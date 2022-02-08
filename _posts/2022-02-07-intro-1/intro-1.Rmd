@@ -213,10 +213,8 @@ El botón ___Update___ del panel paquetes levanta el cuadro de diálogo diseñad
 knitr::include_graphics("img/pack6.png")
 ```
 
-Hasta acá la descripción inicial introductoria a la plataforma RStudio.  
+Hasta acá la descripción inicial introductoria a la plataforma RStudio. Te invito a comentar y compartir en tus redes para ampliar el número de felices usuarios de R.
 
-Te invito a comentar y compartir en tus redes para ampliar el número de felices usuarios de R.
-
-Un saludo Afectuoso, Danilo. 
+Un saludo cordial, Danilo. 
 
 
