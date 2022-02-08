@@ -1,0 +1,62 @@
+[
+  {
+    "path": "posts/2022-02-07-otro-post/",
+    "title": "otro post",
+    "description": "A short description of the post.",
+    "author": [
+      {
+        "name": "Nora Jones",
+        "url": "https://example.com/norajones"
+      }
+    ],
+    "date": "2022-02-07",
+    "categories": [
+      "porta"
+    ],
+    "contents": "\r\nDistill is a publication format for scientific and technical writing, native to the web.\r\nLearn more about using Distill at https://rstudio.github.io/distill.\r\n\r\n\r\n\r\n",
+    "preview": {},
+    "last_modified": "2022-02-07T13:23:16-03:00",
+    "input_file": {}
+  },
+  {
+    "path": "posts/2022-02-04-the-sharpe-ratio/",
+    "title": "The Sharpe Ratio",
+    "description": "A short description of the post.",
+    "author": [
+      {
+        "name": "Nora Jones",
+        "url": "https://example.com/norajones"
+      }
+    ],
+    "date": "2022-02-04",
+    "categories": [
+      "porta",
+      "otro"
+    ],
+    "contents": "\r\nDistill is a publication format for scientific and technical writing, native to the web.\r\nLearn more about using Distill at https://rstudio.github.io/distill.\r\n\r\n\r\n\r\n",
+    "preview": {},
+    "last_modified": "2022-02-07T14:04:42-03:00",
+    "input_file": "the-sharpe-ratio.knit.md"
+  },
+  {
+    "path": "posts/welcome/",
+    "title": "Welcome to Ráster con R. El Blog",
+    "description": "Welcome to our new blog, Ráster con R. El Blog. We hope you enjoy \nreading what we have to say!",
+    "author": [
+      {
+        "name": "Danilo A. Verdugo Chaura",
+        "url": {}
+      },
+      {
+        "name": "",
+        "url": {}
+      }
+    ],
+    "date": "2022-02-04",
+    "categories": [],
+    "contents": "\r\n\r\n\r\n\r\n",
+    "preview": {},
+    "last_modified": "2022-02-07T14:16:14-03:00",
+    "input_file": "welcome.knit.md"
+  }
+]

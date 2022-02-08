@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:media="http://search.yahoo.com/mrss/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:dc="http://purl.org/dc/elements/1.1/" version="2.0">
+  <channel>
+    <title>Ráster con R. El Blog</title>
+    <link>https://daniloverdugo.github.io/</link>
+    <atom:link href="https://daniloverdugo.github.io/index.xml" rel="self" type="application/rss+xml"/>
+    <description>Ráster con R. El Blog
+</description>
+    <generator>Distill</generator>
+    <lastBuildDate>Mon, 07 Feb 2022 00:00:00 +0000</lastBuildDate>
+    <item>
+      <title>R: Historia y Origen</title>
+      <dc:creator>Danilo Verdugo</dc:creator>
+      <dc:creator/>
+      <link>https://daniloverdugo.github.io/posts/2022-02-07-intro-1</link>
+      <description>R es un sistema o una plataforma que surge de un entorno computacional diseñado originalmente para el cálculo estadístico.</description>
+      <category>R</category>
+      <category>INTRO</category>
+      <guid>https://daniloverdugo.github.io/posts/2022-02-07-intro-1</guid>
+      <pubDate>Mon, 07 Feb 2022 00:00:00 +0000</pubDate>
+      <media:content url="https://daniloverdugo.github.io/posts/2022-02-07-intro-1/img/creators.jpg" medium="image" type="image/jpeg"/>
+    </item>
+  </channel>
+</rss>
