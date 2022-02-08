@@ -216,5 +216,3 @@ knitr::include_graphics("img/pack6.png")
 Hasta acá la descripción inicial introductoria a la plataforma RStudio. Te invito a comentar y compartir en tus redes para ampliar el número de felices usuarios de R.
 
 Un saludo cordial, Danilo. 
-
-
