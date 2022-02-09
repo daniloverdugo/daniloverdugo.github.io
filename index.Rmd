@@ -1,5 +1,0 @@
----
-title: "Ráster con R. El Blog"
-site: distill::distill_website
-listing: posts
----
