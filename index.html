@@ -265,9 +265,12 @@ div.csl-indent {
 <li class="chapter" data-level="9.1.1" data-path="r-fechas.html"><a href="r-fechas.html#format-date"><i class="fa fa-check"></i><b>9.1.1</b> Formato de Fechas</a></li>
 <li class="chapter" data-level="9.1.2" data-path="r-fechas.html"><a href="r-fechas.html#cambio-formato-date"><i class="fa fa-check"></i><b>9.1.2</b> Cambio de Formato</a></li>
 </ul></li>
-<li class="chapter" data-level="9.2" data-path="r-fechas.html"><a href="r-fechas.html#posix"><i class="fa fa-check"></i><b>9.2</b> Formato POSIX</a></li>
-<li class="chapter" data-level="9.3" data-path="r-fechas.html"><a href="r-fechas.html#ope-time"><i class="fa fa-check"></i><b>9.3</b> Operando con el tiempo</a></li>
-<li class="chapter" data-level="9.4" data-path="r-fechas.html"><a href="r-fechas.html#zona-hora"><i class="fa fa-check"></i><b>9.4</b> Conversión entre zonas horarias</a></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="r-hora.html"><a href="r-hora.html"><i class="fa fa-check"></i><b>10</b> Hora</a>
+<ul>
+<li class="chapter" data-level="10.1" data-path="r-hora.html"><a href="r-hora.html#posix"><i class="fa fa-check"></i><b>10.1</b> Formato POSIX</a></li>
+<li class="chapter" data-level="10.2" data-path="r-hora.html"><a href="r-hora.html#ope-time"><i class="fa fa-check"></i><b>10.2</b> Operando con el tiempo</a></li>
+<li class="chapter" data-level="10.3" data-path="r-hora.html"><a href="r-hora.html#zona-hora"><i class="fa fa-check"></i><b>10.3</b> Conversión entre zonas horarias</a></li>
 </ul></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Publicado con bookdown</a></li>
@@ -429,6 +432,9 @@ Figure 1.9: Configuración de paneles y cuadros.
 <li id="fn2"><p>Es importante señalar que el <em>nombre de usuario</em> de la sesión Windows donde se realizará la instalación <strong>no existan</strong> espacios e idealmente no contenga tildes. De ser así, es recomendable crear una nueva sesión con un nombre sin espacios ni tildes.<a href="index.html#fnref2" class="footnote-back">↩︎</a></p></li>
 </ol>
 </div>
+      <div class="giscus">  
+      </div>
+
             </section>
 
           </div>
@@ -491,6 +497,35 @@ gitbook.start({
 });
 </script>
 
+<script src="https://giscus.app/client.js"
+        data-repo="daniloverdugo/daniloverdugo.github.io"
+        data-repo-id="R_kgDOGzgXSA"
+        data-category="General"
+        data-category-id="DIC_kwDOGzgXSM4CBEIV"
+        data-mapping="pathname"
+        data-reactions-enabled="1"
+        data-emit-metadata="0"
+        data-input-position="bottom"
+        data-theme="light"
+        data-lang="es"
+        crossorigin="anonymous"
+        async>
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
 </body>
 
 </html>
