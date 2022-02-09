@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Capítulo 7 Dataframes | Ráster con R</title>
+  <meta name="description" content="<p>Los fenómenos geográficos se desarrollan de manera continúa sobre una extensión de la superficie terrestre (en, sobre o bajo ella), y ha sido un desafío constante crear un modelo de representación tan simple para ser almacenado, procesado y visualizado con facilidad y tan complejo que permita perder el mínimo de información crítica y versátil que permita mantener el nivel de detalle proporcional a la riqueza del mundo real.
+Ese modelo se ha denominado <strong>modelo ráster</strong> y es el tema principal del presente libro, su origen, fundamentos, propiedades y algunos usos serán descritos en detalle.
+Para ello, se basará en la <strong>Plataforma R</strong> y <strong>RStudio</strong>, unas de las herramientas informáticas más poderosas en la actualidad.
+Desde la instalación de las aplicaciones, pasando por una guía básica de su utilización, hasta una detallada descripción del trabajo con dicho modelo.</p>" />
+  <meta name="generator" content="bookdown 0.24 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Capítulo 7 Dataframes | Ráster con R" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="<p>Los fenómenos geográficos se desarrollan de manera continúa sobre una extensión de la superficie terrestre (en, sobre o bajo ella), y ha sido un desafío constante crear un modelo de representación tan simple para ser almacenado, procesado y visualizado con facilidad y tan complejo que permita perder el mínimo de información crítica y versátil que permita mantener el nivel de detalle proporcional a la riqueza del mundo real.
+Ese modelo se ha denominado <strong>modelo ráster</strong> y es el tema principal del presente libro, su origen, fundamentos, propiedades y algunos usos serán descritos en detalle.
+Para ello, se basará en la <strong>Plataforma R</strong> y <strong>RStudio</strong>, unas de las herramientas informáticas más poderosas en la actualidad.
+Desde la instalación de las aplicaciones, pasando por una guía básica de su utilización, hasta una detallada descripción del trabajo con dicho modelo.</p>" />
+  <meta name="github-repo" content="rstudio/bookdown-demo" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Capítulo 7 Dataframes | Ráster con R" />
+  
+  <meta name="twitter:description" content="<p>Los fenómenos geográficos se desarrollan de manera continúa sobre una extensión de la superficie terrestre (en, sobre o bajo ella), y ha sido un desafío constante crear un modelo de representación tan simple para ser almacenado, procesado y visualizado con facilidad y tan complejo que permita perder el mínimo de información crítica y versátil que permita mantener el nivel de detalle proporcional a la riqueza del mundo real.
+Ese modelo se ha denominado <strong>modelo ráster</strong> y es el tema principal del presente libro, su origen, fundamentos, propiedades y algunos usos serán descritos en detalle.
+Para ello, se basará en la <strong>Plataforma R</strong> y <strong>RStudio</strong>, unas de las herramientas informáticas más poderosas en la actualidad.
+Desde la instalación de las aplicaciones, pasando por una guía básica de su utilización, hasta una detallada descripción del trabajo con dicho modelo.</p>" />
+  
+
+<meta name="author" content="Danilo A. Verdugo Chaura" />
+
+
+<meta name="date" content="2022-02-09" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="mat.html"/>
+<link rel="next" href="array.html"/>
+<script src="libs/header-attrs-2.11/header-attrs.js"></script>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.0.1/anchor-sections.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Ráster con R</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="1" data-path="part1.html"><a href="part1.html"><i class="fa fa-check"></i><b>1</b> Plataforma R</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="part1.html"><a href="part1.html#hist-orig"><i class="fa fa-check"></i><b>1.1</b> Historia y Origen</a></li>
+<li class="chapter" data-level="1.2" data-path="part1.html"><a href="part1.html#dis-plat"><i class="fa fa-check"></i><b>1.2</b> Diseño de la Plataforma R</a></li>
+<li class="chapter" data-level="1.3" data-path="part1.html"><a href="part1.html#rstudio"><i class="fa fa-check"></i><b>1.3</b> RStudio</a></li>
+<li class="chapter" data-level="1.4" data-path="part1.html"><a href="part1.html#car-prin"><i class="fa fa-check"></i><b>1.4</b> Características Principales</a></li>
+<li class="chapter" data-level="1.5" data-path="part1.html"><a href="part1.html#inst-pla"><i class="fa fa-check"></i><b>1.5</b> Instalación de Plataforma R y RStudio</a></li>
+<li class="chapter" data-level="1.6" data-path="part1.html"><a href="part1.html#con-pre"><i class="fa fa-check"></i><b>1.6</b> Consideraciones Preliminares</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="intro-package.html"><a href="intro-package.html"><i class="fa fa-check"></i><b>2</b> Paquetes</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="intro-package.html"><a href="intro-package.html#pack-search"><i class="fa fa-check"></i><b>2.1</b> Búsqueda</a></li>
+<li class="chapter" data-level="2.2" data-path="intro-package.html"><a href="intro-package.html#pack-install"><i class="fa fa-check"></i><b>2.2</b> Instalación</a>
+<ul>
+<li class="chapter" data-level="2.2.1" data-path="intro-package.html"><a href="intro-package.html#pack-cuadro"><i class="fa fa-check"></i><b>2.2.1</b> Cuadro Diálogo</a></li>
+<li class="chapter" data-level="2.2.2" data-path="intro-package.html"><a href="intro-package.html#pack-install-code"><i class="fa fa-check"></i><b>2.2.2</b> Función <em>install.packages()</em></a></li>
+</ul></li>
+<li class="chapter" data-level="2.3" data-path="intro-package.html"><a href="intro-package.html#pack-update"><i class="fa fa-check"></i><b>2.3</b> Actualización</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="sin-bas.html"><a href="sin-bas.html"><i class="fa fa-check"></i><b>3</b> Sintaxis Básica de R</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="sin-bas.html"><a href="sin-bas.html#op-num"><i class="fa fa-check"></i><b>3.1</b> Operaciones Numéricas</a></li>
+<li class="chapter" data-level="3.2" data-path="sin-bas.html"><a href="sin-bas.html#asig"><i class="fa fa-check"></i><b>3.2</b> Asignación</a></li>
+<li class="chapter" data-level="3.3" data-path="sin-bas.html"><a href="sin-bas.html#nat-vec"><i class="fa fa-check"></i><b>3.3</b> Naturaleza Vectorial</a>
+<ul>
+<li class="chapter" data-level="3.3.1" data-path="sin-bas.html"><a href="sin-bas.html#fun-c"><i class="fa fa-check"></i><b>3.3.1</b> Función <strong><code>c()</code></strong> para crear vectores</a></li>
+<li class="chapter" data-level="3.3.2" data-path="sin-bas.html"><a href="sin-bas.html#uso-sec"><i class="fa fa-check"></i><b>3.3.2</b> Uso de <strong>Secuencias</strong> para crear vectores</a></li>
+<li class="chapter" data-level="3.3.3" data-path="sin-bas.html"><a href="sin-bas.html#usar-rep"><i class="fa fa-check"></i><b>3.3.3</b> Usar <strong>Repetición</strong> para la creación de vectores</a></li>
+<li class="chapter" data-level="3.3.4" data-path="sin-bas.html"><a href="sin-bas.html#uso-pat"><i class="fa fa-check"></i><b>3.3.4</b> Uso de <strong>Patrones</strong> para crear vectores</a></li>
+<li class="chapter" data-level="3.3.5" data-path="sin-bas.html"><a href="sin-bas.html#vec-log"><i class="fa fa-check"></i><b>3.3.5</b> Vectores Lógicos y Caracteres</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="op-vec.html"><a href="op-vec.html"><i class="fa fa-check"></i><b>4</b> Operación Vectorial</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="op-vec.html"><a href="op-vec.html#op-num-vec"><i class="fa fa-check"></i><b>4.1</b> Operaciones Numéricas</a></li>
+<li class="chapter" data-level="4.2" data-path="op-vec.html"><a href="op-vec.html#val-fal"><i class="fa fa-check"></i><b>4.2</b> Valores Faltantes</a></li>
+<li class="chapter" data-level="4.3" data-path="op-vec.html"><a href="op-vec.html#index-sub"><i class="fa fa-check"></i><b>4.3</b> Indexado y Subconjunto</a>
+<ul>
+<li class="chapter" data-level="4.3.1" data-path="op-vec.html"><a href="op-vec.html#ind-num-pos"><i class="fa fa-check"></i><b>4.3.1</b> Índice Numérico Positivo</a></li>
+<li class="chapter" data-level="4.3.2" data-path="op-vec.html"><a href="op-vec.html#ind-num-neg"><i class="fa fa-check"></i><b>4.3.2</b> Índice Numérico Negativo</a></li>
+<li class="chapter" data-level="4.3.3" data-path="op-vec.html"><a href="op-vec.html#vec-log-1"><i class="fa fa-check"></i><b>4.3.3</b> Vector Lógico</a></li>
+</ul></li>
+<li class="chapter" data-level="4.4" data-path="op-vec.html"><a href="op-vec.html#edic-con"><i class="fa fa-check"></i><b>4.4</b> Edición de Contenido</a></li>
+<li class="chapter" data-level="4.5" data-path="op-vec.html"><a href="op-vec.html#op-avan"><i class="fa fa-check"></i><b>4.5</b> Opciones Avanzadas</a>
+<ul>
+<li class="chapter" data-level="4.5.1" data-path="op-vec.html"><a href="op-vec.html#nom-col"><i class="fa fa-check"></i><b>4.5.1</b> Nombrar los Componentes de un Vector</a></li>
+<li class="chapter" data-level="4.5.2" data-path="op-vec.html"><a href="op-vec.html#info-ad"><i class="fa fa-check"></i><b>4.5.2</b> Información Adicional</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="fac.html"><a href="fac.html"><i class="fa fa-check"></i><b>5</b> Factores</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="fac.html"><a href="fac.html#fac-nom"><i class="fa fa-check"></i><b>5.1</b> Factores Nominales</a></li>
+<li class="chapter" data-level="5.2" data-path="fac.html"><a href="fac.html#fac-or"><i class="fa fa-check"></i><b>5.2</b> Factores Ordinales</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="mat.html"><a href="mat.html"><i class="fa fa-check"></i><b>6</b> Matrices</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="mat.html"><a href="mat.html#op-num-mat"><i class="fa fa-check"></i><b>6.1</b> Operaciones Numéricas</a></li>
+<li class="chapter" data-level="6.2" data-path="mat.html"><a href="mat.html#matriz-index"><i class="fa fa-check"></i><b>6.2</b> Indexado y Subconjunto</a></li>
+<li class="chapter" data-level="6.3" data-path="mat.html"><a href="mat.html#ed-con"><i class="fa fa-check"></i><b>6.3</b> Edición de Contenido</a></li>
+<li class="chapter" data-level="6.4" data-path="mat.html"><a href="mat.html#op-avan-mat"><i class="fa fa-check"></i><b>6.4</b> Opciones Avanzadas</a>
+<ul>
+<li class="chapter" data-level="6.4.1" data-path="mat.html"><a href="mat.html#nom-fil"><i class="fa fa-check"></i><b>6.4.1</b> Nombres de Filas y Columnas</a></li>
+<li class="chapter" data-level="6.4.2" data-path="mat.html"><a href="mat.html#mod-mat"><i class="fa fa-check"></i><b>6.4.2</b> Modificar Tamaño de Matrices</a></li>
+<li class="chapter" data-level="6.4.3" data-path="mat.html"><a href="mat.html#info-adic"><i class="fa fa-check"></i><b>6.4.3</b> Información Adicional</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="dataframe.html"><a href="dataframe.html"><i class="fa fa-check"></i><b>7</b> Dataframes</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="dataframe.html"><a href="dataframe.html#df-detalle"><i class="fa fa-check"></i><b>7.1</b> Creación</a></li>
+<li class="chapter" data-level="7.2" data-path="dataframe.html"><a href="dataframe.html#df-op-num"><i class="fa fa-check"></i><b>7.2</b> Operaciones Numéricas</a></li>
+<li class="chapter" data-level="7.3" data-path="dataframe.html"><a href="dataframe.html#df-index"><i class="fa fa-check"></i><b>7.3</b> Indexado y Subconjunto</a>
+<ul>
+<li class="chapter" data-level="7.3.1" data-path="dataframe.html"><a href="dataframe.html#df-op-avan"><i class="fa fa-check"></i><b>7.3.1</b> Opciones Avanzadas</a></li>
+<li class="chapter" data-level="7.3.2" data-path="dataframe.html"><a href="dataframe.html#df-mod-size"><i class="fa fa-check"></i><b>7.3.2</b> Modificar Tamaño o Estructura</a></li>
+<li class="chapter" data-level="7.3.3" data-path="dataframe.html"><a href="dataframe.html#df-nom-fil-col"><i class="fa fa-check"></i><b>7.3.3</b> Nombres de Filas y Columnas</a></li>
+<li class="chapter" data-level="7.3.4" data-path="dataframe.html"><a href="dataframe.html#df-info"><i class="fa fa-check"></i><b>7.3.4</b> Información Adicional</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="array.html"><a href="array.html"><i class="fa fa-check"></i><b>8</b> Array</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="array.html"><a href="array.html#op-num-arr"><i class="fa fa-check"></i><b>8.1</b> Operaciones Numéricas</a></li>
+<li class="chapter" data-level="8.2" data-path="array.html"><a href="array.html#index-arr"><i class="fa fa-check"></i><b>8.2</b> Indexado y Subconjunto</a></li>
+<li class="chapter" data-level="8.3" data-path="array.html"><a href="array.html#ed-con-arr"><i class="fa fa-check"></i><b>8.3</b> Edición de Contenido</a></li>
+<li class="chapter" data-level="8.4" data-path="array.html"><a href="array.html#op-av-arr"><i class="fa fa-check"></i><b>8.4</b> Opciones Avanzadas</a>
+<ul>
+<li class="chapter" data-level="8.4.1" data-path="array.html"><a href="array.html#nom-fil-arr"><i class="fa fa-check"></i><b>8.4.1</b> Nombres de Filas y Columnas</a></li>
+<li class="chapter" data-level="8.4.2" data-path="array.html"><a href="array.html#info-ad-arr"><i class="fa fa-check"></i><b>8.4.2</b> Información Adicional</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="r-fechas.html"><a href="r-fechas.html"><i class="fa fa-check"></i><b>9</b> Fechas</a>
+<ul>
+<li class="chapter" data-level="9.1" data-path="r-fechas.html"><a href="r-fechas.html#op-fe"><i class="fa fa-check"></i><b>9.1</b> Operaciones con Fecha</a>
+<ul>
+<li class="chapter" data-level="9.1.1" data-path="r-fechas.html"><a href="r-fechas.html#format-date"><i class="fa fa-check"></i><b>9.1.1</b> Formato de Fechas</a></li>
+<li class="chapter" data-level="9.1.2" data-path="r-fechas.html"><a href="r-fechas.html#cambio-formato-date"><i class="fa fa-check"></i><b>9.1.2</b> Cambio de Formato</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="r-hora.html"><a href="r-hora.html"><i class="fa fa-check"></i><b>10</b> Hora</a>
+<ul>
+<li class="chapter" data-level="10.1" data-path="r-hora.html"><a href="r-hora.html#posix"><i class="fa fa-check"></i><b>10.1</b> Formato POSIX</a></li>
+<li class="chapter" data-level="10.2" data-path="r-hora.html"><a href="r-hora.html#ope-time"><i class="fa fa-check"></i><b>10.2</b> Operando con el tiempo</a></li>
+<li class="chapter" data-level="10.3" data-path="r-hora.html"><a href="r-hora.html#zona-hora"><i class="fa fa-check"></i><b>10.3</b> Conversión entre zonas horarias</a></li>
+</ul></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Publicado con bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Ráster con R</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="dataframe" class="section level1" number="7">
+<h1><span class="header-section-number">Capítulo 7</span> Dataframes</h1>
+<p>Un <em>vector</em> y una <em>matriz</em> pueden guardar solo datos del mismo tipo. Para resolver esta limitación se ha definido el objeto <em>dataframe</em>.</p>
+<p>Un <strong>dataframe</strong> es una lista de <em>variables</em> del <em>mismo número de filas</em> con <em>nombres de fila únicos</em>. Si no se incluyen variables, los nombres de las filas determinan el número de filas.</p>
+<p>Los nombres de las columnas no <em>deben estar vacíos</em> y los intentos de utilizar nombres vacíos no es admitido. Se permiten nombres de columna duplicados, pero debe usar la opción <code>check.names = FALSE</code> al momento de crearlo. Sin embargo, no todas las operaciones conservarán los nombres de columna duplicados: por ejemplo, un subconjunto tipo matriz forzará que los nombres de columna en el resultado sean únicos.</p>
+<p>Si se construye un dataframe a partir de varios objetos deben tener el mismo número de filas, aunque factores y textos se reciclarán un número entero de veces si fuese necesario.</p>
+<p>Si los nombres de fila no se proporcionan al momento de creación, los nombres de fila se toman del primer componente que tenga nombres adecuados, por ejemplo, un vector con nombre o una matriz con nombres de fila o un dataframe. Si se proporcionó como NULL o no se encontró ningún componente adecuado, los nombres de fila son la secuencia entera que comienza en uno (y dichos nombres de fila se consideran ‘automático’).</p>
+<div id="df-detalle" class="section level2" number="7.1">
+<h2><span class="header-section-number">7.1</span> Creación</h2>
+<p>Un dataframe, es una <strong>estructura matricial cuyas columnas pueden ser de diferentes tipos</strong> (numérico, lógico, factor y carácter, etc.).</p>
+<p>Los vectores deben tener la misma longitud:</p>
+<div class="sourceCode" id="cb238"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb238-1"><a href="dataframe.html#cb238-1" aria-hidden="true" tabindex="-1"></a>numeros <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">5</span>) </span>
+<span id="cb238-2"><a href="dataframe.html#cb238-2" aria-hidden="true" tabindex="-1"></a>textos <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;aa&quot;</span>, <span class="st">&quot;bb&quot;</span>, <span class="st">&quot;cc&quot;</span>) </span>
+<span id="cb238-3"><a href="dataframe.html#cb238-3" aria-hidden="true" tabindex="-1"></a>logicos <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="cn">TRUE</span>, <span class="cn">FALSE</span>, <span class="cn">TRUE</span>) </span>
+<span id="cb238-4"><a href="dataframe.html#cb238-4" aria-hidden="true" tabindex="-1"></a>dataframe <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(numeros, textos, logicos)</span>
+<span id="cb238-5"><a href="dataframe.html#cb238-5" aria-hidden="true" tabindex="-1"></a>dataframe</span></code></pre></div>
+<pre><code>##   numeros textos logicos
+## 1       2     aa    TRUE
+## 2       3     bb   FALSE
+## 3       5     cc    TRUE</code></pre>
+<p>Los nombres de cada columna pueden ser definidos al momento de crear el objeto:
+</p>
+<div class="sourceCode" id="cb240"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb240-1"><a href="dataframe.html#cb240-1" aria-hidden="true" tabindex="-1"></a>dataframe <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="st">&quot;numericos&quot;</span><span class="ot">=</span> numeros, </span>
+<span id="cb240-2"><a href="dataframe.html#cb240-2" aria-hidden="true" tabindex="-1"></a>                        <span class="st">&quot;textual&quot;</span><span class="ot">=</span> textos, </span>
+<span id="cb240-3"><a href="dataframe.html#cb240-3" aria-hidden="true" tabindex="-1"></a>                        <span class="st">&quot;bool&quot;</span><span class="ot">=</span> logicos)</span>
+<span id="cb240-4"><a href="dataframe.html#cb240-4" aria-hidden="true" tabindex="-1"></a>dataframe</span></code></pre></div>
+<pre><code>##   numericos textual  bool
+## 1         2      aa  TRUE
+## 2         3      bb FALSE
+## 3         5      cc  TRUE</code></pre>
+<p>También es posible convertir una matriz a dataframe de manera directa:</p>
+<div class="sourceCode" id="cb242"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb242-1"><a href="dataframe.html#cb242-1" aria-hidden="true" tabindex="-1"></a>m1 <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">12</span>, <span class="at">nrow =</span> <span class="dv">4</span>, <span class="at">ncol =</span> <span class="dv">3</span>)</span>
+<span id="cb242-2"><a href="dataframe.html#cb242-2" aria-hidden="true" tabindex="-1"></a>m1</span></code></pre></div>
+<pre><code>##      [,1] [,2] [,3]
+## [1,]    1    5    9
+## [2,]    2    6   10
+## [3,]    3    7   11
+## [4,]    4    8   12</code></pre>
+<p></p>
+<div class="sourceCode" id="cb244"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb244-1"><a href="dataframe.html#cb244-1" aria-hidden="true" tabindex="-1"></a><span class="fu">as.data.frame</span>(m1)</span></code></pre></div>
+<pre><code>##   V1 V2 V3
+## 1  1  5  9
+## 2  2  6 10
+## 3  3  7 11
+## 4  4  8 12</code></pre>
+<p>Para revisar el detalle y su estructura:</p>
+<div class="sourceCode" id="cb246"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb246-1"><a href="dataframe.html#cb246-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(dataframe)</span></code></pre></div>
+<pre><code>## &#39;data.frame&#39;:    3 obs. of  3 variables:
+##  $ numericos: num  2 3 5
+##  $ textual  : chr  &quot;aa&quot; &quot;bb&quot; &quot;cc&quot;
+##  $ bool     : logi  TRUE FALSE TRUE</code></pre>
+</div>
+<div id="df-op-num" class="section level2" number="7.2">
+<h2><span class="header-section-number">7.2</span> Operaciones Numéricas</h2>
+<p>Como el objeto dataframe acepta distintos tipos de datos, las operaciones aritméticas deben ser realizadas sobre las columnas numéricas:</p>
+<div class="sourceCode" id="cb248"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb248-1"><a href="dataframe.html#cb248-1" aria-hidden="true" tabindex="-1"></a>dataframe<span class="sc">$</span>numericos <span class="sc">*</span> <span class="dv">2</span></span></code></pre></div>
+<p>Aprovechamos de mencionar que un mecanismo de creación de columna y con nombre en la misma operación:</p>
+<div class="sourceCode" id="cb249"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb249-1"><a href="dataframe.html#cb249-1" aria-hidden="true" tabindex="-1"></a>dataframe<span class="sc">$</span>cuadrado <span class="ot">&lt;-</span> dataframe<span class="sc">$</span>numericos <span class="sc">**</span> <span class="dv">2</span></span>
+<span id="cb249-2"><a href="dataframe.html#cb249-2" aria-hidden="true" tabindex="-1"></a>dataframe</span></code></pre></div>
+<pre><code>##   numericos textual  bool cuadrado
+## 1         2      aa  TRUE        4
+## 2         3      bb FALSE        9
+## 3         5      cc  TRUE       25</code></pre>
+</div>
+<div id="df-index" class="section level2" number="7.3">
+<h2><span class="header-section-number">7.3</span> Indexado y Subconjunto</h2>
+<p>Subconjunto por número de filas:</p>
+<div class="sourceCode" id="cb251"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb251-1"><a href="dataframe.html#cb251-1" aria-hidden="true" tabindex="-1"></a>dataframe[<span class="dv">2</span><span class="sc">:</span><span class="dv">3</span>, ]</span></code></pre></div>
+<pre><code>##   numericos textual  bool cuadrado
+## 2         3      bb FALSE        9
+## 3         5      cc  TRUE       25</code></pre>
+<p>Subconjunto por nombre de columnas:</p>
+<div class="sourceCode" id="cb253"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb253-1"><a href="dataframe.html#cb253-1" aria-hidden="true" tabindex="-1"></a>dataframe[ , <span class="fu">c</span>(<span class="st">&quot;bool&quot;</span>,<span class="st">&quot;textual&quot;</span>)]</span></code></pre></div>
+<pre><code>##    bool textual
+## 1  TRUE      aa
+## 2 FALSE      bb
+## 3  TRUE      cc</code></pre>
+<p>Subconjunto por número de fila y nombre de columnas:</p>
+<div class="sourceCode" id="cb255"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb255-1"><a href="dataframe.html#cb255-1" aria-hidden="true" tabindex="-1"></a>dataframe[<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>), <span class="fu">c</span>(<span class="st">&quot;bool&quot;</span>,<span class="st">&quot;cuadrado&quot;</span>)]</span></code></pre></div>
+<pre><code>##    bool cuadrado
+## 1  TRUE        4
+## 2 FALSE        9</code></pre>
+<div id="df-op-avan" class="section level3" number="7.3.1">
+<h3><span class="header-section-number">7.3.1</span> Opciones Avanzadas</h3>
+<p>También podemos usar condiciones lógicas para crear subconjuntos:</p>
+<div class="sourceCode" id="cb257"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb257-1"><a href="dataframe.html#cb257-1" aria-hidden="true" tabindex="-1"></a>dataframe[dataframe<span class="sc">$</span>bool<span class="sc">==</span><span class="cn">TRUE</span>,]</span></code></pre></div>
+<pre><code>##   numericos textual bool cuadrado
+## 1         2      aa TRUE        4
+## 3         5      cc TRUE       25</code></pre>
+<div class="sourceCode" id="cb259"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb259-1"><a href="dataframe.html#cb259-1" aria-hidden="true" tabindex="-1"></a>dataframe[dataframe<span class="sc">$</span>bool<span class="sc">==</span><span class="cn">TRUE</span> <span class="sc">&amp;</span> dataframe<span class="sc">$</span>numericos <span class="sc">&lt;</span><span class="dv">5</span>, ]</span></code></pre></div>
+<pre><code>##   numericos textual bool cuadrado
+## 1         2      aa TRUE        4</code></pre>
+<p>La función <code>subset()</code> provee un formato más económico para realizar subconjuntos:</p>
+<div class="sourceCode" id="cb261"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb261-1"><a href="dataframe.html#cb261-1" aria-hidden="true" tabindex="-1"></a><span class="fu">subset</span>(dataframe, bool <span class="sc">==</span> T <span class="sc">&amp;</span> numericos <span class="sc">&lt;</span> <span class="dv">5</span>)</span></code></pre></div>
+<pre><code>##   numericos textual bool cuadrado
+## 1         2      aa TRUE        4</code></pre>
+</div>
+<div id="df-mod-size" class="section level3" number="7.3.2">
+<h3><span class="header-section-number">7.3.2</span> Modificar Tamaño o Estructura</h3>
+<p>Las formas de consultar el tamaño y geometría de un objeto:</p>
+<div class="sourceCode" id="cb263"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb263-1"><a href="dataframe.html#cb263-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(dataframe)</span></code></pre></div>
+<pre><code>## [1] 3 4</code></pre>
+<div class="sourceCode" id="cb265"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb265-1"><a href="dataframe.html#cb265-1" aria-hidden="true" tabindex="-1"></a><span class="fu">nrow</span>(dataframe)</span></code></pre></div>
+<pre><code>## [1] 3</code></pre>
+<div class="sourceCode" id="cb267"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb267-1"><a href="dataframe.html#cb267-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ncol</span>(dataframe)</span></code></pre></div>
+<pre><code>## [1] 4</code></pre>
+<p>Podemos agregar una columna siempre y cuando contenga el mismo número de filas:
+</p>
+<div class="sourceCode" id="cb269"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb269-1"><a href="dataframe.html#cb269-1" aria-hidden="true" tabindex="-1"></a>vector <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;uno&quot;</span>,<span class="st">&quot;dos&quot;</span>,<span class="st">&quot;tres&quot;</span>)</span>
+<span id="cb269-2"><a href="dataframe.html#cb269-2" aria-hidden="true" tabindex="-1"></a>dataframe <span class="ot">&lt;-</span> <span class="fu">cbind</span>(dataframe, <span class="st">&quot;adicional&quot;</span><span class="ot">=</span> vector)</span>
+<span id="cb269-3"><a href="dataframe.html#cb269-3" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(dataframe)</span></code></pre></div>
+<pre><code>## &#39;data.frame&#39;:    3 obs. of  5 variables:
+##  $ numericos: num  2 3 5
+##  $ textual  : chr  &quot;aa&quot; &quot;bb&quot; &quot;cc&quot;
+##  $ bool     : logi  TRUE FALSE TRUE
+##  $ cuadrado : num  4 9 25
+##  $ adicional: chr  &quot;uno&quot; &quot;dos&quot; &quot;tres&quot;</code></pre>
+<p>Y el correspondiente comando para agregar filas:
+</p>
+<div class="sourceCode" id="cb271"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb271-1"><a href="dataframe.html#cb271-1" aria-hidden="true" tabindex="-1"></a>vector <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">7</span>,<span class="st">&quot;dd&quot;</span>, <span class="cn">NA</span>, <span class="dv">0</span>,<span class="st">&quot;cuatro&quot;</span>)</span>
+<span id="cb271-2"><a href="dataframe.html#cb271-2" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(<span class="fu">rbind</span>(dataframe,vector))</span></code></pre></div>
+<pre><code>## &#39;data.frame&#39;:    4 obs. of  5 variables:
+##  $ numericos: chr  &quot;2&quot; &quot;3&quot; &quot;5&quot; &quot;7&quot;
+##  $ textual  : chr  &quot;aa&quot; &quot;bb&quot; &quot;cc&quot; &quot;dd&quot;
+##  $ bool     : chr  &quot;TRUE&quot; &quot;FALSE&quot; &quot;TRUE&quot; NA
+##  $ cuadrado : chr  &quot;4&quot; &quot;9&quot; &quot;25&quot; &quot;0&quot;
+##  $ adicional: chr  &quot;uno&quot; &quot;dos&quot; &quot;tres&quot; &quot;cuatro&quot;</code></pre>
+<p>Si estudiamos con cuidado el resultado, notaremos que la columna <strong>numéricos</strong> aparece como <em>carácter</em> eso se produce si intentamos agregar una fila usando <code>rbind()</code> y <code>c()</code>, ya que convierte <strong>todas las columnas</strong> en una clase de carácter. Esto se debe a que todos los elementos del vector creado por c() deben ser de la misma clase, por lo que todos son forzados a la clase de caracteres que obliga a todas las variables en el marco de datos a la clase de caracteres.</p>
+<p>Para agregar filas de manera adecuada, necesitamos convertir los elementos que se agregan a un dataframe y asegurarnos de que las columnas sean de la misma clase que el dataframe destino.</p>
+<div class="sourceCode" id="cb273"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb273-1"><a href="dataframe.html#cb273-1" aria-hidden="true" tabindex="-1"></a>agregar_fila <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">numericos=</span> <span class="dv">9</span>, </span>
+<span id="cb273-2"><a href="dataframe.html#cb273-2" aria-hidden="true" tabindex="-1"></a>                           <span class="at">textual=</span> <span class="st">&quot;RR&quot;</span>, </span>
+<span id="cb273-3"><a href="dataframe.html#cb273-3" aria-hidden="true" tabindex="-1"></a>                           <span class="at">bool=</span> <span class="cn">FALSE</span>, </span>
+<span id="cb273-4"><a href="dataframe.html#cb273-4" aria-hidden="true" tabindex="-1"></a>                           <span class="at">cuadrado=</span> <span class="dv">110</span>, </span>
+<span id="cb273-5"><a href="dataframe.html#cb273-5" aria-hidden="true" tabindex="-1"></a>                           <span class="at">adicional=</span> <span class="st">&quot;cuatro&quot;</span>)</span>
+<span id="cb273-6"><a href="dataframe.html#cb273-6" aria-hidden="true" tabindex="-1"></a>(dataframe <span class="ot">&lt;-</span> <span class="fu">rbind</span>(dataframe, agregar_fila))</span></code></pre></div>
+<pre><code>##   numericos textual  bool cuadrado adicional
+## 1         2      aa  TRUE        4       uno
+## 2         3      bb FALSE        9       dos
+## 3         5      cc  TRUE       25      tres
+## 4         9      RR FALSE      110    cuatro</code></pre>
+</div>
+<div id="df-nom-fil-col" class="section level3" number="7.3.3">
+<h3><span class="header-section-number">7.3.3</span> Nombres de Filas y Columnas</h3>
+<p></p>
+<div class="sourceCode" id="cb275"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb275-1"><a href="dataframe.html#cb275-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rownames</span>(dataframe) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;fila1&quot;</span>, <span class="st">&quot;fila2&quot;</span>, <span class="st">&quot;fila3&quot;</span>, <span class="st">&quot;fila4&quot;</span>)</span>
+<span id="cb275-2"><a href="dataframe.html#cb275-2" aria-hidden="true" tabindex="-1"></a>dataframe</span></code></pre></div>
+<pre><code>##       numericos textual  bool cuadrado adicional
+## fila1         2      aa  TRUE        4       uno
+## fila2         3      bb FALSE        9       dos
+## fila3         5      cc  TRUE       25      tres
+## fila4         9      RR FALSE      110    cuatro</code></pre>
+<p></p>
+<div class="sourceCode" id="cb277"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb277-1"><a href="dataframe.html#cb277-1" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(dataframe) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;col_1&quot;</span>, <span class="st">&quot;col_2&quot;</span>, <span class="st">&quot;col_3&quot;</span>)</span>
+<span id="cb277-2"><a href="dataframe.html#cb277-2" aria-hidden="true" tabindex="-1"></a>dataframe</span></code></pre></div>
+<pre><code>##       col_1 col_2 col_3  NA     NA
+## fila1     2    aa  TRUE   4    uno
+## fila2     3    bb FALSE   9    dos
+## fila3     5    cc  TRUE  25   tres
+## fila4     9    RR FALSE 110 cuatro</code></pre>
+</div>
+<div id="df-info" class="section level3" number="7.3.4">
+<h3><span class="header-section-number">7.3.4</span> Información Adicional</h3>
+<p></p>
+<div class="sourceCode" id="cb279"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb279-1"><a href="dataframe.html#cb279-1" aria-hidden="true" tabindex="-1"></a><span class="fu">comment</span>(dataframe) <span class="ot">&lt;-</span> <span class="st">&quot;Texto informativo adicional&quot;</span></span></code></pre></div>
+<p></p>
+<div class="sourceCode" id="cb280"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb280-1"><a href="dataframe.html#cb280-1" aria-hidden="true" tabindex="-1"></a><span class="fu">attributes</span>(dataframe)</span></code></pre></div>
+<pre><code>## $names
+## [1] &quot;col_1&quot; &quot;col_2&quot; &quot;col_3&quot; NA      NA     
+## 
+## $row.names
+## [1] &quot;fila1&quot; &quot;fila2&quot; &quot;fila3&quot; &quot;fila4&quot;
+## 
+## $class
+## [1] &quot;data.frame&quot;
+## 
+## $comment
+## [1] &quot;Texto informativo adicional&quot;</code></pre>
+
+</div>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="mat.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="array.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": true,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "sepia",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/USERNAME/REPO/edit/BRANCH/06-Dataframes.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["_main.pdf"],
+"search": {
+"engine": "lunr",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+},
+"info": true
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

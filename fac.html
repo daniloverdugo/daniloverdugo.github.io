@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Capítulo 5 Factores | Ráster con R</title>
+  <meta name="description" content="<p>Los fenómenos geográficos se desarrollan de manera continúa sobre una extensión de la superficie terrestre (en, sobre o bajo ella), y ha sido un desafío constante crear un modelo de representación tan simple para ser almacenado, procesado y visualizado con facilidad y tan complejo que permita perder el mínimo de información crítica y versátil que permita mantener el nivel de detalle proporcional a la riqueza del mundo real.
+Ese modelo se ha denominado <strong>modelo ráster</strong> y es el tema principal del presente libro, su origen, fundamentos, propiedades y algunos usos serán descritos en detalle.
+Para ello, se basará en la <strong>Plataforma R</strong> y <strong>RStudio</strong>, unas de las herramientas informáticas más poderosas en la actualidad.
+Desde la instalación de las aplicaciones, pasando por una guía básica de su utilización, hasta una detallada descripción del trabajo con dicho modelo.</p>" />
+  <meta name="generator" content="bookdown 0.24 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Capítulo 5 Factores | Ráster con R" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="<p>Los fenómenos geográficos se desarrollan de manera continúa sobre una extensión de la superficie terrestre (en, sobre o bajo ella), y ha sido un desafío constante crear un modelo de representación tan simple para ser almacenado, procesado y visualizado con facilidad y tan complejo que permita perder el mínimo de información crítica y versátil que permita mantener el nivel de detalle proporcional a la riqueza del mundo real.
+Ese modelo se ha denominado <strong>modelo ráster</strong> y es el tema principal del presente libro, su origen, fundamentos, propiedades y algunos usos serán descritos en detalle.
+Para ello, se basará en la <strong>Plataforma R</strong> y <strong>RStudio</strong>, unas de las herramientas informáticas más poderosas en la actualidad.
+Desde la instalación de las aplicaciones, pasando por una guía básica de su utilización, hasta una detallada descripción del trabajo con dicho modelo.</p>" />
+  <meta name="github-repo" content="rstudio/bookdown-demo" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Capítulo 5 Factores | Ráster con R" />
+  
+  <meta name="twitter:description" content="<p>Los fenómenos geográficos se desarrollan de manera continúa sobre una extensión de la superficie terrestre (en, sobre o bajo ella), y ha sido un desafío constante crear un modelo de representación tan simple para ser almacenado, procesado y visualizado con facilidad y tan complejo que permita perder el mínimo de información crítica y versátil que permita mantener el nivel de detalle proporcional a la riqueza del mundo real.
+Ese modelo se ha denominado <strong>modelo ráster</strong> y es el tema principal del presente libro, su origen, fundamentos, propiedades y algunos usos serán descritos en detalle.
+Para ello, se basará en la <strong>Plataforma R</strong> y <strong>RStudio</strong>, unas de las herramientas informáticas más poderosas en la actualidad.
+Desde la instalación de las aplicaciones, pasando por una guía básica de su utilización, hasta una detallada descripción del trabajo con dicho modelo.</p>" />
+  
+
+<meta name="author" content="Danilo A. Verdugo Chaura" />
+
+
+<meta name="date" content="2022-02-09" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="op-vec.html"/>
+<link rel="next" href="mat.html"/>
+<script src="libs/header-attrs-2.11/header-attrs.js"></script>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.0.1/anchor-sections.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Ráster con R</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="1" data-path="part1.html"><a href="part1.html"><i class="fa fa-check"></i><b>1</b> Plataforma R</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="part1.html"><a href="part1.html#hist-orig"><i class="fa fa-check"></i><b>1.1</b> Historia y Origen</a></li>
+<li class="chapter" data-level="1.2" data-path="part1.html"><a href="part1.html#dis-plat"><i class="fa fa-check"></i><b>1.2</b> Diseño de la Plataforma R</a></li>
+<li class="chapter" data-level="1.3" data-path="part1.html"><a href="part1.html#rstudio"><i class="fa fa-check"></i><b>1.3</b> RStudio</a></li>
+<li class="chapter" data-level="1.4" data-path="part1.html"><a href="part1.html#car-prin"><i class="fa fa-check"></i><b>1.4</b> Características Principales</a></li>
+<li class="chapter" data-level="1.5" data-path="part1.html"><a href="part1.html#inst-pla"><i class="fa fa-check"></i><b>1.5</b> Instalación de Plataforma R y RStudio</a></li>
+<li class="chapter" data-level="1.6" data-path="part1.html"><a href="part1.html#con-pre"><i class="fa fa-check"></i><b>1.6</b> Consideraciones Preliminares</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="intro-package.html"><a href="intro-package.html"><i class="fa fa-check"></i><b>2</b> Paquetes</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="intro-package.html"><a href="intro-package.html#pack-search"><i class="fa fa-check"></i><b>2.1</b> Búsqueda</a></li>
+<li class="chapter" data-level="2.2" data-path="intro-package.html"><a href="intro-package.html#pack-install"><i class="fa fa-check"></i><b>2.2</b> Instalación</a>
+<ul>
+<li class="chapter" data-level="2.2.1" data-path="intro-package.html"><a href="intro-package.html#pack-cuadro"><i class="fa fa-check"></i><b>2.2.1</b> Cuadro Diálogo</a></li>
+<li class="chapter" data-level="2.2.2" data-path="intro-package.html"><a href="intro-package.html#pack-install-code"><i class="fa fa-check"></i><b>2.2.2</b> Función <em>install.packages()</em></a></li>
+</ul></li>
+<li class="chapter" data-level="2.3" data-path="intro-package.html"><a href="intro-package.html#pack-update"><i class="fa fa-check"></i><b>2.3</b> Actualización</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="sin-bas.html"><a href="sin-bas.html"><i class="fa fa-check"></i><b>3</b> Sintaxis Básica de R</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="sin-bas.html"><a href="sin-bas.html#op-num"><i class="fa fa-check"></i><b>3.1</b> Operaciones Numéricas</a></li>
+<li class="chapter" data-level="3.2" data-path="sin-bas.html"><a href="sin-bas.html#asig"><i class="fa fa-check"></i><b>3.2</b> Asignación</a></li>
+<li class="chapter" data-level="3.3" data-path="sin-bas.html"><a href="sin-bas.html#nat-vec"><i class="fa fa-check"></i><b>3.3</b> Naturaleza Vectorial</a>
+<ul>
+<li class="chapter" data-level="3.3.1" data-path="sin-bas.html"><a href="sin-bas.html#fun-c"><i class="fa fa-check"></i><b>3.3.1</b> Función <strong><code>c()</code></strong> para crear vectores</a></li>
+<li class="chapter" data-level="3.3.2" data-path="sin-bas.html"><a href="sin-bas.html#uso-sec"><i class="fa fa-check"></i><b>3.3.2</b> Uso de <strong>Secuencias</strong> para crear vectores</a></li>
+<li class="chapter" data-level="3.3.3" data-path="sin-bas.html"><a href="sin-bas.html#usar-rep"><i class="fa fa-check"></i><b>3.3.3</b> Usar <strong>Repetición</strong> para la creación de vectores</a></li>
+<li class="chapter" data-level="3.3.4" data-path="sin-bas.html"><a href="sin-bas.html#uso-pat"><i class="fa fa-check"></i><b>3.3.4</b> Uso de <strong>Patrones</strong> para crear vectores</a></li>
+<li class="chapter" data-level="3.3.5" data-path="sin-bas.html"><a href="sin-bas.html#vec-log"><i class="fa fa-check"></i><b>3.3.5</b> Vectores Lógicos y Caracteres</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="op-vec.html"><a href="op-vec.html"><i class="fa fa-check"></i><b>4</b> Operación Vectorial</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="op-vec.html"><a href="op-vec.html#op-num-vec"><i class="fa fa-check"></i><b>4.1</b> Operaciones Numéricas</a></li>
+<li class="chapter" data-level="4.2" data-path="op-vec.html"><a href="op-vec.html#val-fal"><i class="fa fa-check"></i><b>4.2</b> Valores Faltantes</a></li>
+<li class="chapter" data-level="4.3" data-path="op-vec.html"><a href="op-vec.html#index-sub"><i class="fa fa-check"></i><b>4.3</b> Indexado y Subconjunto</a>
+<ul>
+<li class="chapter" data-level="4.3.1" data-path="op-vec.html"><a href="op-vec.html#ind-num-pos"><i class="fa fa-check"></i><b>4.3.1</b> Índice Numérico Positivo</a></li>
+<li class="chapter" data-level="4.3.2" data-path="op-vec.html"><a href="op-vec.html#ind-num-neg"><i class="fa fa-check"></i><b>4.3.2</b> Índice Numérico Negativo</a></li>
+<li class="chapter" data-level="4.3.3" data-path="op-vec.html"><a href="op-vec.html#vec-log-1"><i class="fa fa-check"></i><b>4.3.3</b> Vector Lógico</a></li>
+</ul></li>
+<li class="chapter" data-level="4.4" data-path="op-vec.html"><a href="op-vec.html#edic-con"><i class="fa fa-check"></i><b>4.4</b> Edición de Contenido</a></li>
+<li class="chapter" data-level="4.5" data-path="op-vec.html"><a href="op-vec.html#op-avan"><i class="fa fa-check"></i><b>4.5</b> Opciones Avanzadas</a>
+<ul>
+<li class="chapter" data-level="4.5.1" data-path="op-vec.html"><a href="op-vec.html#nom-col"><i class="fa fa-check"></i><b>4.5.1</b> Nombrar los Componentes de un Vector</a></li>
+<li class="chapter" data-level="4.5.2" data-path="op-vec.html"><a href="op-vec.html#info-ad"><i class="fa fa-check"></i><b>4.5.2</b> Información Adicional</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="fac.html"><a href="fac.html"><i class="fa fa-check"></i><b>5</b> Factores</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="fac.html"><a href="fac.html#fac-nom"><i class="fa fa-check"></i><b>5.1</b> Factores Nominales</a></li>
+<li class="chapter" data-level="5.2" data-path="fac.html"><a href="fac.html#fac-or"><i class="fa fa-check"></i><b>5.2</b> Factores Ordinales</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="mat.html"><a href="mat.html"><i class="fa fa-check"></i><b>6</b> Matrices</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="mat.html"><a href="mat.html#op-num-mat"><i class="fa fa-check"></i><b>6.1</b> Operaciones Numéricas</a></li>
+<li class="chapter" data-level="6.2" data-path="mat.html"><a href="mat.html#matriz-index"><i class="fa fa-check"></i><b>6.2</b> Indexado y Subconjunto</a></li>
+<li class="chapter" data-level="6.3" data-path="mat.html"><a href="mat.html#ed-con"><i class="fa fa-check"></i><b>6.3</b> Edición de Contenido</a></li>
+<li class="chapter" data-level="6.4" data-path="mat.html"><a href="mat.html#op-avan-mat"><i class="fa fa-check"></i><b>6.4</b> Opciones Avanzadas</a>
+<ul>
+<li class="chapter" data-level="6.4.1" data-path="mat.html"><a href="mat.html#nom-fil"><i class="fa fa-check"></i><b>6.4.1</b> Nombres de Filas y Columnas</a></li>
+<li class="chapter" data-level="6.4.2" data-path="mat.html"><a href="mat.html#mod-mat"><i class="fa fa-check"></i><b>6.4.2</b> Modificar Tamaño de Matrices</a></li>
+<li class="chapter" data-level="6.4.3" data-path="mat.html"><a href="mat.html#info-adic"><i class="fa fa-check"></i><b>6.4.3</b> Información Adicional</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="dataframe.html"><a href="dataframe.html"><i class="fa fa-check"></i><b>7</b> Dataframes</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="dataframe.html"><a href="dataframe.html#df-detalle"><i class="fa fa-check"></i><b>7.1</b> Creación</a></li>
+<li class="chapter" data-level="7.2" data-path="dataframe.html"><a href="dataframe.html#df-op-num"><i class="fa fa-check"></i><b>7.2</b> Operaciones Numéricas</a></li>
+<li class="chapter" data-level="7.3" data-path="dataframe.html"><a href="dataframe.html#df-index"><i class="fa fa-check"></i><b>7.3</b> Indexado y Subconjunto</a>
+<ul>
+<li class="chapter" data-level="7.3.1" data-path="dataframe.html"><a href="dataframe.html#df-op-avan"><i class="fa fa-check"></i><b>7.3.1</b> Opciones Avanzadas</a></li>
+<li class="chapter" data-level="7.3.2" data-path="dataframe.html"><a href="dataframe.html#df-mod-size"><i class="fa fa-check"></i><b>7.3.2</b> Modificar Tamaño o Estructura</a></li>
+<li class="chapter" data-level="7.3.3" data-path="dataframe.html"><a href="dataframe.html#df-nom-fil-col"><i class="fa fa-check"></i><b>7.3.3</b> Nombres de Filas y Columnas</a></li>
+<li class="chapter" data-level="7.3.4" data-path="dataframe.html"><a href="dataframe.html#df-info"><i class="fa fa-check"></i><b>7.3.4</b> Información Adicional</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="array.html"><a href="array.html"><i class="fa fa-check"></i><b>8</b> Array</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="array.html"><a href="array.html#op-num-arr"><i class="fa fa-check"></i><b>8.1</b> Operaciones Numéricas</a></li>
+<li class="chapter" data-level="8.2" data-path="array.html"><a href="array.html#index-arr"><i class="fa fa-check"></i><b>8.2</b> Indexado y Subconjunto</a></li>
+<li class="chapter" data-level="8.3" data-path="array.html"><a href="array.html#ed-con-arr"><i class="fa fa-check"></i><b>8.3</b> Edición de Contenido</a></li>
+<li class="chapter" data-level="8.4" data-path="array.html"><a href="array.html#op-av-arr"><i class="fa fa-check"></i><b>8.4</b> Opciones Avanzadas</a>
+<ul>
+<li class="chapter" data-level="8.4.1" data-path="array.html"><a href="array.html#nom-fil-arr"><i class="fa fa-check"></i><b>8.4.1</b> Nombres de Filas y Columnas</a></li>
+<li class="chapter" data-level="8.4.2" data-path="array.html"><a href="array.html#info-ad-arr"><i class="fa fa-check"></i><b>8.4.2</b> Información Adicional</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="r-fechas.html"><a href="r-fechas.html"><i class="fa fa-check"></i><b>9</b> Fechas</a>
+<ul>
+<li class="chapter" data-level="9.1" data-path="r-fechas.html"><a href="r-fechas.html#op-fe"><i class="fa fa-check"></i><b>9.1</b> Operaciones con Fecha</a>
+<ul>
+<li class="chapter" data-level="9.1.1" data-path="r-fechas.html"><a href="r-fechas.html#format-date"><i class="fa fa-check"></i><b>9.1.1</b> Formato de Fechas</a></li>
+<li class="chapter" data-level="9.1.2" data-path="r-fechas.html"><a href="r-fechas.html#cambio-formato-date"><i class="fa fa-check"></i><b>9.1.2</b> Cambio de Formato</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="r-hora.html"><a href="r-hora.html"><i class="fa fa-check"></i><b>10</b> Hora</a>
+<ul>
+<li class="chapter" data-level="10.1" data-path="r-hora.html"><a href="r-hora.html#posix"><i class="fa fa-check"></i><b>10.1</b> Formato POSIX</a></li>
+<li class="chapter" data-level="10.2" data-path="r-hora.html"><a href="r-hora.html#ope-time"><i class="fa fa-check"></i><b>10.2</b> Operando con el tiempo</a></li>
+<li class="chapter" data-level="10.3" data-path="r-hora.html"><a href="r-hora.html#zona-hora"><i class="fa fa-check"></i><b>10.3</b> Conversión entre zonas horarias</a></li>
+</ul></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Publicado con bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Ráster con R</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="fac" class="section level1" number="5">
+<h1><span class="header-section-number">Capítulo 5</span> Factores</h1>
+<p>Un dato que adopta un valor desde un conjunto finito de valores se denomina <em>data categórica</em>, por ejemplo, el color de ojos, el estado civil o país de origen. Ellos siempre serán <em>discretos</em> (toman un valor específico).</p>
+<p>Cuando no implican una relación de orden (color azul no es más importante que color negro, o casado es menos importante que soltero) hablamos de <strong>data nominal</strong> y cuando si existe una relación de orden de algún tipo (sano es <em>mejor</em> que enfermo, joven es <em>menor</em> que anciano) hablamos de <strong>data ordinal</strong>, ambas son categóricas, pero se diferencian en su relación de orden y en R ese tipo de datos se denominan <strong><em>factores</em></strong>.</p>
+<p>Un vector de caracteres puede ser convertido en factores utilizando la función <code>factor()</code>:</p>
+<div class="sourceCode" id="cb144"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb144-1"><a href="fac.html#cb144-1" aria-hidden="true" tabindex="-1"></a>niveles <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;A&quot;</span>, <span class="st">&quot;B&quot;</span>, <span class="st">&quot;C&quot;</span>, <span class="st">&quot;B&quot;</span>)</span>
+<span id="cb144-2"><a href="fac.html#cb144-2" aria-hidden="true" tabindex="-1"></a>(factores <span class="ot">&lt;-</span> <span class="fu">factor</span>(niveles))</span></code></pre></div>
+<pre><code>## [1] A B C B
+## Levels: A B C</code></pre>
+<div id="fac-nom" class="section level2" number="5.1">
+<h2><span class="header-section-number">5.1</span> Factores Nominales</h2>
+<p>El resultado de la conversión a <em>factor</em> fue:</p>
+<pre><code>## [1] A B C B
+## Levels: A B C</code></pre>
+<p>Donde vemos además de la lista de valores ahora sin las <em>""</em> ya que <strong>no</strong> son <em>textos</em>. Aparece el ítem <code>Levels</code> que señala los niveles o categorías disponibles en el nuevo vector de tipo <em>nominal</em>. El orden con que los presenta es en estricto orden alfabético. Vemos que la clase o categoría base es <em>dos</em>, el método para reordenar nuestros niveles es incorporar el parámetro <code>levels</code>:</p>
+<div class="sourceCode" id="cb147"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb147-1"><a href="fac.html#cb147-1" aria-hidden="true" tabindex="-1"></a>factores <span class="ot">&lt;-</span> <span class="fu">factor</span>(niveles, <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">&quot;A&quot;</span>, <span class="st">&quot;B&quot;</span>, <span class="st">&quot;C&quot;</span>))</span></code></pre></div>
+<p>o ejecutar la función:</p>
+<div class="sourceCode" id="cb148"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb148-1"><a href="fac.html#cb148-1" aria-hidden="true" tabindex="-1"></a><span class="fu">levels</span>(factores) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;A&quot;</span>, <span class="st">&quot;B&quot;</span>, <span class="st">&quot;C&quot;</span>)</span></code></pre></div>
+<p>Y al explorar su contenido vemos la secuencia de niveles como se buscaba:</p>
+<div class="sourceCode" id="cb149"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb149-1"><a href="fac.html#cb149-1" aria-hidden="true" tabindex="-1"></a>factores</span></code></pre></div>
+<pre><code>## [1] A B C B
+## Levels: A B C</code></pre>
+</div>
+<div id="fac-or" class="section level2" number="5.2">
+<h2><span class="header-section-number">5.2</span> Factores Ordinales</h2>
+<p>Hasta ahora tenemos un vector de clases o categorías en la secuencia que deseamos, pero no contiene información relativa a orden o magnitud, por lo tanto no es capaz de ser evaluada por operaciones lógicas:</p>
+<div class="sourceCode" id="cb151"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb151-1"><a href="fac.html#cb151-1" aria-hidden="true" tabindex="-1"></a>factores <span class="sc">&gt;</span> <span class="st">&#39;B&#39;</span></span></code></pre></div>
+<pre><code>## Warning in Ops.factor(factores, &quot;B&quot;): &#39;&gt;&#39; not meaningful for factors</code></pre>
+<pre><code>## [1] NA NA NA NA</code></pre>
+<p>Para convertir nuestra data a formato <em>ordinal</em> debemos agregar el parámetro <code>ordered = TRUE</code> que indica a R que existirá un orden definido por los niveles de <em>levels</em>.</p>
+<div class="sourceCode" id="cb154"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb154-1"><a href="fac.html#cb154-1" aria-hidden="true" tabindex="-1"></a>factores <span class="ot">&lt;-</span> <span class="fu">factor</span>(niveles,<span class="at">levels=</span> <span class="fu">c</span>(<span class="st">&quot;A&quot;</span>,<span class="st">&quot;B&quot;</span>,<span class="st">&quot;C&quot;</span>), <span class="at">ordered=</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<p>Y así nuestro vector tendrá la capacidad de ser evaluado:</p>
+<div class="sourceCode" id="cb155"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb155-1"><a href="fac.html#cb155-1" aria-hidden="true" tabindex="-1"></a>factores <span class="sc">&lt;</span> <span class="st">&#39;B&#39;</span></span></code></pre></div>
+<pre><code>## [1]  TRUE FALSE FALSE FALSE</code></pre>
+<div class="sourceCode" id="cb157"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb157-1"><a href="fac.html#cb157-1" aria-hidden="true" tabindex="-1"></a>factores <span class="sc">==</span> <span class="st">&#39;C&#39;</span></span></code></pre></div>
+<pre><code>## [1] FALSE FALSE  TRUE FALSE</code></pre>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="op-vec.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="mat.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": true,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "sepia",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/USERNAME/REPO/edit/BRANCH/04-Factores.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["_main.pdf"],
+"search": {
+"engine": "lunr",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+},
+"info": true
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

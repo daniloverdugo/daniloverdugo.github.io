@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Capítulo 3 Sintaxis Básica de R | Ráster con R</title>
+  <meta name="description" content="<p>Los fenómenos geográficos se desarrollan de manera continúa sobre una extensión de la superficie terrestre (en, sobre o bajo ella), y ha sido un desafío constante crear un modelo de representación tan simple para ser almacenado, procesado y visualizado con facilidad y tan complejo que permita perder el mínimo de información crítica y versátil que permita mantener el nivel de detalle proporcional a la riqueza del mundo real.
+Ese modelo se ha denominado <strong>modelo ráster</strong> y es el tema principal del presente libro, su origen, fundamentos, propiedades y algunos usos serán descritos en detalle.
+Para ello, se basará en la <strong>Plataforma R</strong> y <strong>RStudio</strong>, unas de las herramientas informáticas más poderosas en la actualidad.
+Desde la instalación de las aplicaciones, pasando por una guía básica de su utilización, hasta una detallada descripción del trabajo con dicho modelo.</p>" />
+  <meta name="generator" content="bookdown 0.24 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Capítulo 3 Sintaxis Básica de R | Ráster con R" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="<p>Los fenómenos geográficos se desarrollan de manera continúa sobre una extensión de la superficie terrestre (en, sobre o bajo ella), y ha sido un desafío constante crear un modelo de representación tan simple para ser almacenado, procesado y visualizado con facilidad y tan complejo que permita perder el mínimo de información crítica y versátil que permita mantener el nivel de detalle proporcional a la riqueza del mundo real.
+Ese modelo se ha denominado <strong>modelo ráster</strong> y es el tema principal del presente libro, su origen, fundamentos, propiedades y algunos usos serán descritos en detalle.
+Para ello, se basará en la <strong>Plataforma R</strong> y <strong>RStudio</strong>, unas de las herramientas informáticas más poderosas en la actualidad.
+Desde la instalación de las aplicaciones, pasando por una guía básica de su utilización, hasta una detallada descripción del trabajo con dicho modelo.</p>" />
+  <meta name="github-repo" content="rstudio/bookdown-demo" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Capítulo 3 Sintaxis Básica de R | Ráster con R" />
+  
+  <meta name="twitter:description" content="<p>Los fenómenos geográficos se desarrollan de manera continúa sobre una extensión de la superficie terrestre (en, sobre o bajo ella), y ha sido un desafío constante crear un modelo de representación tan simple para ser almacenado, procesado y visualizado con facilidad y tan complejo que permita perder el mínimo de información crítica y versátil que permita mantener el nivel de detalle proporcional a la riqueza del mundo real.
+Ese modelo se ha denominado <strong>modelo ráster</strong> y es el tema principal del presente libro, su origen, fundamentos, propiedades y algunos usos serán descritos en detalle.
+Para ello, se basará en la <strong>Plataforma R</strong> y <strong>RStudio</strong>, unas de las herramientas informáticas más poderosas en la actualidad.
+Desde la instalación de las aplicaciones, pasando por una guía básica de su utilización, hasta una detallada descripción del trabajo con dicho modelo.</p>" />
+  
+
+<meta name="author" content="Danilo A. Verdugo Chaura" />
+
+
+<meta name="date" content="2022-02-09" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="intro-package.html"/>
+<link rel="next" href="op-vec.html"/>
+<script src="libs/header-attrs-2.11/header-attrs.js"></script>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.0.1/anchor-sections.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Ráster con R</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="1" data-path="part1.html"><a href="part1.html"><i class="fa fa-check"></i><b>1</b> Plataforma R</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="part1.html"><a href="part1.html#hist-orig"><i class="fa fa-check"></i><b>1.1</b> Historia y Origen</a></li>
+<li class="chapter" data-level="1.2" data-path="part1.html"><a href="part1.html#dis-plat"><i class="fa fa-check"></i><b>1.2</b> Diseño de la Plataforma R</a></li>
+<li class="chapter" data-level="1.3" data-path="part1.html"><a href="part1.html#rstudio"><i class="fa fa-check"></i><b>1.3</b> RStudio</a></li>
+<li class="chapter" data-level="1.4" data-path="part1.html"><a href="part1.html#car-prin"><i class="fa fa-check"></i><b>1.4</b> Características Principales</a></li>
+<li class="chapter" data-level="1.5" data-path="part1.html"><a href="part1.html#inst-pla"><i class="fa fa-check"></i><b>1.5</b> Instalación de Plataforma R y RStudio</a></li>
+<li class="chapter" data-level="1.6" data-path="part1.html"><a href="part1.html#con-pre"><i class="fa fa-check"></i><b>1.6</b> Consideraciones Preliminares</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="intro-package.html"><a href="intro-package.html"><i class="fa fa-check"></i><b>2</b> Paquetes</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="intro-package.html"><a href="intro-package.html#pack-search"><i class="fa fa-check"></i><b>2.1</b> Búsqueda</a></li>
+<li class="chapter" data-level="2.2" data-path="intro-package.html"><a href="intro-package.html#pack-install"><i class="fa fa-check"></i><b>2.2</b> Instalación</a>
+<ul>
+<li class="chapter" data-level="2.2.1" data-path="intro-package.html"><a href="intro-package.html#pack-cuadro"><i class="fa fa-check"></i><b>2.2.1</b> Cuadro Diálogo</a></li>
+<li class="chapter" data-level="2.2.2" data-path="intro-package.html"><a href="intro-package.html#pack-install-code"><i class="fa fa-check"></i><b>2.2.2</b> Función <em>install.packages()</em></a></li>
+</ul></li>
+<li class="chapter" data-level="2.3" data-path="intro-package.html"><a href="intro-package.html#pack-update"><i class="fa fa-check"></i><b>2.3</b> Actualización</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="sin-bas.html"><a href="sin-bas.html"><i class="fa fa-check"></i><b>3</b> Sintaxis Básica de R</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="sin-bas.html"><a href="sin-bas.html#op-num"><i class="fa fa-check"></i><b>3.1</b> Operaciones Numéricas</a></li>
+<li class="chapter" data-level="3.2" data-path="sin-bas.html"><a href="sin-bas.html#asig"><i class="fa fa-check"></i><b>3.2</b> Asignación</a></li>
+<li class="chapter" data-level="3.3" data-path="sin-bas.html"><a href="sin-bas.html#nat-vec"><i class="fa fa-check"></i><b>3.3</b> Naturaleza Vectorial</a>
+<ul>
+<li class="chapter" data-level="3.3.1" data-path="sin-bas.html"><a href="sin-bas.html#fun-c"><i class="fa fa-check"></i><b>3.3.1</b> Función <strong><code>c()</code></strong> para crear vectores</a></li>
+<li class="chapter" data-level="3.3.2" data-path="sin-bas.html"><a href="sin-bas.html#uso-sec"><i class="fa fa-check"></i><b>3.3.2</b> Uso de <strong>Secuencias</strong> para crear vectores</a></li>
+<li class="chapter" data-level="3.3.3" data-path="sin-bas.html"><a href="sin-bas.html#usar-rep"><i class="fa fa-check"></i><b>3.3.3</b> Usar <strong>Repetición</strong> para la creación de vectores</a></li>
+<li class="chapter" data-level="3.3.4" data-path="sin-bas.html"><a href="sin-bas.html#uso-pat"><i class="fa fa-check"></i><b>3.3.4</b> Uso de <strong>Patrones</strong> para crear vectores</a></li>
+<li class="chapter" data-level="3.3.5" data-path="sin-bas.html"><a href="sin-bas.html#vec-log"><i class="fa fa-check"></i><b>3.3.5</b> Vectores Lógicos y Caracteres</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="op-vec.html"><a href="op-vec.html"><i class="fa fa-check"></i><b>4</b> Operación Vectorial</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="op-vec.html"><a href="op-vec.html#op-num-vec"><i class="fa fa-check"></i><b>4.1</b> Operaciones Numéricas</a></li>
+<li class="chapter" data-level="4.2" data-path="op-vec.html"><a href="op-vec.html#val-fal"><i class="fa fa-check"></i><b>4.2</b> Valores Faltantes</a></li>
+<li class="chapter" data-level="4.3" data-path="op-vec.html"><a href="op-vec.html#index-sub"><i class="fa fa-check"></i><b>4.3</b> Indexado y Subconjunto</a>
+<ul>
+<li class="chapter" data-level="4.3.1" data-path="op-vec.html"><a href="op-vec.html#ind-num-pos"><i class="fa fa-check"></i><b>4.3.1</b> Índice Numérico Positivo</a></li>
+<li class="chapter" data-level="4.3.2" data-path="op-vec.html"><a href="op-vec.html#ind-num-neg"><i class="fa fa-check"></i><b>4.3.2</b> Índice Numérico Negativo</a></li>
+<li class="chapter" data-level="4.3.3" data-path="op-vec.html"><a href="op-vec.html#vec-log-1"><i class="fa fa-check"></i><b>4.3.3</b> Vector Lógico</a></li>
+</ul></li>
+<li class="chapter" data-level="4.4" data-path="op-vec.html"><a href="op-vec.html#edic-con"><i class="fa fa-check"></i><b>4.4</b> Edición de Contenido</a></li>
+<li class="chapter" data-level="4.5" data-path="op-vec.html"><a href="op-vec.html#op-avan"><i class="fa fa-check"></i><b>4.5</b> Opciones Avanzadas</a>
+<ul>
+<li class="chapter" data-level="4.5.1" data-path="op-vec.html"><a href="op-vec.html#nom-col"><i class="fa fa-check"></i><b>4.5.1</b> Nombrar los Componentes de un Vector</a></li>
+<li class="chapter" data-level="4.5.2" data-path="op-vec.html"><a href="op-vec.html#info-ad"><i class="fa fa-check"></i><b>4.5.2</b> Información Adicional</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="fac.html"><a href="fac.html"><i class="fa fa-check"></i><b>5</b> Factores</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="fac.html"><a href="fac.html#fac-nom"><i class="fa fa-check"></i><b>5.1</b> Factores Nominales</a></li>
+<li class="chapter" data-level="5.2" data-path="fac.html"><a href="fac.html#fac-or"><i class="fa fa-check"></i><b>5.2</b> Factores Ordinales</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="mat.html"><a href="mat.html"><i class="fa fa-check"></i><b>6</b> Matrices</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="mat.html"><a href="mat.html#op-num-mat"><i class="fa fa-check"></i><b>6.1</b> Operaciones Numéricas</a></li>
+<li class="chapter" data-level="6.2" data-path="mat.html"><a href="mat.html#matriz-index"><i class="fa fa-check"></i><b>6.2</b> Indexado y Subconjunto</a></li>
+<li class="chapter" data-level="6.3" data-path="mat.html"><a href="mat.html#ed-con"><i class="fa fa-check"></i><b>6.3</b> Edición de Contenido</a></li>
+<li class="chapter" data-level="6.4" data-path="mat.html"><a href="mat.html#op-avan-mat"><i class="fa fa-check"></i><b>6.4</b> Opciones Avanzadas</a>
+<ul>
+<li class="chapter" data-level="6.4.1" data-path="mat.html"><a href="mat.html#nom-fil"><i class="fa fa-check"></i><b>6.4.1</b> Nombres de Filas y Columnas</a></li>
+<li class="chapter" data-level="6.4.2" data-path="mat.html"><a href="mat.html#mod-mat"><i class="fa fa-check"></i><b>6.4.2</b> Modificar Tamaño de Matrices</a></li>
+<li class="chapter" data-level="6.4.3" data-path="mat.html"><a href="mat.html#info-adic"><i class="fa fa-check"></i><b>6.4.3</b> Información Adicional</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="dataframe.html"><a href="dataframe.html"><i class="fa fa-check"></i><b>7</b> Dataframes</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="dataframe.html"><a href="dataframe.html#df-detalle"><i class="fa fa-check"></i><b>7.1</b> Creación</a></li>
+<li class="chapter" data-level="7.2" data-path="dataframe.html"><a href="dataframe.html#df-op-num"><i class="fa fa-check"></i><b>7.2</b> Operaciones Numéricas</a></li>
+<li class="chapter" data-level="7.3" data-path="dataframe.html"><a href="dataframe.html#df-index"><i class="fa fa-check"></i><b>7.3</b> Indexado y Subconjunto</a>
+<ul>
+<li class="chapter" data-level="7.3.1" data-path="dataframe.html"><a href="dataframe.html#df-op-avan"><i class="fa fa-check"></i><b>7.3.1</b> Opciones Avanzadas</a></li>
+<li class="chapter" data-level="7.3.2" data-path="dataframe.html"><a href="dataframe.html#df-mod-size"><i class="fa fa-check"></i><b>7.3.2</b> Modificar Tamaño o Estructura</a></li>
+<li class="chapter" data-level="7.3.3" data-path="dataframe.html"><a href="dataframe.html#df-nom-fil-col"><i class="fa fa-check"></i><b>7.3.3</b> Nombres de Filas y Columnas</a></li>
+<li class="chapter" data-level="7.3.4" data-path="dataframe.html"><a href="dataframe.html#df-info"><i class="fa fa-check"></i><b>7.3.4</b> Información Adicional</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="array.html"><a href="array.html"><i class="fa fa-check"></i><b>8</b> Array</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="array.html"><a href="array.html#op-num-arr"><i class="fa fa-check"></i><b>8.1</b> Operaciones Numéricas</a></li>
+<li class="chapter" data-level="8.2" data-path="array.html"><a href="array.html#index-arr"><i class="fa fa-check"></i><b>8.2</b> Indexado y Subconjunto</a></li>
+<li class="chapter" data-level="8.3" data-path="array.html"><a href="array.html#ed-con-arr"><i class="fa fa-check"></i><b>8.3</b> Edición de Contenido</a></li>
+<li class="chapter" data-level="8.4" data-path="array.html"><a href="array.html#op-av-arr"><i class="fa fa-check"></i><b>8.4</b> Opciones Avanzadas</a>
+<ul>
+<li class="chapter" data-level="8.4.1" data-path="array.html"><a href="array.html#nom-fil-arr"><i class="fa fa-check"></i><b>8.4.1</b> Nombres de Filas y Columnas</a></li>
+<li class="chapter" data-level="8.4.2" data-path="array.html"><a href="array.html#info-ad-arr"><i class="fa fa-check"></i><b>8.4.2</b> Información Adicional</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="r-fechas.html"><a href="r-fechas.html"><i class="fa fa-check"></i><b>9</b> Fechas</a>
+<ul>
+<li class="chapter" data-level="9.1" data-path="r-fechas.html"><a href="r-fechas.html#op-fe"><i class="fa fa-check"></i><b>9.1</b> Operaciones con Fecha</a>
+<ul>
+<li class="chapter" data-level="9.1.1" data-path="r-fechas.html"><a href="r-fechas.html#format-date"><i class="fa fa-check"></i><b>9.1.1</b> Formato de Fechas</a></li>
+<li class="chapter" data-level="9.1.2" data-path="r-fechas.html"><a href="r-fechas.html#cambio-formato-date"><i class="fa fa-check"></i><b>9.1.2</b> Cambio de Formato</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="r-hora.html"><a href="r-hora.html"><i class="fa fa-check"></i><b>10</b> Hora</a>
+<ul>
+<li class="chapter" data-level="10.1" data-path="r-hora.html"><a href="r-hora.html#posix"><i class="fa fa-check"></i><b>10.1</b> Formato POSIX</a></li>
+<li class="chapter" data-level="10.2" data-path="r-hora.html"><a href="r-hora.html#ope-time"><i class="fa fa-check"></i><b>10.2</b> Operando con el tiempo</a></li>
+<li class="chapter" data-level="10.3" data-path="r-hora.html"><a href="r-hora.html#zona-hora"><i class="fa fa-check"></i><b>10.3</b> Conversión entre zonas horarias</a></li>
+</ul></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Publicado con bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Ráster con R</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="sin-bas" class="section level1" number="3">
+<h1><span class="header-section-number">Capítulo 3</span> Sintaxis Básica de R</h1>
+<div id="op-num" class="section level2" number="3.1">
+<h2><span class="header-section-number">3.1</span> Operaciones Numéricas</h2>
+<p>De acuerdo con la configuración de ventanas descrita en el punto anterior la ventana <em>Console</em> se encuentra en la esquina superior derecha junto a las ventanas <em>Terminal</em> y <em>Jobs</em>. En ella trabajaremos interactivamente mediante la línea de comando, su uso puede ser comparado con el uso de una calculadora electrónica que siempre está a la espera del ingreso de una instrucción a continuación del símbolo <strong>&gt;</strong>.</p>
+<p>La dinámica de uso es ir ingresando el texto que define la operación o instrucción a realizar y finalizar con la tecla <strong>Intro</strong>:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="sin-bas.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span> <span class="sc">+</span> <span class="dv">2</span> <span class="sc">+</span> <span class="dv">3</span></span></code></pre></div>
+<p>Y R responde con la evaluación inmediata de la operación:</p>
+<pre><code>## [1] 6</code></pre>
+<p>Los espacios en blanco son removidos automáticamente y la orden es evaluada normalmente:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="sin-bas.html#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span><span class="sc">+</span><span class="dv">2</span>         <span class="sc">+</span>       <span class="dv">3</span></span></code></pre></div>
+<pre><code>## [1] 6</code></pre>
+<p>Cuando la instrucción se extiende por más de una línea, R se encarga de interpretar la estructura y completitud para ser evaluada:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="sin-bas.html#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="dv">12</span> <span class="sc">+</span> <span class="dv">3</span> <span class="sc">-</span> </span>
+<span id="cb6-2"><a href="sin-bas.html#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="dv">5</span> <span class="sc">+</span> </span>
+<span id="cb6-3"><a href="sin-bas.html#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="dv">5</span></span></code></pre></div>
+<pre><code>## [1] 15</code></pre>
+<p>También puedes usar el símbolo ‘punto y coma’ (<em>;</em>) para separar secuencias de instrucciones, pero escritas en la misma línea de código.</p>
+<p>El editor ofrece algunas facilidades al usuario como el <em>historial de órdenes</em> de las instrucciones digitadas en orden reverso para evitar el retipeo de una instrucción muy extensa. Recorrer con las flechas verticales hasta encontrar el texto buscado y solo editar los cambios requeridos. También cuenta con un potente <em>motor de finalización inteligente</em> que permite obtener ayuda a medida que se escribe nombre de funciones o comandos y cuando se trabaja con scripts también nombres de funciones o variables. Por último, para limpiar todo el texto escrito presionar la tecla <em>escape</em>.</p>
+<p>Se pueden utilizar los símbolos aritméticos tradicionales +, -, *, / y <span class="math inline">\(^\wedge\)</span>.<a href="#fn4" class="footnote-ref" id="fnref4"><sup>4</sup></a> Además se encuentran disponibles las funciones <em>log</em>, <em>exp</em>, <em>sin</em>, <em>cos</em>, <em>tan</em>, <em>sqrt</em> entre muchas otras bien conocidas. También existe el valor de <em>pi</em>.</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="sin-bas.html#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span> <span class="sc">+</span> <span class="dv">2</span> <span class="sc">-</span> <span class="dv">3</span> <span class="sc">*</span> <span class="dv">4</span> <span class="sc">/</span> <span class="dv">5</span><span class="sc">**</span><span class="dv">6</span>; <span class="fu">sin</span>(<span class="fl">0.33</span>); <span class="fu">acos</span>(<span class="fl">0.253</span>) ; <span class="fu">sqrt</span>(<span class="dv">4</span>)</span></code></pre></div>
+<pre><code>## [1] 2.999232</code></pre>
+<pre><code>## [1] 0.324043</code></pre>
+<pre><code>## [1] 1.315016</code></pre>
+<pre><code>## [1] 2</code></pre>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="sin-bas.html#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="dv">9</span> <span class="sc">%%</span> <span class="dv">4</span></span></code></pre></div>
+<pre><code>## [1] 1</code></pre>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="sin-bas.html#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fl">13.5</span> <span class="sc">%/%</span> <span class="dv">2</span></span></code></pre></div>
+<pre><code>## [1] 6</code></pre>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="sin-bas.html#cb17-1" aria-hidden="true" tabindex="-1"></a>pi</span></code></pre></div>
+<pre><code>## [1] 3.141593</code></pre>
+<p>También se debe tener en cuenta que los números muy grandes o pequeños serán automáticamente convertidos a notación científica.</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="sin-bas.html#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span><span class="sc">/</span><span class="dv">100000000000000000</span></span></code></pre></div>
+<pre><code>## [1] 1e-17</code></pre>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="sin-bas.html#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span><span class="sc">*</span><span class="dv">100000000000000000</span></span></code></pre></div>
+<pre><code>## [1] 1e+17</code></pre>
+<p>En operaciones más complejas se recomienda el uso de <em>()</em> para fijar el orden o <em>precedencia</em> de las operaciones. Se acepta <em>anidar</em> los paréntesis (()).</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="sin-bas.html#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="dv">3</span> <span class="sc">*</span> <span class="dv">5</span> <span class="sc">+</span> <span class="dv">1</span></span></code></pre></div>
+<pre><code>## [1] 16</code></pre>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="sin-bas.html#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="dv">3</span> <span class="sc">*</span> (<span class="dv">5</span> <span class="sc">+</span> <span class="dv">1</span>)</span></code></pre></div>
+<pre><code>## [1] 18</code></pre>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="sin-bas.html#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span> <span class="sc">+</span> (<span class="dv">3</span> <span class="sc">+</span> (<span class="dv">1</span> <span class="sc">+</span> <span class="dv">2</span>) <span class="sc">/</span> <span class="dv">3</span>)</span></code></pre></div>
+<pre><code>## [1] 5</code></pre>
+<p>Las operaciones lógicas se realizan utilizando ciertos símbolos o combinaciones de ellos para obtener resultados lógicos:</p>
+<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="sin-bas.html#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="dv">2</span> <span class="sc">==</span> <span class="dv">3</span></span></code></pre></div>
+<pre><code>## [1] FALSE</code></pre>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="sin-bas.html#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="dv">2</span> <span class="sc">&lt;</span> <span class="dv">3</span></span></code></pre></div>
+<pre><code>## [1] TRUE</code></pre>
+<p>Revisa cuadro  para una lista completa de los caracteres y su significado en las operaciones lógicas.</p>
+<p>Otros componentes del lenguaje R son: valor lógico verdadero <em>TRUE</em> y falso <em>FALSE</em>, infinitud positiva <strong>Inf</strong> y negativa <strong>-Inf</strong>, no disponible <strong>NA</strong>, no es un número <strong>NaN</strong> y nulo o vacío <strong>NULL</strong>.</p>
+<p>Finalmente, no podemos intercambiar mayúsculas o minúsculas al momento de escribir los nombres de instrucciones (por ej. <em>sin</em> no es igual a <em>Sin</em>). Y en R todo es un <em>objeto</em> que pertenecen a cierto tipo de <em>clases</em>. Así cada uno de ellos tendrá comportamientos y usos diferentes.</p>
+<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="sin-bas.html#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(<span class="dv">1</span>)</span></code></pre></div>
+<pre><code>## [1] &quot;numeric&quot;</code></pre>
+<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="sin-bas.html#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(<span class="st">&quot;palabra&quot;</span>)</span></code></pre></div>
+<pre><code>## [1] &quot;character&quot;</code></pre>
+<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="sin-bas.html#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(sqrt)</span></code></pre></div>
+<pre><code>## [1] &quot;function&quot;</code></pre>
+<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb39-1"><a href="sin-bas.html#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(<span class="dv">1</span> <span class="sc">!=</span> <span class="dv">1</span>)</span></code></pre></div>
+<pre><code>## [1] &quot;logical&quot;</code></pre>
+<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb41-1"><a href="sin-bas.html#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(<span class="cn">TRUE</span>)</span></code></pre></div>
+<pre><code>## [1] &quot;logical&quot;</code></pre>
+<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb43-1"><a href="sin-bas.html#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(<span class="fu">Sys.Date</span>())</span></code></pre></div>
+<pre><code>## [1] &quot;Date&quot;</code></pre>
+</div>
+<div id="asig" class="section level2" number="3.2">
+<h2><span class="header-section-number">3.2</span> Asignación</h2>
+<p>El proceso de almacenar cualquiera de los objetos ya descritos, o el resultado de las operaciones en memoria RAM y hacerlo persistente a lo largo de la sesión actual de trabajo se denomina <em>asignación</em>. Resultados intermedios se deben ir asignado con un nombre fácilmente identificable y memorizables.<a href="#fn5" class="footnote-ref" id="fnref5"><sup>5</sup></a></p>
+<p>Es conveniente adoptar un estilo de escritura para los nombres de los objetos y para ellos existen varios métodos entre los cuales podemos destacar:</p>
+<ul>
+<li><strong><em>lowercase:</em></strong> todominusculas.</li>
+<li><strong><em>UPPERCASE:</em></strong> TODOMAYUSCULAS.</li>
+<li><strong><em>UpperCamelCase:</em></strong> PrimeraMayusculaSiguientesBajas.</li>
+<li><strong><em>lowerCamelCase:</em></strong> primeraMinusculaSiguientesMayusculas.</li>
+<li><strong><em>period.separated:</em></strong> separada.por.punto.</li>
+<li><strong><em>snake_case:</em></strong> separada_por_guion_bajo.</li>
+</ul>
+<p>En el sitio web <a href="https://style.tidyverse.org/">style.tidyverse.org</a> donde se discuten buenas prácticas para el uso de R se recomienda el último tipo.</p>
+<p>La forma de realizar una asignación tiene la forma general:</p>
+<span class="math display">\[\begin{equation} \label{eq:solve}
+nombre = valor
+\end{equation}\]</span>
+<p>Donde <span class="math inline">\(nombre\)</span> es el identificador o nombre del objeto o variable que se busca crear y almacenar en memoria, <span class="math inline">\(=\)</span> el operador de asignación (no confundir con <em>==</em>) y <span class="math inline">\(valor\)</span> es el contenido a almacenar.<a href="#fn6" class="footnote-ref" id="fnref6"><sup>6</sup></a></p>
+<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb45-1"><a href="sin-bas.html#cb45-1" aria-hidden="true" tabindex="-1"></a>radio_estimado <span class="ot">=</span> <span class="fl">135.45</span></span></code></pre></div>
+<p><span class="math inline">\(nombre\)</span> será sintácticamente válido cuando consta de letras, números o punto y comienza con <strong>una letra o el punto</strong>, pero <em>no seguido de un número</em>. Los nombres como “.2var” no son válidos, ni tampoco las palabras reservadas.</p>
+<p>En la actualidad el uso &lt;- o = es casi indistinto, pero en casos muy específicos (y técnicos) existen diferencias. En nuestro libro recomendamos el uso de &lt;- ya que es un poco más cómodo de tipear que el carácter =.</p>
+<div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb46-1"><a href="sin-bas.html#cb46-1" aria-hidden="true" tabindex="-1"></a>variable <span class="ot">&lt;-</span> (<span class="fl">112.33</span> <span class="sc">-</span> <span class="dv">45</span>) <span class="sc">/</span> <span class="dv">105</span></span></code></pre></div>
+<p>Una vez escrita la asignación y presionado <em>intro</em> se realiza la operación, se crea el objeto en memoria con nombre <em>variable</em> y la línea de comando se limpia. Para conocer el resultado de la operación podemos:</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:img-lan-1"></span>
+<img src="img/enviroment.png" alt="Panel Environment." width="306" />
+<p class="caption">
+Figure 3.1: Panel Environment.
+</p>
+</div>
+<ol style="list-style-type: decimal">
+<li><p>Buscar el resultado en el panel <strong><em>Environment</em></strong> en la esquina inferior derecha (Figura <a href="sin-bas.html#fig:img-lan-1">3.1</a>).</p></li>
+<li><p>Escribir la asignación dentro de un juego de paréntesis redondos <strong>()</strong> que obliga imprimir el resultado de la evaluación de la expresión.</p></li>
+</ol>
+<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb47-1"><a href="sin-bas.html#cb47-1" aria-hidden="true" tabindex="-1"></a>(variable <span class="ot">&lt;-</span> (<span class="fl">112.33</span> <span class="sc">-</span> <span class="dv">45</span>) <span class="sc">/</span> <span class="dv">105</span>)</span></code></pre></div>
+<pre><code>## [1] 0.6412381</code></pre>
+<ol start="3" style="list-style-type: decimal">
+<li>Volver a escribir el nombre y presionar intro.</li>
+</ol>
+<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb49-1"><a href="sin-bas.html#cb49-1" aria-hidden="true" tabindex="-1"></a>variable</span></code></pre></div>
+<pre><code>## [1] 0.6412381</code></pre>
+<ol start="4" style="list-style-type: decimal">
+<li>Utilizar el comando <em>print()</em>.</li>
+</ol>
+<div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb51-1"><a href="sin-bas.html#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(variable)</span></code></pre></div>
+<pre><code>## [1] 0.6412381</code></pre>
+<p>El principal objetivo de almacenar en memoria es la reutilización de dichos contenidos:</p>
+<div class="sourceCode" id="cb53"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb53-1"><a href="sin-bas.html#cb53-1" aria-hidden="true" tabindex="-1"></a>radio_inicial <span class="ot">&lt;-</span> <span class="fl">15.43</span> <span class="sc">+</span> <span class="fl">36.315</span> <span class="sc">*</span> (<span class="dv">3</span> <span class="sc">*</span> <span class="dv">5</span>)</span>
+<span id="cb53-2"><a href="sin-bas.html#cb53-2" aria-hidden="true" tabindex="-1"></a>(area_base <span class="ot">&lt;-</span> pi <span class="sc">*</span> radio_inicial <span class="sc">**</span> <span class="dv">2</span>)</span></code></pre></div>
+<pre><code>## [1] 985748.9</code></pre>
+<p>Al asignar un nuevo contenido con el mismo nombre, el anterior se elimina de memoria y se crea un nuevo objeto.</p>
+<div class="sourceCode" id="cb55"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb55-1"><a href="sin-bas.html#cb55-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="dv">5</span></span>
+<span id="cb55-2"><a href="sin-bas.html#cb55-2" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="st">&quot;hola&quot;</span></span>
+<span id="cb55-3"><a href="sin-bas.html#cb55-3" aria-hidden="true" tabindex="-1"></a>x</span></code></pre></div>
+<pre><code>## [1] &quot;hola&quot;</code></pre>
+<p>El comando <code>ls()</code> me permite listar todos los objetos almacenados en mi sesión actual y <code>rm(list = ls())</code> borrará la totalidad de objetos de mi sesión actual.</p>
+</div>
+<div id="nat-vec" class="section level2" number="3.3">
+<h2><span class="header-section-number">3.3</span> Naturaleza Vectorial</h2>
+<p>En todas las ocasiones que hemos escrito una operación aritmética o impreso un resultado R crea automáticamente un <em>vector</em><a href="#fn7" class="footnote-ref" id="fnref7"><sup>7</sup></a> con una longitud que corresponde a los valores por almacenar.</p>
+<p>Si estudiamos el ejemplo siguiente:</p>
+<div class="sourceCode" id="cb57"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb57-1"><a href="sin-bas.html#cb57-1" aria-hidden="true" tabindex="-1"></a><span class="dv">5</span></span></code></pre></div>
+<pre><code>## [1] 5</code></pre>
+<div class="sourceCode" id="cb59"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb59-1"><a href="sin-bas.html#cb59-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span>()</span></code></pre></div>
+<pre><code>## [1] &quot;area_base&quot;     &quot;radio_inicial&quot; &quot;variable&quot;      &quot;x&quot;</code></pre>
+<p>Vemos un <strong>[1]</strong> antecediendo al número 5 que indica que se trata del primer (y único en este caso) elemento, mientras que en el caso del comando <em>ls()</em> la lista de respuesta por cada renglón que se extienda en la consola antecederá su correspondiente [] señalando la posición en el vector generado automáticamente.</p>
+<div id="fun-c" class="section level3" number="3.3.1">
+<h3><span class="header-section-number">3.3.1</span> Función <strong><code>c()</code></strong> para crear vectores</h3>
+<p>La creación manual de vectores usando elementos individuales se realiza mediante la función <code>c()</code>.</p>
+<p>En el siguiente ejemplo hemos incorporado dos nuevos elementos:</p>
+<ul>
+<li><strong>;</strong> <em>(punto y coma)</em> que nos permite separar dos instrucciones en la misma línea.</li>
+<li><strong>#</strong> <em>(almohadilla o numeral)</em> sirve para crear COMENTARIOS: textos que no serán evaluados por R.</li>
+</ul>
+<div class="sourceCode" id="cb61"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb61-1"><a href="sin-bas.html#cb61-1" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">4</span>, <span class="dv">8</span>, <span class="dv">11</span>) <span class="co">#Sin asignar a nombre de objeto</span></span></code></pre></div>
+<pre><code>## [1]  1  4  8 11</code></pre>
+<div class="sourceCode" id="cb63"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb63-1"><a href="sin-bas.html#cb63-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">4</span>, <span class="dv">6</span>, <span class="dv">8</span>); <span class="fu">print</span>(x) </span></code></pre></div>
+<pre><code>## [1] 2 4 6 8</code></pre>
+<div class="sourceCode" id="cb65"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb65-1"><a href="sin-bas.html#cb65-1" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">c</span>(x, <span class="dv">100</span>, <span class="dv">101</span>, <span class="dv">102</span>); y</span></code></pre></div>
+<pre><code>## [1]   2   4   6   8 100 101 102</code></pre>
+<div class="sourceCode" id="cb67"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb67-1"><a href="sin-bas.html#cb67-1" aria-hidden="true" tabindex="-1"></a>z <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;azul&quot;</span>, <span class="st">&quot;rojo&quot;</span>, <span class="st">&quot;verde&quot;</span>, <span class="st">&quot;amarillo&quot;</span>); (z)</span></code></pre></div>
+<pre><code>## [1] &quot;azul&quot;     &quot;rojo&quot;     &quot;verde&quot;    &quot;amarillo&quot;</code></pre>
+</div>
+<div id="uso-sec" class="section level3" number="3.3.2">
+<h3><span class="header-section-number">3.3.2</span> Uso de <strong>Secuencias</strong> para crear vectores</h3>
+<p>Una secuencia numérica se construye usando el operador <code>:</code>. Por ejemplo:</p>
+<div class="sourceCode" id="cb69"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb69-1"><a href="sin-bas.html#cb69-1" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span><span class="sc">:</span><span class="dv">30</span></span></code></pre></div>
+<p>Es equivalente a <code>c(1, 2, 3, ... , 30)</code>, también es capaz de crear secuencias negativas y/o usar valores decimales. Comprueba las siguientes operaciones y sus resultados:</p>
+<div class="sourceCode" id="cb70"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb70-1"><a href="sin-bas.html#cb70-1" aria-hidden="true" tabindex="-1"></a><span class="dv">30</span> <span class="sc">:</span> <span class="dv">1</span></span>
+<span id="cb70-2"><a href="sin-bas.html#cb70-2" aria-hidden="true" tabindex="-1"></a><span class="sc">-</span><span class="dv">10</span> <span class="sc">:</span> <span class="sc">-</span><span class="dv">8</span></span>
+<span id="cb70-3"><a href="sin-bas.html#cb70-3" aria-hidden="true" tabindex="-1"></a><span class="fl">1.5</span> <span class="sc">:</span> <span class="dv">5</span></span></code></pre></div>
+<p>La prioridad del comando <code>:</code> es máxima y siempre será evaluado al inicio. Compara las secuencias obtenidas entre <code>1:5-1</code> y <code>1:(5-1)</code>.</p>
+</div>
+<div id="usar-rep" class="section level3" number="3.3.3">
+<h3><span class="header-section-number">3.3.3</span> Usar <strong>Repetición</strong> para la creación de vectores</h3>
+<p>El comando <code>rep()</code> genera un vector con la repetición de un valor un número determinado de veces. También se puede repetir un texto, una fecha o una secuencia definida con la opción <strong>:</strong>.</p>
+<p>Revisar usando alguna de las formas de ayuda en línea los argumentos, nombres y usos para el comando <em>rep</em>:</p>
+<div class="sourceCode" id="cb71"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb71-1"><a href="sin-bas.html#cb71-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rep</span>(<span class="dv">1</span>, <span class="dv">5</span>); <span class="fu">rep</span>(<span class="st">&#39;a&#39;</span>, <span class="dv">5</span>)</span></code></pre></div>
+<pre><code>## [1] 1 1 1 1 1</code></pre>
+<pre><code>## [1] &quot;a&quot; &quot;a&quot; &quot;a&quot; &quot;a&quot; &quot;a&quot;</code></pre>
+<div class="sourceCode" id="cb74"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb74-1"><a href="sin-bas.html#cb74-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rep</span>(<span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>, <span class="dv">7</span>), <span class="dv">3</span>); <span class="fu">rep</span>(<span class="at">x =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>, <span class="at">times =</span> <span class="dv">3</span>, <span class="at">each=</span><span class="dv">3</span>)</span></code></pre></div>
+<pre><code>##  [1] 1 2 3 7 1 2 3 7 1 2 3 7</code></pre>
+<pre><code>##  [1] 1 1 1 2 2 2 1 1 1 2 2 2 1 1 1 2 2 2</code></pre>
+</div>
+<div id="uso-pat" class="section level3" number="3.3.4">
+<h3><span class="header-section-number">3.3.4</span> Uso de <strong>Patrones</strong> para crear vectores</h3>
+<p>El comando <code>seq()</code> genera patrones regulares. Posee múltiples parámetros o <em>argumentos con nombre</em> para configurar el patrón. Los dos primeros <em>desde</em> <strong>(from)</strong>, <em>hasta</em> <strong>(to)</strong> tendrían el mismo comportamiento que los parámetros del comando <strong>:</strong>, un tercero <em>paso</em> <strong>(by)</strong> define el incremento y posee un valor por defecto de <em>1</em> y un cuarto argumento define el número de elementos que debe contener la secuencia <em>(length.out)</em><a href="#fn8" class="footnote-ref" id="fnref8"><sup>8</sup></a>.</p>
+<p>En los ejemplos siguientes vemos el uso del comando usando los argumentos en orden preciso <strong><em>sin utilizar sus nombres</em></strong>:</p>
+<div class="sourceCode" id="cb77"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb77-1"><a href="sin-bas.html#cb77-1" aria-hidden="true" tabindex="-1"></a><span class="fu">seq</span>(<span class="dv">1</span>, <span class="dv">10</span>) <span class="co">#from=2, to=10</span></span></code></pre></div>
+<pre><code>##  [1]  1  2  3  4  5  6  7  8  9 10</code></pre>
+<div class="sourceCode" id="cb79"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb79-1"><a href="sin-bas.html#cb79-1" aria-hidden="true" tabindex="-1"></a><span class="fu">seq</span>(<span class="dv">1</span>, <span class="dv">10</span>, <span class="dv">2</span>) <span class="co">#from=2, to=10, by=2</span></span></code></pre></div>
+<pre><code>## [1] 1 3 5 7 9</code></pre>
+<p>También al poseer valores por defecto se puede abreviar su uso:</p>
+<div class="sourceCode" id="cb81"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb81-1"><a href="sin-bas.html#cb81-1" aria-hidden="true" tabindex="-1"></a><span class="fu">seq</span>(<span class="at">to =</span> <span class="dv">5</span>)</span></code></pre></div>
+<pre><code>## [1] 1 2 3 4 5</code></pre>
+<div class="sourceCode" id="cb83"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb83-1"><a href="sin-bas.html#cb83-1" aria-hidden="true" tabindex="-1"></a><span class="fu">seq</span>(<span class="at">from =</span> <span class="dv">3</span>)</span></code></pre></div>
+<pre><code>## [1] 1 2 3</code></pre>
+<p>Pero la verdadera utilidad de los argumentos con nombres es la libertad en el orden de uso:</p>
+<div class="sourceCode" id="cb85"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb85-1"><a href="sin-bas.html#cb85-1" aria-hidden="true" tabindex="-1"></a><span class="fu">seq</span>(<span class="at">to =</span> <span class="dv">9</span>, <span class="at">from =</span> <span class="dv">1</span>)</span></code></pre></div>
+<pre><code>## [1] 1 2 3 4 5 6 7 8 9</code></pre>
+<div class="sourceCode" id="cb87"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb87-1"><a href="sin-bas.html#cb87-1" aria-hidden="true" tabindex="-1"></a><span class="fu">seq</span>(<span class="at">by =</span> <span class="fl">1.5</span>, <span class="at">from =</span> <span class="dv">1</span>, <span class="at">to =</span> <span class="dv">9</span>)</span></code></pre></div>
+<pre><code>## [1] 1.0 2.5 4.0 5.5 7.0 8.5</code></pre>
+<div class="sourceCode" id="cb89"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb89-1"><a href="sin-bas.html#cb89-1" aria-hidden="true" tabindex="-1"></a><span class="fu">seq</span>(<span class="at">from =</span> <span class="dv">10</span>, <span class="at">by =</span> <span class="sc">-</span><span class="dv">3</span>, <span class="at">length.out=</span> <span class="dv">5</span>)</span></code></pre></div>
+<pre><code>## [1] 10  7  4  1 -2</code></pre>
+<div class="sourceCode" id="cb91"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb91-1"><a href="sin-bas.html#cb91-1" aria-hidden="true" tabindex="-1"></a><span class="fu">seq</span>(<span class="at">by =</span> <span class="dv">3</span>, <span class="at">length.out=</span> <span class="dv">6</span>)</span></code></pre></div>
+<pre><code>## [1]  1  4  7 10 13 16</code></pre>
+<p>La misma lógica se aplica al trabajo con fechas:</p>
+<div class="sourceCode" id="cb93"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb93-1"><a href="sin-bas.html#cb93-1" aria-hidden="true" tabindex="-1"></a><span class="fu">seq</span>(<span class="fu">as.Date</span>(<span class="st">&quot;1910/1/1&quot;</span>), <span class="fu">as.Date</span>(<span class="st">&quot;1912/1/1&quot;</span>), <span class="st">&quot;years&quot;</span>)</span></code></pre></div>
+<pre><code>## [1] &quot;1910-01-01&quot; &quot;1911-01-01&quot; &quot;1912-01-01&quot;</code></pre>
+<div class="sourceCode" id="cb95"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb95-1"><a href="sin-bas.html#cb95-1" aria-hidden="true" tabindex="-1"></a><span class="fu">seq</span>(<span class="at">from=</span> <span class="fu">as.Date</span>(<span class="st">&quot;2000/1/1&quot;</span>), <span class="at">by =</span> <span class="st">&quot;month&quot;</span>, <span class="at">length.out =</span> <span class="dv">3</span>)</span></code></pre></div>
+<pre><code>## [1] &quot;2000-01-01&quot; &quot;2000-02-01&quot; &quot;2000-03-01&quot;</code></pre>
+<div class="sourceCode" id="cb97"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb97-1"><a href="sin-bas.html#cb97-1" aria-hidden="true" tabindex="-1"></a>inicio <span class="ot">&lt;-</span> <span class="fu">as.Date</span>(<span class="st">&quot;1999-12-17&quot;</span>)</span>
+<span id="cb97-2"><a href="sin-bas.html#cb97-2" aria-hidden="true" tabindex="-1"></a>fin <span class="ot">&lt;-</span> <span class="fu">as.Date</span>(<span class="st">&quot;2000-3-7&quot;</span>)</span>
+<span id="cb97-3"><a href="sin-bas.html#cb97-3" aria-hidden="true" tabindex="-1"></a><span class="fu">seq</span>(<span class="at">from=</span> fin, </span>
+<span id="cb97-4"><a href="sin-bas.html#cb97-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">to=</span> inicio, </span>
+<span id="cb97-5"><a href="sin-bas.html#cb97-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">by =</span> <span class="st">&quot;-1 month&quot;</span>)</span></code></pre></div>
+<pre><code>## [1] &quot;2000-03-07&quot; &quot;2000-02-07&quot; &quot;2000-01-07&quot;</code></pre>
+</div>
+<div id="vec-log" class="section level3" number="3.3.5">
+<h3><span class="header-section-number">3.3.5</span> Vectores Lógicos y Caracteres</h3>
+<p>Además de los vectores numéricos y fechas R soporta del tipo <strong>lógico</strong> y <strong>texto</strong>. En el caso de vectores lógicos solo puede tomar dos valores: <strong>FALSE</strong> (falso) y <strong>TRUE</strong> (verdadero), también son válidos <strong>F</strong> y <strong>T</strong>.<br />
+Generalmente son construidos a partir del uso de los operadores lógicos (ver Cuadro ) en <em>condiciones</em>. Por ejemplo:</p>
+<div class="sourceCode" id="cb99"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb99-1"><a href="sin-bas.html#cb99-1" aria-hidden="true" tabindex="-1"></a>enteros <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">6</span></span>
+<span id="cb99-2"><a href="sin-bas.html#cb99-2" aria-hidden="true" tabindex="-1"></a>(prueba <span class="ot">&lt;-</span> enteros <span class="sc">&lt;=</span><span class="dv">3</span>)</span></code></pre></div>
+<pre><code>## [1]  TRUE  TRUE  TRUE FALSE FALSE FALSE</code></pre>
+<p>Donde <code>prueba</code> almacena un vector de la misma longitud que enteros y cuyo contenido será tanto <em>True</em> o <em>False</em> dependiendo si o no cumplen la condición.<br />
+También vectores de texto o caracteres pueden ser creados. Los textos o frases deben ser escritos entre comillas (<em>"</em>) o comillas simples (<em>’</em>), por ejemplo <code>'Este texto está entre comillas.'</code>. Generalmente utilizada en la construcción de vectores con <code>c()</code>.</p>
+<div class="sourceCode" id="cb101"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb101-1"><a href="sin-bas.html#cb101-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rep</span>(<span class="at">x=</span><span class="fu">c</span>(<span class="st">&#39;x&#39;</span>,<span class="st">&#39;y&#39;</span>), <span class="at">times=</span> <span class="dv">4</span>)</span></code></pre></div>
+<pre><code>## [1] &quot;x&quot; &quot;y&quot; &quot;x&quot; &quot;y&quot; &quot;x&quot; &quot;y&quot; &quot;x&quot; &quot;y&quot;</code></pre>
+
+</div>
+</div>
+</div>
+<div class="footnotes">
+<hr />
+<ol start="4">
+<li id="fn4"><p>El acento circunflejo <span class="math inline">\(^\wedge\)</span> se utiliza para la potenciación (se obtiene combinando las teclas alt+94) también se puede reemplazar con <span class="math inline">\(**\)</span>. Además, existe la <em>operación módulo</em> (%%) y la <em>división entera</em> (%/%).<a href="sin-bas.html#fnref4" class="footnote-back">↩︎</a></p></li>
+<li id="fn5"><p>Los nombres de los objetos deben en lo posible <em>resumir</em> el contenido, evitar nombres <em>genéricos</em> como <em>a</em> u <em>X</em> y no ambiguos como <em>variable</em> o <em>constante</em>. Pueden contener letras, números, puntos y guiones o <em>barra baja</em> (_). Siempre debe comenzar con una letra o punto.<a href="sin-bas.html#fnref5" class="footnote-back">↩︎</a></p></li>
+<li id="fn6"><p>En R se ha utilizado tradicionalmente como operador de asignación <strong>&lt;-</strong> que viene desde la primera versión de R, dado que su origen proviene del lenguaje <strong>S</strong> y a la vez éste fue inspirado por el lenguaje <em>APL</em> (A Programming Language, <em>Kenneth Iverson en 1957-62</em>) que utilizaba dicho carácter ya que el símbolo <em>=</em> se utilizaba solo para prueba de igualdad.<a href="sin-bas.html#fnref6" class="footnote-back">↩︎</a></p></li>
+<li id="fn7"><p>Un <strong><em>Vector</em></strong> es el tipo de objeto más básico del lenguaje R. Un <em>vector</em> puede contener cero o más objetos, y siempre serán de la misma clase.<a href="sin-bas.html#fnref7" class="footnote-back">↩︎</a></p></li>
+<li id="fn8"><p>La mayoría de funciones en R poseen parámetros o argumentos con nombre que permiten ajustar el funcionamiento. El orden y sus nombres lo encuentras usando la ayuda en línea. En R el sistema es muy poderoso y fácil de utilizar, basta ubicar el cursor sobre el nombre de comando y presionar <strong>F1</strong> y un panel con información detallada con:<br />
+<strong>Descripción:</strong> Breve descripción de funcionamiento.<br />
+<strong>Uso:</strong> Sintaxis con el orden y nombres de argumentos.<br />
+<strong>Argumentos:</strong> Lista detallada y en orden correspondiente de los argumentos.<br />
+<strong>Detalles:</strong> Información adicional.<br />
+<strong>Valor:</strong> El objeto que retorna.<br />
+<strong>Ejemplos:</strong> Código R con alternativas de uso.<br />
+Será desplegada en el panel inferior derecho. También puedes escribir en la consola el símbolo de interrogación y a continuación el nombre del comando: <code>?seq</code> o usar el comando <code>help('seq')</code>.<a href="sin-bas.html#fnref8" class="footnote-back">↩︎</a></p></li>
+</ol>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="intro-package.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="op-vec.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": true,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "sepia",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/USERNAME/REPO/edit/BRANCH/02-Lenguaje.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["_main.pdf"],
+"search": {
+"engine": "lunr",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+},
+"info": true
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

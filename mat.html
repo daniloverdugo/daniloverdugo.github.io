@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Capítulo 5 Matrices | Ráster con R</title>
+  <meta name="description" content="<p>Los fenómenos geográficos se desarrollan de manera continúa sobre una extensión de la superficie terrestre (en, sobre o bajo ella), y ha sido un desafío constante crear un modelo de representación tan simple para ser almacenado, procesado y visualizado con facilidad y tan complejo que permita perder el mínimo de información crítica y versátil que permita mantener el nivel de detalle proporcional a la riqueza del mundo real.
+Ese modelo se ha denominado <strong>modelo ráster</strong> y es el tema principal del presente libro, su origen, fundamentos, propiedades y algunos usos serán descritos en detalle.
+Para ello, se basará en la <strong>Plataforma R</strong> y <strong>RStudio</strong>, unas de las herramientas informáticas más poderosas en la actualidad.
+Desde la instalación de las aplicaciones, pasando por una guía básica de su utilización, hasta una detallada descripción del trabajo con dicho modelo.</p>" />
+  <meta name="generator" content="bookdown 0.24 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Capítulo 5 Matrices | Ráster con R" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="<p>Los fenómenos geográficos se desarrollan de manera continúa sobre una extensión de la superficie terrestre (en, sobre o bajo ella), y ha sido un desafío constante crear un modelo de representación tan simple para ser almacenado, procesado y visualizado con facilidad y tan complejo que permita perder el mínimo de información crítica y versátil que permita mantener el nivel de detalle proporcional a la riqueza del mundo real.
+Ese modelo se ha denominado <strong>modelo ráster</strong> y es el tema principal del presente libro, su origen, fundamentos, propiedades y algunos usos serán descritos en detalle.
+Para ello, se basará en la <strong>Plataforma R</strong> y <strong>RStudio</strong>, unas de las herramientas informáticas más poderosas en la actualidad.
+Desde la instalación de las aplicaciones, pasando por una guía básica de su utilización, hasta una detallada descripción del trabajo con dicho modelo.</p>" />
+  <meta name="github-repo" content="rstudio/bookdown-demo" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Capítulo 5 Matrices | Ráster con R" />
+  
+  <meta name="twitter:description" content="<p>Los fenómenos geográficos se desarrollan de manera continúa sobre una extensión de la superficie terrestre (en, sobre o bajo ella), y ha sido un desafío constante crear un modelo de representación tan simple para ser almacenado, procesado y visualizado con facilidad y tan complejo que permita perder el mínimo de información crítica y versátil que permita mantener el nivel de detalle proporcional a la riqueza del mundo real.
+Ese modelo se ha denominado <strong>modelo ráster</strong> y es el tema principal del presente libro, su origen, fundamentos, propiedades y algunos usos serán descritos en detalle.
+Para ello, se basará en la <strong>Plataforma R</strong> y <strong>RStudio</strong>, unas de las herramientas informáticas más poderosas en la actualidad.
+Desde la instalación de las aplicaciones, pasando por una guía básica de su utilización, hasta una detallada descripción del trabajo con dicho modelo.</p>" />
+  
+
+<meta name="author" content="Danilo A. Verdugo Chaura" />
+
+
+<meta name="date" content="2022-02-09" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="fac.html"/>
+<link rel="next" href="dataframe.html"/>
+<script src="libs/header-attrs-2.11/header-attrs.js"></script>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.0.1/anchor-sections.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Ráster con R</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="1" data-path="part1.html"><a href="part1.html"><i class="fa fa-check"></i><b>1</b> Plataforma R</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="part1.html"><a href="part1.html#hist-orig"><i class="fa fa-check"></i><b>1.1</b> Historia y Origen</a></li>
+<li class="chapter" data-level="1.2" data-path="part1.html"><a href="part1.html#dis-plat"><i class="fa fa-check"></i><b>1.2</b> Diseño de la Plataforma R</a></li>
+<li class="chapter" data-level="1.3" data-path="part1.html"><a href="part1.html#rstudio"><i class="fa fa-check"></i><b>1.3</b> RStudio</a></li>
+<li class="chapter" data-level="1.4" data-path="part1.html"><a href="part1.html#car-prin"><i class="fa fa-check"></i><b>1.4</b> Características Principales</a></li>
+<li class="chapter" data-level="1.5" data-path="part1.html"><a href="part1.html#inst-pla"><i class="fa fa-check"></i><b>1.5</b> Instalación de Plataforma R y RStudio</a></li>
+<li class="chapter" data-level="1.6" data-path="part1.html"><a href="part1.html#con-pre"><i class="fa fa-check"></i><b>1.6</b> Consideraciones Preliminares</a></li>
+<li class="chapter" data-level="1.7" data-path="part1.html"><a href="part1.html#pack-search"><i class="fa fa-check"></i><b>1.7</b> Búsqueda</a></li>
+<li class="chapter" data-level="1.8" data-path="part1.html"><a href="part1.html#pack-install"><i class="fa fa-check"></i><b>1.8</b> Instalación</a>
+<ul>
+<li class="chapter" data-level="1.8.1" data-path="part1.html"><a href="part1.html#pack-cuadro"><i class="fa fa-check"></i><b>1.8.1</b> Cuadro Diálogo</a></li>
+<li class="chapter" data-level="1.8.2" data-path="part1.html"><a href="part1.html#pack-install-code"><i class="fa fa-check"></i><b>1.8.2</b> Función <em>install.packages()</em></a></li>
+</ul></li>
+<li class="chapter" data-level="1.9" data-path="part1.html"><a href="part1.html#pack-update"><i class="fa fa-check"></i><b>1.9</b> Actualización</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="sin-bas.html"><a href="sin-bas.html"><i class="fa fa-check"></i><b>2</b> Sintaxis Básica de R</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="sin-bas.html"><a href="sin-bas.html#op-num"><i class="fa fa-check"></i><b>2.1</b> Operaciones Numéricas</a></li>
+<li class="chapter" data-level="2.2" data-path="sin-bas.html"><a href="sin-bas.html#asig"><i class="fa fa-check"></i><b>2.2</b> Asignación</a></li>
+<li class="chapter" data-level="2.3" data-path="sin-bas.html"><a href="sin-bas.html#nat-vec"><i class="fa fa-check"></i><b>2.3</b> Naturaleza Vectorial</a>
+<ul>
+<li class="chapter" data-level="2.3.1" data-path="sin-bas.html"><a href="sin-bas.html#fun-c"><i class="fa fa-check"></i><b>2.3.1</b> Función <strong><code>c()</code></strong> para crear vectores</a></li>
+<li class="chapter" data-level="2.3.2" data-path="sin-bas.html"><a href="sin-bas.html#uso-sec"><i class="fa fa-check"></i><b>2.3.2</b> Uso de <strong>Secuencias</strong> para crear vectores</a></li>
+<li class="chapter" data-level="2.3.3" data-path="sin-bas.html"><a href="sin-bas.html#usar-rep"><i class="fa fa-check"></i><b>2.3.3</b> Usar <strong>Repetición</strong> para la creación de vectores</a></li>
+<li class="chapter" data-level="2.3.4" data-path="sin-bas.html"><a href="sin-bas.html#uso-pat"><i class="fa fa-check"></i><b>2.3.4</b> Uso de <strong>Patrones</strong> para crear vectores</a></li>
+<li class="chapter" data-level="2.3.5" data-path="sin-bas.html"><a href="sin-bas.html#vec-log"><i class="fa fa-check"></i><b>2.3.5</b> Vectores Lógicos y Caracteres</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="op-vec.html"><a href="op-vec.html"><i class="fa fa-check"></i><b>3</b> Operación Vectorial</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="op-vec.html"><a href="op-vec.html#op-num-vec"><i class="fa fa-check"></i><b>3.1</b> Operaciones Numéricas</a></li>
+<li class="chapter" data-level="3.2" data-path="op-vec.html"><a href="op-vec.html#val-fal"><i class="fa fa-check"></i><b>3.2</b> Valores Faltantes</a></li>
+<li class="chapter" data-level="3.3" data-path="op-vec.html"><a href="op-vec.html#index-sub"><i class="fa fa-check"></i><b>3.3</b> Indexado y Subconjunto</a>
+<ul>
+<li class="chapter" data-level="3.3.1" data-path="op-vec.html"><a href="op-vec.html#ind-num-pos"><i class="fa fa-check"></i><b>3.3.1</b> Índice Numérico Positivo</a></li>
+<li class="chapter" data-level="3.3.2" data-path="op-vec.html"><a href="op-vec.html#ind-num-neg"><i class="fa fa-check"></i><b>3.3.2</b> Índice Numérico Negativo</a></li>
+<li class="chapter" data-level="3.3.3" data-path="op-vec.html"><a href="op-vec.html#vec-log-1"><i class="fa fa-check"></i><b>3.3.3</b> Vector Lógico</a></li>
+</ul></li>
+<li class="chapter" data-level="3.4" data-path="op-vec.html"><a href="op-vec.html#edic-con"><i class="fa fa-check"></i><b>3.4</b> Edición de Contenido</a></li>
+<li class="chapter" data-level="3.5" data-path="op-vec.html"><a href="op-vec.html#op-avan"><i class="fa fa-check"></i><b>3.5</b> Opciones Avanzadas</a>
+<ul>
+<li class="chapter" data-level="3.5.1" data-path="op-vec.html"><a href="op-vec.html#nom-col"><i class="fa fa-check"></i><b>3.5.1</b> Nombrar los Componentes de un Vector</a></li>
+<li class="chapter" data-level="3.5.2" data-path="op-vec.html"><a href="op-vec.html#info-ad"><i class="fa fa-check"></i><b>3.5.2</b> Información Adicional</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="fac.html"><a href="fac.html"><i class="fa fa-check"></i><b>4</b> Factores</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="fac.html"><a href="fac.html#fac-nom"><i class="fa fa-check"></i><b>4.1</b> Factores Nominales</a></li>
+<li class="chapter" data-level="4.2" data-path="fac.html"><a href="fac.html#fac-or"><i class="fa fa-check"></i><b>4.2</b> Factores Ordinales</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="mat.html"><a href="mat.html"><i class="fa fa-check"></i><b>5</b> Matrices</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="mat.html"><a href="mat.html#op-num-mat"><i class="fa fa-check"></i><b>5.1</b> Operaciones Numéricas</a></li>
+<li class="chapter" data-level="5.2" data-path="mat.html"><a href="mat.html#matriz-index"><i class="fa fa-check"></i><b>5.2</b> Indexado y Subconjunto</a></li>
+<li class="chapter" data-level="5.3" data-path="mat.html"><a href="mat.html#ed-con"><i class="fa fa-check"></i><b>5.3</b> Edición de Contenido</a></li>
+<li class="chapter" data-level="5.4" data-path="mat.html"><a href="mat.html#op-avan-mat"><i class="fa fa-check"></i><b>5.4</b> Opciones Avanzadas</a>
+<ul>
+<li class="chapter" data-level="5.4.1" data-path="mat.html"><a href="mat.html#nom-fil"><i class="fa fa-check"></i><b>5.4.1</b> Nombres de Filas y Columnas</a></li>
+<li class="chapter" data-level="5.4.2" data-path="mat.html"><a href="mat.html#mod-mat"><i class="fa fa-check"></i><b>5.4.2</b> Modificar Tamaño de Matrices</a></li>
+<li class="chapter" data-level="5.4.3" data-path="mat.html"><a href="mat.html#info-adic"><i class="fa fa-check"></i><b>5.4.3</b> Información Adicional</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="dataframe.html"><a href="dataframe.html"><i class="fa fa-check"></i><b>6</b> Dataframes</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="dataframe.html"><a href="dataframe.html#df-detalle"><i class="fa fa-check"></i><b>6.1</b> Creación</a></li>
+<li class="chapter" data-level="6.2" data-path="dataframe.html"><a href="dataframe.html#df-op-num"><i class="fa fa-check"></i><b>6.2</b> Operaciones Numéricas</a></li>
+<li class="chapter" data-level="6.3" data-path="dataframe.html"><a href="dataframe.html#df-index"><i class="fa fa-check"></i><b>6.3</b> Indexado y Subconjunto</a>
+<ul>
+<li class="chapter" data-level="6.3.1" data-path="dataframe.html"><a href="dataframe.html#df-op-avan"><i class="fa fa-check"></i><b>6.3.1</b> Opciones Avanzadas</a></li>
+<li class="chapter" data-level="6.3.2" data-path="dataframe.html"><a href="dataframe.html#df-mod-size"><i class="fa fa-check"></i><b>6.3.2</b> Modificar Tamaño o Estructura</a></li>
+<li class="chapter" data-level="6.3.3" data-path="dataframe.html"><a href="dataframe.html#df-nom-fil-col"><i class="fa fa-check"></i><b>6.3.3</b> Nombres de Filas y Columnas</a></li>
+<li class="chapter" data-level="6.3.4" data-path="dataframe.html"><a href="dataframe.html#df-info"><i class="fa fa-check"></i><b>6.3.4</b> Información Adicional</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="array.html"><a href="array.html"><i class="fa fa-check"></i><b>7</b> Array</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="array.html"><a href="array.html#op-num-arr"><i class="fa fa-check"></i><b>7.1</b> Operaciones Numéricas</a></li>
+<li class="chapter" data-level="7.2" data-path="array.html"><a href="array.html#index-arr"><i class="fa fa-check"></i><b>7.2</b> Indexado y Subconjunto</a></li>
+<li class="chapter" data-level="7.3" data-path="array.html"><a href="array.html#ed-con-arr"><i class="fa fa-check"></i><b>7.3</b> Edición de Contenido</a></li>
+<li class="chapter" data-level="7.4" data-path="array.html"><a href="array.html#op-av-arr"><i class="fa fa-check"></i><b>7.4</b> Opciones Avanzadas</a>
+<ul>
+<li class="chapter" data-level="7.4.1" data-path="array.html"><a href="array.html#nom-fil-arr"><i class="fa fa-check"></i><b>7.4.1</b> Nombres de Filas y Columnas</a></li>
+<li class="chapter" data-level="7.4.2" data-path="array.html"><a href="array.html#info-ad-arr"><i class="fa fa-check"></i><b>7.4.2</b> Información Adicional</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="r-fechas.html"><a href="r-fechas.html"><i class="fa fa-check"></i><b>8</b> Fechas</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="r-fechas.html"><a href="r-fechas.html#op-fe"><i class="fa fa-check"></i><b>8.1</b> Operaciones con Fecha</a>
+<ul>
+<li class="chapter" data-level="8.1.1" data-path="r-fechas.html"><a href="r-fechas.html#format-date"><i class="fa fa-check"></i><b>8.1.1</b> Formato de Fechas</a></li>
+<li class="chapter" data-level="8.1.2" data-path="r-fechas.html"><a href="r-fechas.html#cambio-formato-date"><i class="fa fa-check"></i><b>8.1.2</b> Cambio de Formato</a></li>
+</ul></li>
+<li class="chapter" data-level="8.2" data-path="r-fechas.html"><a href="r-fechas.html#posix"><i class="fa fa-check"></i><b>8.2</b> Formato POSIX</a></li>
+<li class="chapter" data-level="8.3" data-path="r-fechas.html"><a href="r-fechas.html#ope-time"><i class="fa fa-check"></i><b>8.3</b> Operando con el tiempo</a></li>
+<li class="chapter" data-level="8.4" data-path="r-fechas.html"><a href="r-fechas.html#zona-hora"><i class="fa fa-check"></i><b>8.4</b> Conversión entre zonas horarias</a></li>
+</ul></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Publicado con bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Ráster con R</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="mat" class="section level1" number="5">
+<h1><span class="header-section-number">Capítulo 5</span> Matrices</h1>
+<p>Un vector posee un índice por lo tanto es <em>unidimensional</em>, si agregamos una segunda dimensión se convierte en <em>bidimensional</em> y se denomina <strong>matriz</strong>.</p>
+<p>La función en R para construir una matriz es <code>matrix()</code> y requiere dos parámetros de dimensión, además de los datos. La primera dimensión corresponde al número de <em>filas</em> y la segunda dimensión corresponde al número de <em>columnas</em>.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="mat.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">matrix</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">8</span>, <span class="dv">2</span>, <span class="dv">4</span>)</span></code></pre></div>
+<pre><code>##      [,1] [,2] [,3] [,4]
+## [1,]    1    3    5    7
+## [2,]    2    4    6    8</code></pre>
+<p>Aunque se recomienda utilizar los parámetros con nombre por facilidad de uso:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="mat.html#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">matrix</span>(<span class="at">nrow =</span> <span class="dv">5</span>, <span class="at">ncol =</span> <span class="dv">3</span>)</span></code></pre></div>
+<pre><code>##      [,1] [,2] [,3]
+## [1,]   NA   NA   NA
+## [2,]   NA   NA   NA
+## [3,]   NA   NA   NA
+## [4,]   NA   NA   NA
+## [5,]   NA   NA   NA</code></pre>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="mat.html#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">matrix</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">15</span>, <span class="at">ncol =</span> <span class="dv">3</span>, <span class="at">nrow =</span> <span class="dv">5</span>)</span></code></pre></div>
+<pre><code>##      [,1] [,2] [,3]
+## [1,]    1    6   11
+## [2,]    2    7   12
+## [3,]    3    8   13
+## [4,]    4    9   14
+## [5,]    5   10   15</code></pre>
+<p>Si necesita convertir un vector <em>x</em> evitando duplicar el objeto a una matriz puede intentarlo así:</p>
+<p>dim(x) &lt;- c(num_filas, num_columnas)</p>
+<p>Donde <strong><em>dim</em></strong> es una función que redefine las <em>dimensiones</em> de la matriz.</p>
+<p>El parámetro <code>byrow</code> cambia la forma de asignar los datos de columna en columna a fila por fila:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="mat.html#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">matrix</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">15</span>, <span class="at">ncol =</span> <span class="dv">3</span>, <span class="at">nrow =</span> <span class="dv">5</span>, <span class="at">byrow =</span> T)</span></code></pre></div>
+<pre><code>##      [,1] [,2] [,3]
+## [1,]    1    2    3
+## [2,]    4    5    6
+## [3,]    7    8    9
+## [4,]   10   11   12
+## [5,]   13   14   15</code></pre>
+<div id="op-num-mat" class="section level2" number="5.1">
+<h2><span class="header-section-number">5.1</span> Operaciones Numéricas</h2>
+<p>Las matrices responden a las mismas reglas de operación que los <em>vectores</em> realizando las operaciones elemento a elemento:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="mat.html#cb9-1" aria-hidden="true" tabindex="-1"></a>(mi_matriz <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>,<span class="at">nrow=</span><span class="dv">2</span>, <span class="at">ncol=</span><span class="dv">3</span>))</span></code></pre></div>
+<pre><code>##      [,1] [,2] [,3]
+## [1,]    1    3    5
+## [2,]    2    4    6</code></pre>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="mat.html#cb11-1" aria-hidden="true" tabindex="-1"></a>mi_matriz <span class="sc">*</span> <span class="dv">2</span></span></code></pre></div>
+<pre><code>##      [,1] [,2] [,3]
+## [1,]    2    6   10
+## [2,]    4    8   12</code></pre>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="mat.html#cb13-1" aria-hidden="true" tabindex="-1"></a>mi_matriz <span class="sc">+</span> <span class="dv">2</span> <span class="sc">/</span> mi_matriz <span class="sc">**</span> <span class="dv">3</span></span></code></pre></div>
+<pre><code>##      [,1]     [,2]     [,3]
+## [1,] 3.00 3.074074 5.016000
+## [2,] 2.25 4.031250 6.009259</code></pre>
+<p>Y así podemos aplicar las funciones detalladas en :</p>
+<p></p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="mat.html#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(mi_matriz) <span class="co">#largo del vector</span></span></code></pre></div>
+<pre><code>## [1] 6</code></pre>
+<p></p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="mat.html#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">min</span>(mi_matriz) <span class="co">#encuetra valor mínimo</span></span></code></pre></div>
+<pre><code>## [1] 1</code></pre>
+<p></p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="mat.html#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">max</span>(mi_matriz) <span class="co">#encuentra valor máximo</span></span></code></pre></div>
+<pre><code>## [1] 6</code></pre>
+<p></p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="mat.html#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">range</span>(mi_matriz) <span class="co">#encuentra el rango</span></span></code></pre></div>
+<pre><code>## [1] 1 6</code></pre>
+<p></p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="mat.html#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(mi_matriz) <span class="co">#promedio</span></span></code></pre></div>
+<pre><code>## [1] 3.5</code></pre>
+<p></p>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="mat.html#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">median</span>(mi_matriz) <span class="co">#mdiana</span></span></code></pre></div>
+<pre><code>## [1] 3.5</code></pre>
+<p></p>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="mat.html#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(mi_matriz) <span class="co">#sumatoria</span></span></code></pre></div>
+<pre><code>## [1] 21</code></pre>
+<p></p>
+<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="mat.html#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">prod</span>(mi_matriz) <span class="co">#producto de todos elementos</span></span></code></pre></div>
+<pre><code>## [1] 720</code></pre>
+<p></p>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="mat.html#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">var</span>(mi_matriz) <span class="co">#varianza</span></span></code></pre></div>
+<pre><code>##      [,1] [,2] [,3]
+## [1,]  0.5  0.5  0.5
+## [2,]  0.5  0.5  0.5
+## [3,]  0.5  0.5  0.5</code></pre>
+<p></p>
+<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="mat.html#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sd</span>(mi_matriz) <span class="co">#desviación estándar</span></span></code></pre></div>
+<pre><code>## [1] 1.870829</code></pre>
+<p>Y existe una serie de funciones especialmente diseñadas para matrices.</p>
+<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="mat.html#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(mi_matriz) <span class="co">#Dimensión de la matriz, fila x columna</span></span></code></pre></div>
+<pre><code>## [1] 2 3</code></pre>
+<p></p>
+<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="mat.html#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="fu">nrow</span>(mi_matriz) <span class="co">#Número de filas</span></span></code></pre></div>
+<pre><code>## [1] 2</code></pre>
+<p></p>
+<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb39-1"><a href="mat.html#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ncol</span>(mi_matriz) <span class="co">#Número de columnas</span></span></code></pre></div>
+<pre><code>## [1] 3</code></pre>
+<p></p>
+<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb41-1"><a href="mat.html#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rowSums</span>(mi_matriz, <span class="at">na.rm =</span> T) <span class="co">#Suma elementos por filas</span></span></code></pre></div>
+<pre><code>## [1]  9 12</code></pre>
+<p></p>
+<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb43-1"><a href="mat.html#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="fu">colSums</span>(mi_matriz, <span class="at">na.rm =</span> T) <span class="co">#Suma elementos por columnas</span></span></code></pre></div>
+<pre><code>## [1]  3  7 11</code></pre>
+<p></p>
+<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb45-1"><a href="mat.html#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rowMeans</span>(mi_matriz) <span class="co">#Promedio por filas</span></span></code></pre></div>
+<pre><code>## [1] 3 4</code></pre>
+<p></p>
+<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb47-1"><a href="mat.html#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="fu">colMeans</span>(mi_matriz) <span class="co">#Promedio por columnas</span></span></code></pre></div>
+<pre><code>## [1] 1.5 3.5 5.5</code></pre>
+</div>
+<div id="matriz-index" class="section level2" number="5.2">
+<h2><span class="header-section-number">5.2</span> Indexado y Subconjunto</h2>
+<p>Las mismas reglas aplicadas a los vectores son aplicables a las matrices, considerando sí que el índice <strong><em>i</em></strong> en <strong><em>x[i, ]</em></strong> será la i-ésima <strong><em>fila</em></strong>, el índice <strong><em>j</em></strong> en <strong><em>x[ , j]</em></strong> será la j-ésima <strong><em>columna</em></strong> y <strong><em>x[i, j]</em></strong> refiere al <strong><em>ij-ésimo</em></strong> elemento de <strong><em>x</em></strong>.
+Los índices <strong><em>i</em></strong> y <strong><em>j</em></strong> deben ser vectores numéricos.</p>
+<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb49-1"><a href="mat.html#cb49-1" aria-hidden="true" tabindex="-1"></a>(mi_matriz <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>, <span class="dv">3</span>, <span class="dv">2</span>, <span class="at">byrow =</span> T))</span></code></pre></div>
+<pre><code>##      [,1] [,2]
+## [1,]    1    2
+## [2,]    3    4
+## [3,]    5    6</code></pre>
+<div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb51-1"><a href="mat.html#cb51-1" aria-hidden="true" tabindex="-1"></a>mi_matriz[<span class="dv">2</span>, <span class="dv">1</span>]</span></code></pre></div>
+<pre><code>## [1] 3</code></pre>
+<div class="sourceCode" id="cb53"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb53-1"><a href="mat.html#cb53-1" aria-hidden="true" tabindex="-1"></a>mi_matriz[<span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">3</span>), <span class="dv">2</span>]</span></code></pre></div>
+<pre><code>## [1] 2 6</code></pre>
+<div class="sourceCode" id="cb55"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb55-1"><a href="mat.html#cb55-1" aria-hidden="true" tabindex="-1"></a>mi_matriz[<span class="dv">1</span>, ]</span></code></pre></div>
+<pre><code>## [1] 1 2</code></pre>
+<div class="sourceCode" id="cb57"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb57-1"><a href="mat.html#cb57-1" aria-hidden="true" tabindex="-1"></a>mi_matriz[<span class="dv">2</span><span class="sc">:</span><span class="dv">3</span>, ]</span></code></pre></div>
+<pre><code>##      [,1] [,2]
+## [1,]    3    4
+## [2,]    5    6</code></pre>
+<div class="sourceCode" id="cb59"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb59-1"><a href="mat.html#cb59-1" aria-hidden="true" tabindex="-1"></a>mi_matriz[, <span class="dv">1</span>]</span></code></pre></div>
+<pre><code>## [1] 1 3 5</code></pre>
+<div class="sourceCode" id="cb61"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb61-1"><a href="mat.html#cb61-1" aria-hidden="true" tabindex="-1"></a>mi_matriz[, <span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>]</span></code></pre></div>
+<pre><code>##      [,1] [,2]
+## [1,]    1    2
+## [2,]    3    4
+## [3,]    5    6</code></pre>
+</div>
+<div id="ed-con" class="section level2" number="5.3">
+<h2><span class="header-section-number">5.3</span> Edición de Contenido</h2>
+<p>Modificar valores se hace aplicando las mismas técnicas del punto anterior, se selecciona un subconjunto y se asignan los valores:</p>
+<div class="sourceCode" id="cb63"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb63-1"><a href="mat.html#cb63-1" aria-hidden="true" tabindex="-1"></a>mi_matriz[<span class="dv">3</span>, <span class="dv">2</span>] <span class="ot">&lt;-</span> <span class="fl">45.66</span> <span class="co">#modificar un valor</span></span>
+<span id="cb63-2"><a href="mat.html#cb63-2" aria-hidden="true" tabindex="-1"></a>mi_matriz[, <span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="dv">333</span> <span class="co">#modificar toda la columna</span></span>
+<span id="cb63-3"><a href="mat.html#cb63-3" aria-hidden="true" tabindex="-1"></a>mi_matriz[<span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>), ] <span class="ot">&lt;-</span> <span class="dv">777</span> <span class="co">#modificar todas las filas</span></span>
+<span id="cb63-4"><a href="mat.html#cb63-4" aria-hidden="true" tabindex="-1"></a>mi_matriz</span></code></pre></div>
+<pre><code>##      [,1]   [,2]
+## [1,]  777 777.00
+## [2,]  777 777.00
+## [3,]  333  45.66</code></pre>
+</div>
+<div id="op-avan-mat" class="section level2" number="5.4">
+<h2><span class="header-section-number">5.4</span> Opciones Avanzadas</h2>
+<div id="nom-fil" class="section level3" number="5.4.1">
+<h3><span class="header-section-number">5.4.1</span> Nombres de Filas y Columnas</h3>
+<p>Para facilidad de uso también contamos con un método para asignar nombres a filas y columnas y usar esos nombres como índices:<br />
+</p>
+<div class="sourceCode" id="cb65"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb65-1"><a href="mat.html#cb65-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rownames</span>(mi_matriz) <span class="ot">&lt;-</span> LETTERS[<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>]</span></code></pre></div>
+<p></p>
+<div class="sourceCode" id="cb66"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb66-1"><a href="mat.html#cb66-1" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(mi_matriz) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;uno&quot;</span>, <span class="st">&quot;dos&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb67"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb67-1"><a href="mat.html#cb67-1" aria-hidden="true" tabindex="-1"></a>mi_matriz</span></code></pre></div>
+<pre><code>##   uno    dos
+## A 777 777.00
+## B 777 777.00
+## C 333  45.66</code></pre>
+<div class="sourceCode" id="cb69"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb69-1"><a href="mat.html#cb69-1" aria-hidden="true" tabindex="-1"></a>mi_matriz[,<span class="st">&#39;uno&#39;</span>]</span></code></pre></div>
+<pre><code>##   A   B   C 
+## 777 777 333</code></pre>
+<div class="sourceCode" id="cb71"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb71-1"><a href="mat.html#cb71-1" aria-hidden="true" tabindex="-1"></a>mi_matriz[<span class="st">&#39;B&#39;</span>,<span class="st">&#39;uno&#39;</span>]</span></code></pre></div>
+<pre><code>## [1] 777</code></pre>
+<p>También podemos usar las mismas funciones y un índice para cambiar su nombre:</p>
+<div class="sourceCode" id="cb73"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb73-1"><a href="mat.html#cb73-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rownames</span>(mi_matriz)[<span class="dv">3</span>] <span class="ot">&lt;-</span> <span class="st">&quot;Letra C&quot;</span></span>
+<span id="cb73-2"><a href="mat.html#cb73-2" aria-hidden="true" tabindex="-1"></a>mi_matriz</span></code></pre></div>
+<pre><code>##         uno    dos
+## A       777 777.00
+## B       777 777.00
+## Letra C 333  45.66</code></pre>
+</div>
+<div id="mod-mat" class="section level3" number="5.4.2">
+<h3><span class="header-section-number">5.4.2</span> Modificar Tamaño de Matrices</h3>
+<p>Agregar información (cambiando el tamaño de la matriz) se realiza mediante las funciones <code>cbind()</code> y <code>rbind()</code>, la primera agrega a continuación un nueva columna de datos y la segunda filas:</p>
+<div class="sourceCode" id="cb75"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb75-1"><a href="mat.html#cb75-1" aria-hidden="true" tabindex="-1"></a>datos_columna <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">100</span>, <span class="dv">200</span>,<span class="dv">300</span>)</span>
+<span id="cb75-2"><a href="mat.html#cb75-2" aria-hidden="true" tabindex="-1"></a>mi_matriz <span class="ot">&lt;-</span> <span class="fu">cbind</span>(mi_matriz, <span class="at">nombre_col=</span> datos_columna)</span>
+<span id="cb75-3"><a href="mat.html#cb75-3" aria-hidden="true" tabindex="-1"></a>datos_fila <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1000</span>, <span class="dv">2000</span>, <span class="dv">3000</span>)</span>
+<span id="cb75-4"><a href="mat.html#cb75-4" aria-hidden="true" tabindex="-1"></a>(mi_matriz <span class="ot">&lt;-</span> <span class="fu">rbind</span>(mi_matriz, <span class="at">nombre_fil=</span> datos_fila))</span></code></pre></div>
+<pre><code>##             uno     dos nombre_col
+## A           777  777.00        100
+## B           777  777.00        200
+## Letra C     333   45.66        300
+## nombre_fil 1000 2000.00       3000</code></pre>
+</div>
+<div id="info-adic" class="section level3" number="5.4.3">
+<h3><span class="header-section-number">5.4.3</span> Información Adicional</h3>
+<p>Por último, también contamos con la función <code>comment()</code> para asociar información adicional al objeto.<br />
+
+</p>
+<div class="sourceCode" id="cb77"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb77-1"><a href="mat.html#cb77-1" aria-hidden="true" tabindex="-1"></a><span class="fu">comment</span>(mi_matriz) <span class="ot">&lt;-</span> <span class="st">&quot;Información Adicional&quot;</span></span>
+<span id="cb77-2"><a href="mat.html#cb77-2" aria-hidden="true" tabindex="-1"></a><span class="fu">attributes</span>(mi_matriz)</span></code></pre></div>
+<pre><code>## $dim
+## [1] 4 3
+## 
+## $dimnames
+## $dimnames[[1]]
+## [1] &quot;A&quot;          &quot;B&quot;          &quot;Letra C&quot;    &quot;nombre_fil&quot;
+## 
+## $dimnames[[2]]
+## [1] &quot;uno&quot;        &quot;dos&quot;        &quot;nombre_col&quot;
+## 
+## 
+## $comment
+## [1] &quot;Información Adicional&quot;</code></pre>
+
+</div>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="fac.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="dataframe.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": true,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "sepia",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/USERNAME/REPO/edit/BRANCH/05-Matrices.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["_main.pdf"],
+"search": {
+"engine": "lunr",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+},
+"info": true
+});
+});
+</script>
+
+</body>
+
+</html>
