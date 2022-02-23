@@ -1,0 +1,826 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Capítulo 12 EEM | Ráster con R</title>
+  <meta name="description" content="<p>Los fenómenos geográficos se desarrollan de manera continúa sobre una extensión de la superficie terrestre (en, sobre o bajo ella), y ha sido un desafío constante crear un modelo de representación tan simple para ser almacenado, procesado y visualizado con facilidad y tan complejo que permita perder el mínimo de información crítica y versátil que permita mantener el nivel de detalle proporcional a la riqueza del mundo real.
+Ese modelo se ha denominado <strong>modelo ráster</strong> y es el tema principal del presente libro, su origen, fundamentos, propiedades y algunos usos serán descritos en detalle.
+Para ello, se basará en la <strong>Plataforma R</strong> y <strong>RStudio</strong>, unas de las herramientas informáticas más poderosas en la actualidad.
+Desde la instalación de las aplicaciones, pasando por una guía básica de su utilización, hasta una detallada descripción del trabajo con dicho modelo.</p>" />
+  <meta name="generator" content="bookdown 0.24 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Capítulo 12 EEM | Ráster con R" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="<p>Los fenómenos geográficos se desarrollan de manera continúa sobre una extensión de la superficie terrestre (en, sobre o bajo ella), y ha sido un desafío constante crear un modelo de representación tan simple para ser almacenado, procesado y visualizado con facilidad y tan complejo que permita perder el mínimo de información crítica y versátil que permita mantener el nivel de detalle proporcional a la riqueza del mundo real.
+Ese modelo se ha denominado <strong>modelo ráster</strong> y es el tema principal del presente libro, su origen, fundamentos, propiedades y algunos usos serán descritos en detalle.
+Para ello, se basará en la <strong>Plataforma R</strong> y <strong>RStudio</strong>, unas de las herramientas informáticas más poderosas en la actualidad.
+Desde la instalación de las aplicaciones, pasando por una guía básica de su utilización, hasta una detallada descripción del trabajo con dicho modelo.</p>" />
+  <meta name="github-repo" content="rstudio/bookdown-demo" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Capítulo 12 EEM | Ráster con R" />
+  
+  <meta name="twitter:description" content="<p>Los fenómenos geográficos se desarrollan de manera continúa sobre una extensión de la superficie terrestre (en, sobre o bajo ella), y ha sido un desafío constante crear un modelo de representación tan simple para ser almacenado, procesado y visualizado con facilidad y tan complejo que permita perder el mínimo de información crítica y versátil que permita mantener el nivel de detalle proporcional a la riqueza del mundo real.
+Ese modelo se ha denominado <strong>modelo ráster</strong> y es el tema principal del presente libro, su origen, fundamentos, propiedades y algunos usos serán descritos en detalle.
+Para ello, se basará en la <strong>Plataforma R</strong> y <strong>RStudio</strong>, unas de las herramientas informáticas más poderosas en la actualidad.
+Desde la instalación de las aplicaciones, pasando por una guía básica de su utilización, hasta una detallada descripción del trabajo con dicho modelo.</p>" />
+  
+
+<meta name="author" content="Danilo A. Verdugo Chaura" />
+
+
+<meta name="date" content="2022-02-22" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="EO-intro.html"/>
+<link rel="next" href="prop-img.html"/>
+<script src="libs/header-attrs-2.11/header-attrs.js"></script>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.0.1/anchor-sections.js"></script>
+<script src="libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Ráster con R</a></li>
+
+<li class="divider"></li>
+<li class="part"><span><b>I Part I</b></span></li>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Plataforma R</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="index.html"><a href="index.html#hist-orig"><i class="fa fa-check"></i><b>1.1</b> Historia y Origen</a></li>
+<li class="chapter" data-level="1.2" data-path="index.html"><a href="index.html#dis-plat"><i class="fa fa-check"></i><b>1.2</b> Diseño de la Plataforma R</a></li>
+<li class="chapter" data-level="1.3" data-path="index.html"><a href="index.html#rstudio"><i class="fa fa-check"></i><b>1.3</b> RStudio</a></li>
+<li class="chapter" data-level="1.4" data-path="index.html"><a href="index.html#car-prin"><i class="fa fa-check"></i><b>1.4</b> Características Principales</a></li>
+<li class="chapter" data-level="1.5" data-path="index.html"><a href="index.html#inst-pla"><i class="fa fa-check"></i><b>1.5</b> Instalación de Plataforma R y RStudio</a></li>
+<li class="chapter" data-level="1.6" data-path="index.html"><a href="index.html#con-pre"><i class="fa fa-check"></i><b>1.6</b> Consideraciones Preliminares</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="intro-package.html"><a href="intro-package.html"><i class="fa fa-check"></i><b>2</b> Paquetes</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="intro-package.html"><a href="intro-package.html#pack-search"><i class="fa fa-check"></i><b>2.1</b> Búsqueda</a></li>
+<li class="chapter" data-level="2.2" data-path="intro-package.html"><a href="intro-package.html#pack-install"><i class="fa fa-check"></i><b>2.2</b> Instalación</a>
+<ul>
+<li class="chapter" data-level="2.2.1" data-path="intro-package.html"><a href="intro-package.html#pack-cuadro"><i class="fa fa-check"></i><b>2.2.1</b> Cuadro Diálogo</a></li>
+<li class="chapter" data-level="2.2.2" data-path="intro-package.html"><a href="intro-package.html#pack-install-code"><i class="fa fa-check"></i><b>2.2.2</b> Función <em>install.packages()</em></a></li>
+</ul></li>
+<li class="chapter" data-level="2.3" data-path="intro-package.html"><a href="intro-package.html#pack-update"><i class="fa fa-check"></i><b>2.3</b> Actualización</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="sin-bas.html"><a href="sin-bas.html"><i class="fa fa-check"></i><b>3</b> Sintaxis Básica de R</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="sin-bas.html"><a href="sin-bas.html#op-num"><i class="fa fa-check"></i><b>3.1</b> Operaciones Numéricas</a></li>
+<li class="chapter" data-level="3.2" data-path="sin-bas.html"><a href="sin-bas.html#asig"><i class="fa fa-check"></i><b>3.2</b> Asignación</a></li>
+<li class="chapter" data-level="3.3" data-path="sin-bas.html"><a href="sin-bas.html#nat-vec"><i class="fa fa-check"></i><b>3.3</b> Naturaleza Vectorial</a>
+<ul>
+<li class="chapter" data-level="3.3.1" data-path="sin-bas.html"><a href="sin-bas.html#fun-c"><i class="fa fa-check"></i><b>3.3.1</b> Función <strong><code>c()</code></strong> para crear vectores</a></li>
+<li class="chapter" data-level="3.3.2" data-path="sin-bas.html"><a href="sin-bas.html#uso-sec"><i class="fa fa-check"></i><b>3.3.2</b> Uso de <strong>Secuencias</strong> para crear vectores</a></li>
+<li class="chapter" data-level="3.3.3" data-path="sin-bas.html"><a href="sin-bas.html#usar-rep"><i class="fa fa-check"></i><b>3.3.3</b> Usar <strong>Repetición</strong> para la creación de vectores</a></li>
+<li class="chapter" data-level="3.3.4" data-path="sin-bas.html"><a href="sin-bas.html#uso-pat"><i class="fa fa-check"></i><b>3.3.4</b> Uso de <strong>Patrones</strong> para crear vectores</a></li>
+<li class="chapter" data-level="3.3.5" data-path="sin-bas.html"><a href="sin-bas.html#vec-log"><i class="fa fa-check"></i><b>3.3.5</b> Vectores Lógicos y Caracteres</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="op-vec.html"><a href="op-vec.html"><i class="fa fa-check"></i><b>4</b> Operación Vectorial</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="op-vec.html"><a href="op-vec.html#op-num-vec"><i class="fa fa-check"></i><b>4.1</b> Operaciones Numéricas</a></li>
+<li class="chapter" data-level="4.2" data-path="op-vec.html"><a href="op-vec.html#val-fal"><i class="fa fa-check"></i><b>4.2</b> Valores Faltantes</a></li>
+<li class="chapter" data-level="4.3" data-path="op-vec.html"><a href="op-vec.html#index-sub"><i class="fa fa-check"></i><b>4.3</b> Indexado y Subconjunto</a>
+<ul>
+<li class="chapter" data-level="4.3.1" data-path="op-vec.html"><a href="op-vec.html#ind-num-pos"><i class="fa fa-check"></i><b>4.3.1</b> Índice Numérico Positivo</a></li>
+<li class="chapter" data-level="4.3.2" data-path="op-vec.html"><a href="op-vec.html#ind-num-neg"><i class="fa fa-check"></i><b>4.3.2</b> Índice Numérico Negativo</a></li>
+<li class="chapter" data-level="4.3.3" data-path="op-vec.html"><a href="op-vec.html#vec-log-1"><i class="fa fa-check"></i><b>4.3.3</b> Vector Lógico</a></li>
+</ul></li>
+<li class="chapter" data-level="4.4" data-path="op-vec.html"><a href="op-vec.html#edic-con"><i class="fa fa-check"></i><b>4.4</b> Edición de Contenido</a></li>
+<li class="chapter" data-level="4.5" data-path="op-vec.html"><a href="op-vec.html#op-avan"><i class="fa fa-check"></i><b>4.5</b> Opciones Avanzadas</a>
+<ul>
+<li class="chapter" data-level="4.5.1" data-path="op-vec.html"><a href="op-vec.html#nom-col"><i class="fa fa-check"></i><b>4.5.1</b> Nombrar los Componentes de un Vector</a></li>
+<li class="chapter" data-level="4.5.2" data-path="op-vec.html"><a href="op-vec.html#info-ad"><i class="fa fa-check"></i><b>4.5.2</b> Información Adicional</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="fac.html"><a href="fac.html"><i class="fa fa-check"></i><b>5</b> Factores</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="fac.html"><a href="fac.html#fac-nom"><i class="fa fa-check"></i><b>5.1</b> Factores Nominales</a></li>
+<li class="chapter" data-level="5.2" data-path="fac.html"><a href="fac.html#fac-or"><i class="fa fa-check"></i><b>5.2</b> Factores Ordinales</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="mat.html"><a href="mat.html"><i class="fa fa-check"></i><b>6</b> Matrices</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="mat.html"><a href="mat.html#op-num-mat"><i class="fa fa-check"></i><b>6.1</b> Operaciones Numéricas</a></li>
+<li class="chapter" data-level="6.2" data-path="mat.html"><a href="mat.html#matriz-index"><i class="fa fa-check"></i><b>6.2</b> Indexado y Subconjunto</a></li>
+<li class="chapter" data-level="6.3" data-path="mat.html"><a href="mat.html#ed-con"><i class="fa fa-check"></i><b>6.3</b> Edición de Contenido</a></li>
+<li class="chapter" data-level="6.4" data-path="mat.html"><a href="mat.html#op-avan-mat"><i class="fa fa-check"></i><b>6.4</b> Opciones Avanzadas</a>
+<ul>
+<li class="chapter" data-level="6.4.1" data-path="mat.html"><a href="mat.html#nom-fil"><i class="fa fa-check"></i><b>6.4.1</b> Nombres de Filas y Columnas</a></li>
+<li class="chapter" data-level="6.4.2" data-path="mat.html"><a href="mat.html#mod-mat"><i class="fa fa-check"></i><b>6.4.2</b> Modificar Tamaño de Matrices</a></li>
+<li class="chapter" data-level="6.4.3" data-path="mat.html"><a href="mat.html#info-adic"><i class="fa fa-check"></i><b>6.4.3</b> Información Adicional</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="dataframe.html"><a href="dataframe.html"><i class="fa fa-check"></i><b>7</b> Dataframes</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="dataframe.html"><a href="dataframe.html#df-detalle"><i class="fa fa-check"></i><b>7.1</b> Creación</a></li>
+<li class="chapter" data-level="7.2" data-path="dataframe.html"><a href="dataframe.html#df-op-num"><i class="fa fa-check"></i><b>7.2</b> Operaciones Numéricas</a></li>
+<li class="chapter" data-level="7.3" data-path="dataframe.html"><a href="dataframe.html#df-index"><i class="fa fa-check"></i><b>7.3</b> Indexado y Subconjunto</a>
+<ul>
+<li class="chapter" data-level="7.3.1" data-path="dataframe.html"><a href="dataframe.html#df-op-avan"><i class="fa fa-check"></i><b>7.3.1</b> Opciones Avanzadas</a></li>
+<li class="chapter" data-level="7.3.2" data-path="dataframe.html"><a href="dataframe.html#df-mod-size"><i class="fa fa-check"></i><b>7.3.2</b> Modificar Tamaño o Estructura</a></li>
+<li class="chapter" data-level="7.3.3" data-path="dataframe.html"><a href="dataframe.html#df-nom-fil-col"><i class="fa fa-check"></i><b>7.3.3</b> Nombres de Filas y Columnas</a></li>
+<li class="chapter" data-level="7.3.4" data-path="dataframe.html"><a href="dataframe.html#df-info"><i class="fa fa-check"></i><b>7.3.4</b> Información Adicional</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="array.html"><a href="array.html"><i class="fa fa-check"></i><b>8</b> Array</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="array.html"><a href="array.html#op-num-arr"><i class="fa fa-check"></i><b>8.1</b> Operaciones Numéricas</a></li>
+<li class="chapter" data-level="8.2" data-path="array.html"><a href="array.html#index-arr"><i class="fa fa-check"></i><b>8.2</b> Indexado y Subconjunto</a></li>
+<li class="chapter" data-level="8.3" data-path="array.html"><a href="array.html#ed-con-arr"><i class="fa fa-check"></i><b>8.3</b> Edición de Contenido</a></li>
+<li class="chapter" data-level="8.4" data-path="array.html"><a href="array.html#op-av-arr"><i class="fa fa-check"></i><b>8.4</b> Opciones Avanzadas</a>
+<ul>
+<li class="chapter" data-level="8.4.1" data-path="array.html"><a href="array.html#nom-fil-arr"><i class="fa fa-check"></i><b>8.4.1</b> Nombres de Filas y Columnas</a></li>
+<li class="chapter" data-level="8.4.2" data-path="array.html"><a href="array.html#info-ad-arr"><i class="fa fa-check"></i><b>8.4.2</b> Información Adicional</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="r-fechas.html"><a href="r-fechas.html"><i class="fa fa-check"></i><b>9</b> Fechas</a>
+<ul>
+<li class="chapter" data-level="9.1" data-path="r-fechas.html"><a href="r-fechas.html#op-fe"><i class="fa fa-check"></i><b>9.1</b> Operaciones con Fecha</a>
+<ul>
+<li class="chapter" data-level="9.1.1" data-path="r-fechas.html"><a href="r-fechas.html#format-date"><i class="fa fa-check"></i><b>9.1.1</b> Formato de Fechas</a></li>
+<li class="chapter" data-level="9.1.2" data-path="r-fechas.html"><a href="r-fechas.html#cambio-formato-date"><i class="fa fa-check"></i><b>9.1.2</b> Cambio de Formato</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="r-hora.html"><a href="r-hora.html"><i class="fa fa-check"></i><b>10</b> Hora</a>
+<ul>
+<li class="chapter" data-level="10.1" data-path="r-hora.html"><a href="r-hora.html#posix"><i class="fa fa-check"></i><b>10.1</b> Formato POSIX</a></li>
+<li class="chapter" data-level="10.2" data-path="r-hora.html"><a href="r-hora.html#ope-time"><i class="fa fa-check"></i><b>10.2</b> Operando con el tiempo</a></li>
+<li class="chapter" data-level="10.3" data-path="r-hora.html"><a href="r-hora.html#zona-hora"><i class="fa fa-check"></i><b>10.3</b> Conversión entre zonas horarias</a></li>
+</ul></li>
+<li class="part"><span><b>II Part II</b></span></li>
+<li class="chapter" data-level="11" data-path="EO-intro.html"><a href="EO-intro.html"><i class="fa fa-check"></i><b>11</b> Observación de la Tierra</a>
+<ul>
+<li class="chapter" data-level="11.1" data-path="EO-intro.html"><a href="EO-intro.html#intro-rs"><i class="fa fa-check"></i><b>11.1</b> Introducción</a></li>
+<li class="chapter" data-level="11.2" data-path="EO-intro.html"><a href="EO-intro.html#rs-eletro"><i class="fa fa-check"></i><b>11.2</b> Energía Electromagnética</a>
+<ul>
+<li class="chapter" data-level="11.2.1" data-path="EO-intro.html"><a href="EO-intro.html#rs-intro-amable"><i class="fa fa-check"></i><b>11.2.1</b> Fundamentos Históricos y Físicos</a></li>
+<li class="chapter" data-level="11.2.2" data-path="EO-intro.html"><a href="EO-intro.html#rs-intro-electro"><i class="fa fa-check"></i><b>11.2.2</b> Fenómeno Eléctrico</a></li>
+<li class="chapter" data-level="11.2.3" data-path="EO-intro.html"><a href="EO-intro.html#rs-intro-magneto"><i class="fa fa-check"></i><b>11.2.3</b> Fenómeno Magnético</a></li>
+</ul></li>
+<li class="chapter" data-level="11.3" data-path="EO-intro.html"><a href="EO-intro.html#rs-relation"><i class="fa fa-check"></i><b>11.3</b> La Relación Electricidad Magnetismo</a>
+<ul>
+<li class="chapter" data-level="11.3.1" data-path="EO-intro.html"><a href="EO-intro.html#rs-campo"><i class="fa fa-check"></i><b>11.3.1</b> El Concepto de Campo</a></li>
+<li class="chapter" data-level="11.3.2" data-path="EO-intro.html"><a href="EO-intro.html#rs-electro-magne"><i class="fa fa-check"></i><b>11.3.2</b> El Electromagnetismo</a></li>
+</ul></li>
+<li class="chapter" data-level="11.4" data-path="EO-intro.html"><a href="EO-intro.html#rs-eem"><i class="fa fa-check"></i><b>11.4</b> Cómo se Produce y Transporta la Energía</a>
+<ul>
+<li class="chapter" data-level="11.4.1" data-path="EO-intro.html"><a href="EO-intro.html#rs-onda"><i class="fa fa-check"></i><b>11.4.1</b> Las Ondas</a></li>
+<li class="chapter" data-level="11.4.2" data-path="EO-intro.html"><a href="EO-intro.html#cuantiluz"><i class="fa fa-check"></i><b>11.4.2</b> Cuantos y Dualidad de la Luz</a></li>
+<li class="chapter" data-level="11.4.3" data-path="EO-intro.html"><a href="EO-intro.html#foton"><i class="fa fa-check"></i><b>11.4.3</b> El Fotón</a></li>
+<li class="chapter" data-level="11.4.4" data-path="EO-intro.html"><a href="EO-intro.html#teo-cuan-ond"><i class="fa fa-check"></i><b>11.4.4</b> Relación entre Teoría Ondulatoria y Cuántica</a></li>
+</ul></li>
+<li class="chapter" data-level="11.5" data-path="EO-intro.html"><a href="EO-intro.html#rs-el-espectro-electro"><i class="fa fa-check"></i><b>11.5</b> El Espectro Electromagnético</a>
+<ul>
+<li class="chapter" data-level="11.5.1" data-path="EO-intro.html"><a href="EO-intro.html#vis"><i class="fa fa-check"></i><b>11.5.1</b> Espectro Visible (VIS)</a></li>
+<li class="chapter" data-level="11.5.2" data-path="EO-intro.html"><a href="EO-intro.html#infra-cer"><i class="fa fa-check"></i><b>11.5.2</b> Infrarrojo Cercano (NIR), Próximo o Reflejado</a></li>
+<li class="chapter" data-level="11.5.3" data-path="EO-intro.html"><a href="EO-intro.html#infra-mir"><i class="fa fa-check"></i><b>11.5.3</b> Infrarrojo Medio (MIR)</a></li>
+<li class="chapter" data-level="11.5.4" data-path="EO-intro.html"><a href="EO-intro.html#infra-ter"><i class="fa fa-check"></i><b>11.5.4</b> Infrarrojo Térmico (TIR)</a></li>
+<li class="chapter" data-level="11.5.5" data-path="EO-intro.html"><a href="EO-intro.html#microwave"><i class="fa fa-check"></i><b>11.5.5</b> Microondas (MW)</a></li>
+</ul></li>
+<li class="chapter" data-level="11.6" data-path="EO-intro.html"><a href="EO-intro.html#concep-unidad"><i class="fa fa-check"></i><b>11.6</b> Conceptos Básicos y sus Unidades</a>
+<ul>
+<li class="chapter" data-level="11.6.1" data-path="EO-intro.html"><a href="EO-intro.html#angsol"><i class="fa fa-check"></i><b>11.6.1</b> Ángulo Sólido</a></li>
+<li class="chapter" data-level="11.6.2" data-path="EO-intro.html"><a href="EO-intro.html#mag-radio"><i class="fa fa-check"></i><b>11.6.2</b> Magnitudes Radiométricas</a></li>
+<li class="chapter" data-level="11.6.3" data-path="EO-intro.html"><a href="EO-intro.html#temp-intro"><i class="fa fa-check"></i><b>11.6.3</b> Importancia de la Temperatura</a></li>
+</ul></li>
+<li class="chapter" data-level="11.7" data-path="EO-intro.html"><a href="EO-intro.html#cuerpo-negro"><i class="fa fa-check"></i><b>11.7</b> Radiación de Cuerpo Negro</a>
+<ul>
+<li class="chapter" data-level="11.7.1" data-path="EO-intro.html"><a href="EO-intro.html#ley-planck"><i class="fa fa-check"></i><b>11.7.1</b> Ley de Planck</a></li>
+<li class="chapter" data-level="11.7.2" data-path="EO-intro.html"><a href="EO-intro.html#wien"><i class="fa fa-check"></i><b>11.7.2</b> Ley de Desplazamiento de Wien</a></li>
+<li class="chapter" data-level="11.7.3" data-path="EO-intro.html"><a href="EO-intro.html#stef"><i class="fa fa-check"></i><b>11.7.3</b> Ley de Stefan-Boltzmann</a></li>
+<li class="chapter" data-level="11.7.4" data-path="EO-intro.html"><a href="EO-intro.html#kirchhoff"><i class="fa fa-check"></i><b>11.7.4</b> Ley de Kirchhoff</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="12" data-path="flujo.html"><a href="flujo.html"><i class="fa fa-check"></i><b>12</b> EEM</a>
+<ul>
+<li class="chapter" data-level="12.1" data-path="flujo.html"><a href="flujo.html#flujo-eem"><i class="fa fa-check"></i><b>12.1</b> Flujo de la EEM</a></li>
+<li class="chapter" data-level="12.2" data-path="flujo.html"><a href="flujo.html#inter-atm-eem"><i class="fa fa-check"></i><b>12.2</b> Interacción EEM con la Atmósfera</a>
+<ul>
+<li class="chapter" data-level="12.2.1" data-path="flujo.html"><a href="flujo.html#atmos"><i class="fa fa-check"></i><b>12.2.1</b> La Atmósfera</a></li>
+<li class="chapter" data-level="12.2.2" data-path="flujo.html"><a href="flujo.html#at-abs"><i class="fa fa-check"></i><b>12.2.2</b> Absorción</a></li>
+<li class="chapter" data-level="12.2.3" data-path="flujo.html"><a href="flujo.html#disper"><i class="fa fa-check"></i><b>12.2.3</b> Dispersión</a></li>
+<li class="chapter" data-level="12.2.4" data-path="flujo.html"><a href="flujo.html#emision"><i class="fa fa-check"></i><b>12.2.4</b> Emisión</a></li>
+</ul></li>
+<li class="chapter" data-level="12.3" data-path="flujo.html"><a href="flujo.html#fin-ciclo"><i class="fa fa-check"></i><b>12.3</b> Últimos pasos</a>
+<ul>
+<li class="chapter" data-level="12.3.1" data-path="flujo.html"><a href="flujo.html#dn-toa"><i class="fa fa-check"></i><b>12.3.1</b> DN a TOA</a></li>
+<li class="chapter" data-level="12.3.2" data-path="flujo.html"><a href="flujo.html#dn-boa"><i class="fa fa-check"></i><b>12.3.2</b> TOA a BOA</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="13" data-path="prop-img.html"><a href="prop-img.html"><i class="fa fa-check"></i><b>13</b> Resoluciones de Imagen</a>
+<ul>
+<li class="chapter" data-level="13.1" data-path="prop-img.html"><a href="prop-img.html#res-spac"><i class="fa fa-check"></i><b>13.1</b> Resolución Espacial</a></li>
+<li class="chapter" data-level="13.2" data-path="prop-img.html"><a href="prop-img.html#res-espec"><i class="fa fa-check"></i><b>13.2</b> Resolución Espectral</a>
+<ul>
+<li class="chapter" data-level="13.2.1" data-path="prop-img.html"><a href="prop-img.html#res-profile"><i class="fa fa-check"></i><b>13.2.1</b> Firma Espectral</a></li>
+<li class="chapter" data-level="13.2.2" data-path="prop-img.html"><a href="prop-img.html#import-ds"><i class="fa fa-check"></i><b>13.2.2</b> Import Dataset</a></li>
+<li class="chapter" data-level="13.2.3" data-path="prop-img.html"><a href="prop-img.html#spec-r"><i class="fa fa-check"></i><b>13.2.3</b> Procesando en R</a></li>
+</ul></li>
+<li class="chapter" data-level="13.3" data-path="prop-img.html"><a href="prop-img.html#res-rad"><i class="fa fa-check"></i><b>13.3</b> Resolución Radiométrica</a></li>
+<li class="chapter" data-level="13.4" data-path="prop-img.html"><a href="prop-img.html#res-temp"><i class="fa fa-check"></i><b>13.4</b> Resolución Temporal</a></li>
+<li class="chapter" data-level="13.5" data-path="prop-img.html"><a href="prop-img.html#res-ang"><i class="fa fa-check"></i><b>13.5</b> Resolución angular</a></li>
+</ul></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Publicado con bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Ráster con R</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="flujo" class="section level1" number="12">
+<h1><span class="header-section-number">Capítulo 12</span> EEM</h1>
+<div id="flujo-eem" class="section level2" number="12.1">
+<h2><span class="header-section-number">12.1</span> Flujo de la EEM</h2>
+<p>En la teledetección como en la EO, la energía que emana de la superficie de la tierra se mide utilizando un sensor montado en una plataforma de aeronave o nave espacial. Esa medida se usa para construir una imagen del paisaje debajo de la plataforma.</p>
+<p>En principio, cualquier energía procedente de la superficie terrestre puede utilizarse para formar una imagen. La mayoría de las veces se refleja la luz del sol, por lo que la imagen grabada es, en muchos sentidos, similar a la vista que tendríamos de la superficie de la tierra desde un avión, aunque las longitudes de onda utilizadas en la teledetección suelen estar fuera del alcance de la visión humana.</p>
+<p>La energía recibida también podría provenir de la propia tierra que actúa como un radiador debido a su propia temperatura. Alternativamente, podría ser energía que se dispersa hasta el sensor al haber sido irradiado a la superficie por una fuente artificial, como un láser o un radar.</p>
+<p>Siempre que se disponga de una fuente de energía, se podría utilizar casi cualquier longitud de onda para imaginen las características de la superficie terrestre. Sin embargo, existe una limitación, particularmente cuando se toman imágenes de altitudes de las naves espaciales. La atmósfera terrestre no permite el paso de radiación en todas las longitudes de onda. Energía en algunas longitudes de onda son absorbidas por los constituyentes moleculares de la atmósfera.</p>
+<p>Las longitudes de onda para las que hay poca o ninguna absorción atmosférica forman las que son llamadas <em>ventanas atmosféricas</em> (ver <a href="flujo.html#at-abs">12.2.2</a>) y encontramos cierto número de dichas ventanas en las regiones visible e infrarroja del espectro. Las longitudes de onda utilizadas para la obtención de imágenes en la teledetección están claramente restringidas a estas ventanas atmosféricas. Incluyen las llamadas longitudes de onda <em>ópticas</em> que cubren el visible y el infrarrojo, las longitudes de onda térmicas y las longitudes de onda de radio que se utilizan en imágenes de radar y microondas pasivas de la superficie terrestre.</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:rs-flow-2"></span>
+<img src="img/flujo.png" alt="Esquema básico del flujo de la EEM en la EO. Basado en Olaya [2020]" width="300" />
+<p class="caption">
+Figura 12.1: Esquema básico del flujo de la EEM en la EO. Basado en Olaya [2020]
+</p>
+</div>
+<p>Cualquiera que sea el rango de longitud de onda que se utilice para obtener imágenes de la superficie terrestre, el sistema es muy complejo, basado en <span class="citation">Olaya (2020)</span> podemos distinguir a los menos tres elementos principales en el ciclo o flujo de la EEM.</p>
+<p>Siguiendo la figura <a href="flujo.html#fig:rs-flow-2">12.1</a> encontramos:</p>
+<p>Una <strong>Fuente de radiación (A)</strong>, que puede ser de origen natural o artificial. La radiación emitida por dicha fuente viaja a través de un medio gaseoso, <strong>la atmósfera (C)</strong> y llega a la <strong>superficie terrestre (B)</strong> y sufre perturbaciones causadas por los elementos presentes en ella. Los <em>propios objetos pueden ser también</em> emisores de radiación que nuevamente viajan por la atmósfera (C) hasta <strong>el receptor (D)</strong>.</p>
+</div>
+<div id="inter-atm-eem" class="section level2" number="12.2">
+<h2><span class="header-section-number">12.2</span> Interacción EEM con la Atmósfera</h2>
+<div id="atmos" class="section level3" number="12.2.1">
+<h3><span class="header-section-number">12.2.1</span> La Atmósfera</h3>
+<div class="sourceCode" id="cb395"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb395-1"><a href="flujo.html#cb395-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb395-2"><a href="flujo.html#cb395-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggthemes)</span>
+<span id="cb395-3"><a href="flujo.html#cb395-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Standard Atmosphere Calculator</span></span>
+<span id="cb395-4"><a href="flujo.html#cb395-4" aria-hidden="true" tabindex="-1"></a><span class="co"># 1.Standard sea level conditions (h = 0) ----</span></span>
+<span id="cb395-5"><a href="flujo.html#cb395-5" aria-hidden="true" tabindex="-1"></a>temp0 <span class="ot">&lt;-</span> <span class="fl">288.16</span></span>
+<span id="cb395-6"><a href="flujo.html#cb395-6" aria-hidden="true" tabindex="-1"></a>pres0 <span class="ot">&lt;-</span> <span class="fl">1.01325</span> <span class="sc">*</span> <span class="dv">10</span><span class="sc">^</span><span class="dv">5</span></span>
+<span id="cb395-7"><a href="flujo.html#cb395-7" aria-hidden="true" tabindex="-1"></a>dens0 <span class="ot">&lt;-</span> <span class="fl">1.2250</span> </span>
+<span id="cb395-8"><a href="flujo.html#cb395-8" aria-hidden="true" tabindex="-1"></a>grav0 <span class="ot">&lt;-</span> <span class="fl">9.80665</span></span>
+<span id="cb395-9"><a href="flujo.html#cb395-9" aria-hidden="true" tabindex="-1"></a>radius <span class="ot">&lt;-</span> <span class="fl">6378136.3</span></span>
+<span id="cb395-10"><a href="flujo.html#cb395-10" aria-hidden="true" tabindex="-1"></a>gasc <span class="ot">&lt;-</span> <span class="fl">287.0368</span> </span>
+<span id="cb395-11"><a href="flujo.html#cb395-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb395-12"><a href="flujo.html#cb395-12" aria-hidden="true" tabindex="-1"></a><span class="co"># 2.Standard Atmosphere Results -----</span></span>
+<span id="cb395-13"><a href="flujo.html#cb395-13" aria-hidden="true" tabindex="-1"></a><span class="co"># 0:11k - first gradient layer</span></span>
+<span id="cb395-14"><a href="flujo.html#cb395-14" aria-hidden="true" tabindex="-1"></a>h1 <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">11000</span>, <span class="at">by =</span> <span class="dv">100</span>)</span>
+<span id="cb395-15"><a href="flujo.html#cb395-15" aria-hidden="true" tabindex="-1"></a>h1.calc <span class="ot">&lt;-</span> h1 <span class="sc">-</span> <span class="dv">0</span></span>
+<span id="cb395-16"><a href="flujo.html#cb395-16" aria-hidden="true" tabindex="-1"></a>a1 <span class="ot">&lt;-</span> <span class="sc">-</span><span class="fl">6.5</span> <span class="sc">*</span> <span class="dv">10</span><span class="sc">^-</span><span class="dv">3</span></span>
+<span id="cb395-17"><a href="flujo.html#cb395-17" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> temp0 <span class="sc">+</span> a1 <span class="sc">*</span> h1.calc</span>
+<span id="cb395-18"><a href="flujo.html#cb395-18" aria-hidden="true" tabindex="-1"></a>p1 <span class="ot">&lt;-</span> pres0 <span class="sc">*</span> (t1<span class="sc">/</span>temp0)<span class="sc">^</span>(<span class="sc">-</span>grav0<span class="sc">/</span>(a1<span class="sc">*</span>gasc))</span>
+<span id="cb395-19"><a href="flujo.html#cb395-19" aria-hidden="true" tabindex="-1"></a>d1 <span class="ot">&lt;-</span> dens0 <span class="sc">*</span> (t1<span class="sc">/</span>temp0)<span class="sc">^</span>(<span class="sc">-</span>((grav0<span class="sc">/</span>(a1<span class="sc">*</span>gasc))<span class="sc">+</span><span class="dv">1</span>))</span>
+<span id="cb395-20"><a href="flujo.html#cb395-20" aria-hidden="true" tabindex="-1"></a><span class="co"># 11.1k:25k - first isothermal layer</span></span>
+<span id="cb395-21"><a href="flujo.html#cb395-21" aria-hidden="true" tabindex="-1"></a>h2 <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="dv">11100</span>, <span class="dv">25000</span>, <span class="at">by =</span> <span class="dv">100</span>)</span>
+<span id="cb395-22"><a href="flujo.html#cb395-22" aria-hidden="true" tabindex="-1"></a>h2.calc <span class="ot">&lt;-</span> h2 <span class="sc">-</span> <span class="dv">11000</span></span>
+<span id="cb395-23"><a href="flujo.html#cb395-23" aria-hidden="true" tabindex="-1"></a>t2 <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="fl">216.66</span>, <span class="fu">length</span>(h2))</span>
+<span id="cb395-24"><a href="flujo.html#cb395-24" aria-hidden="true" tabindex="-1"></a>p2 <span class="ot">&lt;-</span> <span class="fl">22631.5</span> <span class="sc">*</span> <span class="fu">exp</span>(<span class="sc">-</span>(grav0<span class="sc">/</span>(gasc<span class="sc">*</span>t2))<span class="sc">*</span>h2.calc)</span>
+<span id="cb395-25"><a href="flujo.html#cb395-25" aria-hidden="true" tabindex="-1"></a>d2 <span class="ot">&lt;-</span> .<span class="dv">3639048</span> <span class="sc">*</span> <span class="fu">exp</span>(<span class="sc">-</span>(grav0<span class="sc">/</span>(gasc<span class="sc">*</span>t2))<span class="sc">*</span>h2.calc)</span>
+<span id="cb395-26"><a href="flujo.html#cb395-26" aria-hidden="true" tabindex="-1"></a><span class="co"># 25.1k:47k - second gradient layer</span></span>
+<span id="cb395-27"><a href="flujo.html#cb395-27" aria-hidden="true" tabindex="-1"></a>h3 <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="dv">25100</span>, <span class="dv">47000</span>, <span class="at">by =</span> <span class="dv">100</span>)</span>
+<span id="cb395-28"><a href="flujo.html#cb395-28" aria-hidden="true" tabindex="-1"></a>h3.calc <span class="ot">&lt;-</span> h3 <span class="sc">-</span> <span class="dv">25000</span></span>
+<span id="cb395-29"><a href="flujo.html#cb395-29" aria-hidden="true" tabindex="-1"></a>a3 <span class="ot">&lt;-</span> <span class="dv">3</span> <span class="sc">*</span> <span class="dv">10</span><span class="sc">^-</span><span class="dv">3</span></span>
+<span id="cb395-30"><a href="flujo.html#cb395-30" aria-hidden="true" tabindex="-1"></a>t3 <span class="ot">&lt;-</span> <span class="fl">216.66</span> <span class="sc">+</span> a3 <span class="sc">*</span> h3.calc</span>
+<span id="cb395-31"><a href="flujo.html#cb395-31" aria-hidden="true" tabindex="-1"></a>p3 <span class="ot">&lt;-</span> <span class="fl">2488.504</span> <span class="sc">*</span> (t3<span class="sc">/</span><span class="fl">216.66</span>)<span class="sc">^</span>(<span class="sc">-</span>grav0<span class="sc">/</span>(a3<span class="sc">*</span>gasc))</span>
+<span id="cb395-32"><a href="flujo.html#cb395-32" aria-hidden="true" tabindex="-1"></a>d3 <span class="ot">&lt;-</span> .<span class="dv">04001407</span> <span class="sc">*</span> (t3<span class="sc">/</span><span class="fl">216.66</span>)<span class="sc">^</span>(<span class="sc">-</span>((grav0<span class="sc">/</span>(a3<span class="sc">*</span>gasc))<span class="sc">+</span><span class="dv">1</span>))</span>
+<span id="cb395-33"><a href="flujo.html#cb395-33" aria-hidden="true" tabindex="-1"></a><span class="co"># 47.1k:53k - second isothermal layer</span></span>
+<span id="cb395-34"><a href="flujo.html#cb395-34" aria-hidden="true" tabindex="-1"></a>h4 <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="dv">47100</span>, <span class="dv">53000</span>, <span class="at">by =</span> <span class="dv">100</span>)</span>
+<span id="cb395-35"><a href="flujo.html#cb395-35" aria-hidden="true" tabindex="-1"></a>h4.calc <span class="ot">&lt;-</span> h4 <span class="sc">-</span> <span class="dv">47000</span></span>
+<span id="cb395-36"><a href="flujo.html#cb395-36" aria-hidden="true" tabindex="-1"></a>t4 <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="fl">282.66</span>, <span class="fu">length</span>(h4))</span>
+<span id="cb395-37"><a href="flujo.html#cb395-37" aria-hidden="true" tabindex="-1"></a>p4 <span class="ot">&lt;-</span> <span class="fl">120.4327</span> <span class="sc">*</span> <span class="fu">exp</span>(<span class="sc">-</span>(grav0<span class="sc">/</span>(gasc<span class="sc">*</span>t4))<span class="sc">*</span>h4.calc)</span>
+<span id="cb395-38"><a href="flujo.html#cb395-38" aria-hidden="true" tabindex="-1"></a>d4 <span class="ot">&lt;-</span> <span class="fl">0.001484340</span> <span class="sc">*</span> <span class="fu">exp</span>(<span class="sc">-</span>(grav0<span class="sc">/</span>(gasc<span class="sc">*</span>t4))<span class="sc">*</span>h4.calc)</span>
+<span id="cb395-39"><a href="flujo.html#cb395-39" aria-hidden="true" tabindex="-1"></a><span class="co"># 53.1k:79k - third gradient layer</span></span>
+<span id="cb395-40"><a href="flujo.html#cb395-40" aria-hidden="true" tabindex="-1"></a>h5 <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="dv">53100</span>, <span class="dv">79000</span>, <span class="at">by =</span> <span class="dv">100</span>)</span>
+<span id="cb395-41"><a href="flujo.html#cb395-41" aria-hidden="true" tabindex="-1"></a>h5.calc <span class="ot">&lt;-</span> h5 <span class="sc">-</span> <span class="dv">53000</span></span>
+<span id="cb395-42"><a href="flujo.html#cb395-42" aria-hidden="true" tabindex="-1"></a>a5 <span class="ot">&lt;-</span> <span class="sc">-</span><span class="fl">4.5</span> <span class="sc">*</span> <span class="dv">10</span><span class="sc">^-</span><span class="dv">3</span></span>
+<span id="cb395-43"><a href="flujo.html#cb395-43" aria-hidden="true" tabindex="-1"></a>t5 <span class="ot">&lt;-</span> <span class="fl">282.66</span> <span class="sc">+</span> a5 <span class="sc">*</span>  h5.calc</span>
+<span id="cb395-44"><a href="flujo.html#cb395-44" aria-hidden="true" tabindex="-1"></a>p5 <span class="ot">&lt;-</span> <span class="fl">58.31566</span> <span class="sc">*</span> (t5<span class="sc">/</span><span class="fl">282.66</span>)<span class="sc">^</span>(<span class="sc">-</span>grav0<span class="sc">/</span>(a5<span class="sc">*</span>gasc))</span>
+<span id="cb395-45"><a href="flujo.html#cb395-45" aria-hidden="true" tabindex="-1"></a>d5 <span class="ot">&lt;-</span> <span class="fl">0.0007187439</span> <span class="sc">*</span> (t5<span class="sc">/</span><span class="fl">282.66</span>)<span class="sc">^</span>(<span class="sc">-</span>((grav0<span class="sc">/</span>(a5<span class="sc">*</span>gasc))<span class="sc">+</span><span class="dv">1</span>))</span>
+<span id="cb395-46"><a href="flujo.html#cb395-46" aria-hidden="true" tabindex="-1"></a><span class="co"># 79.1K:90k - third isothermal layer</span></span>
+<span id="cb395-47"><a href="flujo.html#cb395-47" aria-hidden="true" tabindex="-1"></a>h6 <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="dv">79100</span>, <span class="dv">90000</span>, <span class="at">by =</span> <span class="dv">100</span>)</span>
+<span id="cb395-48"><a href="flujo.html#cb395-48" aria-hidden="true" tabindex="-1"></a>h6.calc <span class="ot">&lt;-</span> h6 <span class="sc">-</span> <span class="dv">79000</span></span>
+<span id="cb395-49"><a href="flujo.html#cb395-49" aria-hidden="true" tabindex="-1"></a>t6 <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="fl">165.66</span>, <span class="fu">length</span>(h6))</span>
+<span id="cb395-50"><a href="flujo.html#cb395-50" aria-hidden="true" tabindex="-1"></a>p6 <span class="ot">&lt;-</span> <span class="fl">1.009319</span> <span class="sc">*</span> <span class="fu">exp</span>(<span class="sc">-</span>(grav0<span class="sc">/</span>(gasc<span class="sc">*</span>t6))<span class="sc">*</span>h6.calc)</span>
+<span id="cb395-51"><a href="flujo.html#cb395-51" aria-hidden="true" tabindex="-1"></a>d6 <span class="ot">&lt;-</span> <span class="fl">2.122580e-05</span> <span class="sc">*</span> <span class="fu">exp</span>(<span class="sc">-</span>(grav0<span class="sc">/</span>(gasc<span class="sc">*</span>t6))<span class="sc">*</span>h6.calc)</span>
+<span id="cb395-52"><a href="flujo.html#cb395-52" aria-hidden="true" tabindex="-1"></a><span class="co"># 90.1k:105K - fourth gradient level</span></span>
+<span id="cb395-53"><a href="flujo.html#cb395-53" aria-hidden="true" tabindex="-1"></a>h7 <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="dv">90100</span>, <span class="dv">105000</span>, <span class="at">by =</span> <span class="dv">100</span>)</span>
+<span id="cb395-54"><a href="flujo.html#cb395-54" aria-hidden="true" tabindex="-1"></a>h7.calc <span class="ot">&lt;-</span> h7 <span class="sc">-</span> <span class="dv">90000</span></span>
+<span id="cb395-55"><a href="flujo.html#cb395-55" aria-hidden="true" tabindex="-1"></a>a7 <span class="ot">&lt;-</span> <span class="dv">4</span> <span class="sc">*</span> <span class="dv">10</span><span class="sc">^-</span><span class="dv">3</span></span>
+<span id="cb395-56"><a href="flujo.html#cb395-56" aria-hidden="true" tabindex="-1"></a>t7 <span class="ot">&lt;-</span> <span class="fl">165.66</span> <span class="sc">+</span> a7 <span class="sc">*</span> h7.calc</span>
+<span id="cb395-57"><a href="flujo.html#cb395-57" aria-hidden="true" tabindex="-1"></a>p7 <span class="ot">&lt;-</span> .<span class="dv">1044209</span> <span class="sc">*</span> (t7<span class="sc">/</span><span class="fl">165.66</span>)<span class="sc">^</span>(<span class="sc">-</span>grav0<span class="sc">/</span>(a7<span class="sc">*</span>gasc))</span>
+<span id="cb395-58"><a href="flujo.html#cb395-58" aria-hidden="true" tabindex="-1"></a>d7 <span class="ot">&lt;-</span> <span class="fl">2.195954e-06</span> <span class="sc">*</span> (t7<span class="sc">/</span><span class="fl">165.66</span>)<span class="sc">^</span>(<span class="sc">-</span>((grav0<span class="sc">/</span>(a7<span class="sc">*</span>gasc))<span class="sc">+</span><span class="dv">1</span>))</span>
+<span id="cb395-59"><a href="flujo.html#cb395-59" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb395-60"><a href="flujo.html#cb395-60" aria-hidden="true" tabindex="-1"></a><span class="co"># 5. Plot Data ----</span></span>
+<span id="cb395-61"><a href="flujo.html#cb395-61" aria-hidden="true" tabindex="-1"></a><span class="co"># consolidate data</span></span>
+<span id="cb395-62"><a href="flujo.html#cb395-62" aria-hidden="true" tabindex="-1"></a>std.atmos <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">hg =</span> <span class="fu">c</span>(h1, h2, h3, h4, h5, h6, h7),</span>
+<span id="cb395-63"><a href="flujo.html#cb395-63" aria-hidden="true" tabindex="-1"></a>                        <span class="at">temp =</span> <span class="fu">c</span>(t1, t2, t3, t4, t5, t6, t7) <span class="sc">-</span> <span class="fl">273.15</span>,</span>
+<span id="cb395-64"><a href="flujo.html#cb395-64" aria-hidden="true" tabindex="-1"></a>                        <span class="at">pres =</span> <span class="fu">c</span>(p1, p2, p3, p4, p5, p6, p7),</span>
+<span id="cb395-65"><a href="flujo.html#cb395-65" aria-hidden="true" tabindex="-1"></a>                        <span class="at">dens =</span> <span class="fu">c</span>(d1, d2, d3, d4, d5, d6, d7))</span>
+<span id="cb395-66"><a href="flujo.html#cb395-66" aria-hidden="true" tabindex="-1"></a>std.atmos.thin <span class="ot">&lt;-</span> std.atmos[<span class="fu">seq</span>(<span class="dv">0</span>, <span class="fl">1e3</span>, <span class="at">by =</span> <span class="dv">20</span>),]</span></code></pre></div>
+<div class="sourceCode" id="cb396"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb396-1"><a href="flujo.html#cb396-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">1</span>))</span>
+<span id="cb396-2"><a href="flujo.html#cb396-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(</span>
+<span id="cb396-3"><a href="flujo.html#cb396-3" aria-hidden="true" tabindex="-1"></a>  std.atmos.thin<span class="sc">$</span>pres,</span>
+<span id="cb396-4"><a href="flujo.html#cb396-4" aria-hidden="true" tabindex="-1"></a>  std.atmos.thin<span class="sc">$</span>hg,</span>
+<span id="cb396-5"><a href="flujo.html#cb396-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">type =</span> <span class="st">&quot;l&quot;</span>,</span>
+<span id="cb396-6"><a href="flujo.html#cb396-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">xlim =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">10</span>, <span class="fl">1e5</span>),</span>
+<span id="cb396-7"><a href="flujo.html#cb396-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="fl">1e5</span>),</span>
+<span id="cb396-8"><a href="flujo.html#cb396-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">axes =</span> F,</span>
+<span id="cb396-9"><a href="flujo.html#cb396-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">xlab =</span> <span class="fu">expression</span>(<span class="fu">paste</span>(<span class="st">&quot;Presión (hPa)&quot;</span>)),</span>
+<span id="cb396-10"><a href="flujo.html#cb396-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">ylab =</span> <span class="st">&quot;Altitud (km)&quot;</span>,</span>
+<span id="cb396-11"><a href="flujo.html#cb396-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">lwd =</span> <span class="dv">3</span>,</span>
+<span id="cb396-12"><a href="flujo.html#cb396-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">col =</span> <span class="st">&quot;gray80&quot;</span></span>
+<span id="cb396-13"><a href="flujo.html#cb396-13" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb396-14"><a href="flujo.html#cb396-14" aria-hidden="true" tabindex="-1"></a><span class="fu">axis</span>(</span>
+<span id="cb396-15"><a href="flujo.html#cb396-15" aria-hidden="true" tabindex="-1"></a>  <span class="dv">1</span>,</span>
+<span id="cb396-16"><a href="flujo.html#cb396-16" aria-hidden="true" tabindex="-1"></a>  <span class="at">at =</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="fl">8e4</span>, <span class="fl">2e4</span>),</span>
+<span id="cb396-17"><a href="flujo.html#cb396-17" aria-hidden="true" tabindex="-1"></a>  <span class="at">labels =</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">800</span>, <span class="dv">200</span>),</span>
+<span id="cb396-18"><a href="flujo.html#cb396-18" aria-hidden="true" tabindex="-1"></a>  <span class="at">las =</span> <span class="dv">1</span></span>
+<span id="cb396-19"><a href="flujo.html#cb396-19" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb396-20"><a href="flujo.html#cb396-20" aria-hidden="true" tabindex="-1"></a><span class="fu">axis</span>(</span>
+<span id="cb396-21"><a href="flujo.html#cb396-21" aria-hidden="true" tabindex="-1"></a>  <span class="dv">2</span>,</span>
+<span id="cb396-22"><a href="flujo.html#cb396-22" aria-hidden="true" tabindex="-1"></a>  <span class="at">at =</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="fl">1e5</span>, <span class="fl">1e4</span>),</span>
+<span id="cb396-23"><a href="flujo.html#cb396-23" aria-hidden="true" tabindex="-1"></a>  <span class="at">labels =</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">100</span>, <span class="dv">10</span>),</span>
+<span id="cb396-24"><a href="flujo.html#cb396-24" aria-hidden="true" tabindex="-1"></a>  <span class="at">las =</span> <span class="dv">2</span></span>
+<span id="cb396-25"><a href="flujo.html#cb396-25" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb396-26"><a href="flujo.html#cb396-26" aria-hidden="true" tabindex="-1"></a><span class="fu">segments</span>(<span class="dv">0</span>,</span>
+<span id="cb396-27"><a href="flujo.html#cb396-27" aria-hidden="true" tabindex="-1"></a>         <span class="dv">9600</span>,</span>
+<span id="cb396-28"><a href="flujo.html#cb396-28" aria-hidden="true" tabindex="-1"></a>         <span class="fl">8e4</span>,</span>
+<span id="cb396-29"><a href="flujo.html#cb396-29" aria-hidden="true" tabindex="-1"></a>         <span class="dv">9600</span>,</span>
+<span id="cb396-30"><a href="flujo.html#cb396-30" aria-hidden="true" tabindex="-1"></a>         <span class="at">lty =</span> <span class="dv">2</span>,</span>
+<span id="cb396-31"><a href="flujo.html#cb396-31" aria-hidden="true" tabindex="-1"></a>         <span class="at">col =</span> <span class="st">&quot;gray40&quot;</span>,</span>
+<span id="cb396-32"><a href="flujo.html#cb396-32" aria-hidden="true" tabindex="-1"></a>         <span class="at">lwd =</span> <span class="fl">0.5</span>)</span>
+<span id="cb396-33"><a href="flujo.html#cb396-33" aria-hidden="true" tabindex="-1"></a><span class="fu">segments</span>(<span class="dv">0</span>,</span>
+<span id="cb396-34"><a href="flujo.html#cb396-34" aria-hidden="true" tabindex="-1"></a>         <span class="dv">49600</span>,</span>
+<span id="cb396-35"><a href="flujo.html#cb396-35" aria-hidden="true" tabindex="-1"></a>         <span class="fl">8e4</span>,</span>
+<span id="cb396-36"><a href="flujo.html#cb396-36" aria-hidden="true" tabindex="-1"></a>         <span class="dv">49600</span>,</span>
+<span id="cb396-37"><a href="flujo.html#cb396-37" aria-hidden="true" tabindex="-1"></a>         <span class="at">lty =</span> <span class="dv">2</span>,</span>
+<span id="cb396-38"><a href="flujo.html#cb396-38" aria-hidden="true" tabindex="-1"></a>         <span class="at">col =</span> <span class="st">&quot;gray40&quot;</span>,</span>
+<span id="cb396-39"><a href="flujo.html#cb396-39" aria-hidden="true" tabindex="-1"></a>         <span class="at">lwd =</span> <span class="fl">0.5</span>)</span>
+<span id="cb396-40"><a href="flujo.html#cb396-40" aria-hidden="true" tabindex="-1"></a><span class="fu">segments</span>(<span class="dv">0</span>,</span>
+<span id="cb396-41"><a href="flujo.html#cb396-41" aria-hidden="true" tabindex="-1"></a>         <span class="dv">83300</span>,</span>
+<span id="cb396-42"><a href="flujo.html#cb396-42" aria-hidden="true" tabindex="-1"></a>         <span class="fl">8e4</span>,</span>
+<span id="cb396-43"><a href="flujo.html#cb396-43" aria-hidden="true" tabindex="-1"></a>         <span class="dv">83300</span>,</span>
+<span id="cb396-44"><a href="flujo.html#cb396-44" aria-hidden="true" tabindex="-1"></a>         <span class="at">lty =</span> <span class="dv">2</span>,</span>
+<span id="cb396-45"><a href="flujo.html#cb396-45" aria-hidden="true" tabindex="-1"></a>         <span class="at">col =</span> <span class="st">&quot;gray40&quot;</span>,</span>
+<span id="cb396-46"><a href="flujo.html#cb396-46" aria-hidden="true" tabindex="-1"></a>         <span class="at">lwd =</span> <span class="fl">0.5</span>)</span>
+<span id="cb396-47"><a href="flujo.html#cb396-47" aria-hidden="true" tabindex="-1"></a><span class="fu">text</span>(</span>
+<span id="cb396-48"><a href="flujo.html#cb396-48" aria-hidden="true" tabindex="-1"></a>  <span class="fl">8e4</span>,</span>
+<span id="cb396-49"><a href="flujo.html#cb396-49" aria-hidden="true" tabindex="-1"></a>  <span class="dv">13000</span>,</span>
+<span id="cb396-50"><a href="flujo.html#cb396-50" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;Límite Tropopausa&quot;</span>,</span>
+<span id="cb396-51"><a href="flujo.html#cb396-51" aria-hidden="true" tabindex="-1"></a>  <span class="at">adj =</span> <span class="dv">1</span>,</span>
+<span id="cb396-52"><a href="flujo.html#cb396-52" aria-hidden="true" tabindex="-1"></a>  <span class="at">cex =</span> <span class="fl">0.9</span>,</span>
+<span id="cb396-53"><a href="flujo.html#cb396-53" aria-hidden="true" tabindex="-1"></a>  <span class="at">font =</span> <span class="dv">4</span>,</span>
+<span id="cb396-54"><a href="flujo.html#cb396-54" aria-hidden="true" tabindex="-1"></a>  <span class="at">col =</span> <span class="st">&quot;steelblue4&quot;</span></span>
+<span id="cb396-55"><a href="flujo.html#cb396-55" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb396-56"><a href="flujo.html#cb396-56" aria-hidden="true" tabindex="-1"></a><span class="fu">text</span>(</span>
+<span id="cb396-57"><a href="flujo.html#cb396-57" aria-hidden="true" tabindex="-1"></a>  <span class="fl">8e4</span>,</span>
+<span id="cb396-58"><a href="flujo.html#cb396-58" aria-hidden="true" tabindex="-1"></a>  <span class="dv">53000</span>,</span>
+<span id="cb396-59"><a href="flujo.html#cb396-59" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;Límite Estratopausa&quot;</span>,</span>
+<span id="cb396-60"><a href="flujo.html#cb396-60" aria-hidden="true" tabindex="-1"></a>  <span class="at">adj =</span> <span class="dv">1</span>,</span>
+<span id="cb396-61"><a href="flujo.html#cb396-61" aria-hidden="true" tabindex="-1"></a>  <span class="at">cex =</span> <span class="fl">0.9</span>,</span>
+<span id="cb396-62"><a href="flujo.html#cb396-62" aria-hidden="true" tabindex="-1"></a>  <span class="at">font =</span> <span class="dv">4</span>,</span>
+<span id="cb396-63"><a href="flujo.html#cb396-63" aria-hidden="true" tabindex="-1"></a>  <span class="at">col =</span> <span class="st">&quot;steelblue4&quot;</span></span>
+<span id="cb396-64"><a href="flujo.html#cb396-64" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb396-65"><a href="flujo.html#cb396-65" aria-hidden="true" tabindex="-1"></a><span class="fu">text</span>(</span>
+<span id="cb396-66"><a href="flujo.html#cb396-66" aria-hidden="true" tabindex="-1"></a>  <span class="fl">8e4</span>,</span>
+<span id="cb396-67"><a href="flujo.html#cb396-67" aria-hidden="true" tabindex="-1"></a>  <span class="dv">86700</span>,</span>
+<span id="cb396-68"><a href="flujo.html#cb396-68" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;Límite Mesopausa&quot;</span>,</span>
+<span id="cb396-69"><a href="flujo.html#cb396-69" aria-hidden="true" tabindex="-1"></a>  <span class="at">adj =</span> <span class="dv">1</span>,</span>
+<span id="cb396-70"><a href="flujo.html#cb396-70" aria-hidden="true" tabindex="-1"></a>  <span class="at">cex =</span> <span class="fl">0.9</span>,</span>
+<span id="cb396-71"><a href="flujo.html#cb396-71" aria-hidden="true" tabindex="-1"></a>  <span class="at">font =</span> <span class="dv">4</span>,</span>
+<span id="cb396-72"><a href="flujo.html#cb396-72" aria-hidden="true" tabindex="-1"></a>  <span class="at">col =</span> <span class="st">&quot;steelblue4&quot;</span></span>
+<span id="cb396-73"><a href="flujo.html#cb396-73" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb396-74"><a href="flujo.html#cb396-74" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb396-75"><a href="flujo.html#cb396-75" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb396-76"><a href="flujo.html#cb396-76" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(</span>
+<span id="cb396-77"><a href="flujo.html#cb396-77" aria-hidden="true" tabindex="-1"></a>  std.atmos.thin<span class="sc">$</span>temp,</span>
+<span id="cb396-78"><a href="flujo.html#cb396-78" aria-hidden="true" tabindex="-1"></a>  std.atmos.thin<span class="sc">$</span>hg,</span>
+<span id="cb396-79"><a href="flujo.html#cb396-79" aria-hidden="true" tabindex="-1"></a>  <span class="at">type =</span> <span class="st">&quot;l&quot;</span>,</span>
+<span id="cb396-80"><a href="flujo.html#cb396-80" aria-hidden="true" tabindex="-1"></a>  <span class="at">xlim =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">120</span>, <span class="dv">30</span>),</span>
+<span id="cb396-81"><a href="flujo.html#cb396-81" aria-hidden="true" tabindex="-1"></a>  <span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="fl">1e5</span>),</span>
+<span id="cb396-82"><a href="flujo.html#cb396-82" aria-hidden="true" tabindex="-1"></a>  <span class="at">axes =</span> F,</span>
+<span id="cb396-83"><a href="flujo.html#cb396-83" aria-hidden="true" tabindex="-1"></a>  <span class="at">xlab =</span> <span class="st">&quot;Temperatura (°C)&quot;</span>,</span>
+<span id="cb396-84"><a href="flujo.html#cb396-84" aria-hidden="true" tabindex="-1"></a>  <span class="at">ylab =</span> <span class="st">&quot;Altitud (km)&quot;</span>,</span>
+<span id="cb396-85"><a href="flujo.html#cb396-85" aria-hidden="true" tabindex="-1"></a>  <span class="at">lwd =</span> <span class="dv">3</span>,</span>
+<span id="cb396-86"><a href="flujo.html#cb396-86" aria-hidden="true" tabindex="-1"></a>  <span class="at">col =</span> <span class="st">&quot;gray80&quot;</span></span>
+<span id="cb396-87"><a href="flujo.html#cb396-87" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb396-88"><a href="flujo.html#cb396-88" aria-hidden="true" tabindex="-1"></a><span class="fu">axis</span>(<span class="dv">1</span>, <span class="at">at =</span> <span class="fu">seq</span>(<span class="sc">-</span><span class="dv">120</span>, <span class="dv">30</span>, <span class="dv">30</span>), <span class="at">las =</span> <span class="dv">1</span>)</span>
+<span id="cb396-89"><a href="flujo.html#cb396-89" aria-hidden="true" tabindex="-1"></a><span class="fu">axis</span>(</span>
+<span id="cb396-90"><a href="flujo.html#cb396-90" aria-hidden="true" tabindex="-1"></a>  <span class="dv">2</span>,</span>
+<span id="cb396-91"><a href="flujo.html#cb396-91" aria-hidden="true" tabindex="-1"></a>  <span class="at">at =</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="fl">1e5</span>, <span class="fl">1e4</span>),</span>
+<span id="cb396-92"><a href="flujo.html#cb396-92" aria-hidden="true" tabindex="-1"></a>  <span class="at">labels =</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">100</span>, <span class="dv">10</span>),</span>
+<span id="cb396-93"><a href="flujo.html#cb396-93" aria-hidden="true" tabindex="-1"></a>  <span class="at">las =</span> <span class="dv">2</span></span>
+<span id="cb396-94"><a href="flujo.html#cb396-94" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb396-95"><a href="flujo.html#cb396-95" aria-hidden="true" tabindex="-1"></a><span class="fu">segments</span>(<span class="sc">-</span><span class="dv">120</span>,</span>
+<span id="cb396-96"><a href="flujo.html#cb396-96" aria-hidden="true" tabindex="-1"></a>         <span class="dv">9600</span>,</span>
+<span id="cb396-97"><a href="flujo.html#cb396-97" aria-hidden="true" tabindex="-1"></a>         <span class="dv">30</span>,</span>
+<span id="cb396-98"><a href="flujo.html#cb396-98" aria-hidden="true" tabindex="-1"></a>         <span class="dv">9600</span>,</span>
+<span id="cb396-99"><a href="flujo.html#cb396-99" aria-hidden="true" tabindex="-1"></a>         <span class="at">lty =</span> <span class="dv">2</span>,</span>
+<span id="cb396-100"><a href="flujo.html#cb396-100" aria-hidden="true" tabindex="-1"></a>         <span class="at">col =</span> <span class="st">&quot;gray40&quot;</span>,</span>
+<span id="cb396-101"><a href="flujo.html#cb396-101" aria-hidden="true" tabindex="-1"></a>         <span class="at">lwd =</span> <span class="fl">0.5</span>)</span>
+<span id="cb396-102"><a href="flujo.html#cb396-102" aria-hidden="true" tabindex="-1"></a><span class="fu">segments</span>(<span class="sc">-</span><span class="dv">120</span>,</span>
+<span id="cb396-103"><a href="flujo.html#cb396-103" aria-hidden="true" tabindex="-1"></a>         <span class="dv">49600</span>,</span>
+<span id="cb396-104"><a href="flujo.html#cb396-104" aria-hidden="true" tabindex="-1"></a>         <span class="dv">30</span>,</span>
+<span id="cb396-105"><a href="flujo.html#cb396-105" aria-hidden="true" tabindex="-1"></a>         <span class="dv">49600</span>,</span>
+<span id="cb396-106"><a href="flujo.html#cb396-106" aria-hidden="true" tabindex="-1"></a>         <span class="at">lty =</span> <span class="dv">2</span>,</span>
+<span id="cb396-107"><a href="flujo.html#cb396-107" aria-hidden="true" tabindex="-1"></a>         <span class="at">col =</span> <span class="st">&quot;gray40&quot;</span>,</span>
+<span id="cb396-108"><a href="flujo.html#cb396-108" aria-hidden="true" tabindex="-1"></a>         <span class="at">lwd =</span> <span class="fl">0.5</span>)</span>
+<span id="cb396-109"><a href="flujo.html#cb396-109" aria-hidden="true" tabindex="-1"></a><span class="fu">segments</span>(<span class="sc">-</span><span class="dv">120</span>,</span>
+<span id="cb396-110"><a href="flujo.html#cb396-110" aria-hidden="true" tabindex="-1"></a>         <span class="dv">83300</span>,</span>
+<span id="cb396-111"><a href="flujo.html#cb396-111" aria-hidden="true" tabindex="-1"></a>         <span class="dv">30</span>,</span>
+<span id="cb396-112"><a href="flujo.html#cb396-112" aria-hidden="true" tabindex="-1"></a>         <span class="dv">83300</span>,</span>
+<span id="cb396-113"><a href="flujo.html#cb396-113" aria-hidden="true" tabindex="-1"></a>         <span class="at">lty =</span> <span class="dv">2</span>,</span>
+<span id="cb396-114"><a href="flujo.html#cb396-114" aria-hidden="true" tabindex="-1"></a>         <span class="at">col =</span> <span class="st">&quot;gray40&quot;</span>,</span>
+<span id="cb396-115"><a href="flujo.html#cb396-115" aria-hidden="true" tabindex="-1"></a>         <span class="at">lwd =</span> <span class="fl">0.5</span>)</span>
+<span id="cb396-116"><a href="flujo.html#cb396-116" aria-hidden="true" tabindex="-1"></a><span class="fu">text</span>(</span>
+<span id="cb396-117"><a href="flujo.html#cb396-117" aria-hidden="true" tabindex="-1"></a>  <span class="sc">-</span><span class="dv">120</span>,</span>
+<span id="cb396-118"><a href="flujo.html#cb396-118" aria-hidden="true" tabindex="-1"></a>  <span class="dv">13000</span>,</span>
+<span id="cb396-119"><a href="flujo.html#cb396-119" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;Límite Tropopausa&quot;</span>,</span>
+<span id="cb396-120"><a href="flujo.html#cb396-120" aria-hidden="true" tabindex="-1"></a>  <span class="at">adj =</span> <span class="dv">0</span>,</span>
+<span id="cb396-121"><a href="flujo.html#cb396-121" aria-hidden="true" tabindex="-1"></a>  <span class="at">cex =</span> <span class="fl">0.9</span>,</span>
+<span id="cb396-122"><a href="flujo.html#cb396-122" aria-hidden="true" tabindex="-1"></a>  <span class="at">font =</span> <span class="dv">4</span>,</span>
+<span id="cb396-123"><a href="flujo.html#cb396-123" aria-hidden="true" tabindex="-1"></a>  <span class="at">col =</span> <span class="st">&quot;steelblue4&quot;</span></span>
+<span id="cb396-124"><a href="flujo.html#cb396-124" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb396-125"><a href="flujo.html#cb396-125" aria-hidden="true" tabindex="-1"></a><span class="fu">text</span>(</span>
+<span id="cb396-126"><a href="flujo.html#cb396-126" aria-hidden="true" tabindex="-1"></a>  <span class="sc">-</span><span class="dv">120</span>,</span>
+<span id="cb396-127"><a href="flujo.html#cb396-127" aria-hidden="true" tabindex="-1"></a>  <span class="dv">53000</span>,</span>
+<span id="cb396-128"><a href="flujo.html#cb396-128" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;Límite Estratopausa&quot;</span>,</span>
+<span id="cb396-129"><a href="flujo.html#cb396-129" aria-hidden="true" tabindex="-1"></a>  <span class="at">adj =</span> <span class="dv">0</span>,</span>
+<span id="cb396-130"><a href="flujo.html#cb396-130" aria-hidden="true" tabindex="-1"></a>  <span class="at">cex =</span> <span class="fl">0.9</span>,</span>
+<span id="cb396-131"><a href="flujo.html#cb396-131" aria-hidden="true" tabindex="-1"></a>  <span class="at">font =</span> <span class="dv">4</span>,</span>
+<span id="cb396-132"><a href="flujo.html#cb396-132" aria-hidden="true" tabindex="-1"></a>  <span class="at">col =</span> <span class="st">&quot;steelblue4&quot;</span></span>
+<span id="cb396-133"><a href="flujo.html#cb396-133" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb396-134"><a href="flujo.html#cb396-134" aria-hidden="true" tabindex="-1"></a><span class="fu">text</span>(</span>
+<span id="cb396-135"><a href="flujo.html#cb396-135" aria-hidden="true" tabindex="-1"></a>  <span class="dv">30</span>,</span>
+<span id="cb396-136"><a href="flujo.html#cb396-136" aria-hidden="true" tabindex="-1"></a>  <span class="dv">86700</span>,</span>
+<span id="cb396-137"><a href="flujo.html#cb396-137" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;Límite Mesopausa&quot;</span>,</span>
+<span id="cb396-138"><a href="flujo.html#cb396-138" aria-hidden="true" tabindex="-1"></a>  <span class="at">adj =</span> <span class="dv">1</span>,</span>
+<span id="cb396-139"><a href="flujo.html#cb396-139" aria-hidden="true" tabindex="-1"></a>  <span class="at">cex =</span> <span class="fl">0.9</span>,</span>
+<span id="cb396-140"><a href="flujo.html#cb396-140" aria-hidden="true" tabindex="-1"></a>  <span class="at">font =</span> <span class="dv">4</span>,</span>
+<span id="cb396-141"><a href="flujo.html#cb396-141" aria-hidden="true" tabindex="-1"></a>  <span class="at">col =</span> <span class="st">&quot;steelblue4&quot;</span></span>
+<span id="cb396-142"><a href="flujo.html#cb396-142" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:rs-flow-4"></span>
+<img src="_main_files/figure-html/rs-flow-4-1.png" alt="Modelo Atmósfera Estándar, Presión (superior) y Temperatura (inferior) versus Altitud." width="480" />
+<p class="caption">
+Figura 12.2: Modelo Atmósfera Estándar, Presión (superior) y Temperatura (inferior) versus Altitud.
+</p>
+</div>
+<p>El <span class="math inline">\(97\%\)</span> de la masa atmosférica se encuentra entre la superficie terrestre y los <span class="math inline">\(25 \; km\)</span> de altura. La densidad varía a medida que ascendemos producto de la gravedad, menor presión a medida que ascendemos (Figura <a href="flujo.html#fig:rs-flow-4">12.2</a>, superior).</p>
+<p>La temperatura varía con la altitud debido a la presión, en la troposfera la temperatura disminuye con la altitud, en la estratosfera la temperatura permanece constante para luego aumentar con la altitud, en la mesósfera disminuye, en la termósfera aumenta con la altitud (Figura <a href="flujo.html#fig:rs-flow-4">12.2</a>, inferior).</p>
+<p>La atmósfera se compone principalmente de gases como el <span class="math inline">\(N_2\;(78\%)\)</span>, <span class="math inline">\(O_2\;(21 \%)\)</span>, <span class="math inline">\(Ar\;(0,9\%)\)</span>, <span class="math inline">\(CO_2\;(0,03\%)\)</span>, algunas trazas de gases nobles y Ozono (<span class="math inline">\(O_3\)</span>), también vapor de agua (<span class="math inline">\(H_2O\)</span>) y Aerosoles: partículas sólidas como humo o polvo o partículas líquidas dispersas en el medio gaseoso como gotas de agua.</p>
+<p>Y todo el conjunto reduce el total de energía incidente de <span class="math inline">\(\sim 340 \;W m^{-2}\)</span> a sólo <span class="math inline">\(\sim 173 \;Wm^{-2}\)</span> que llegan a la superficie terrestre.</p>
+<p>En conjunto todos estos fenómenos deben ser considerados al momento de interpretar las señales de respuestas de los objetos y la superficie terrestre capturados en los sensores correspondientes. Vamos a clasificar en tres los efectos de la atmósfera:</p>
+<ul>
+<li><strong>Absorción</strong> de EEM en determinadas bandas del espectro (ver figura <a href="flujo.html#fig:rs-flow-1">12.3</a>).</li>
+<li><strong>Dispersión</strong> de determinadas magnitudes de longitud de onda causadas por los aerosoles y nubes.</li>
+<li><strong>Emisión</strong> de EEM por cualquier cuerpo sobre el cero absoluto adicionales al flujo radiante del sol.</li>
+</ul>
+</div>
+<div id="at-abs" class="section level3" number="12.2.2">
+<h3><span class="header-section-number">12.2.2</span> Absorción</h3>
+<p>La <em>absorción</em> implica que algunas moléculas presentes en la atmósfera absorben algunas longitudes de onda, quedando el resto intactas. Las tres moléculas presentes en la atmósfera que contribuyen en mayor medida a la absorción de radiación son el <em>ozono</em> (<span class="math inline">\(O_3\)</span>), el <em>dióxido de carbono</em> (<span class="math inline">\(CO_2\)</span>)y el <em>vapor de agua</em> (<span class="math inline">\(H_20\)</span>).</p>
+<p>El <strong>ozono</strong> absorbe radiación en el rango del <em>ultravioleta</em>. Este tipo de radiación resulta perjudicial para los seres humanos, por lo que la desaparición del ozono causaría que la luz del sol produjese quemaduras en nuestra piel. El <strong>dióxido de carbono</strong> absorbe radiación en el rango del <em>infrarrojo</em>. Este tipo de radiación está asociada a fenómenos térmicos, por lo que el gas contribuye a que cierta cantidad de calor quede atrapado en la atmósfera. El <strong>vapor de agua</strong> absorbe principalmente <em>microondas</em>, y su distribución varía enormemente a lo largo del planeta. En las capas de aire por encima de un desierto, por ejemplo, hay una cantidad muy pequeña de vapor de agua, mientras que sobre los trópicos esta cantidad es mucho más grande.</p>
+<div class="sourceCode" id="cb397"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb397-1"><a href="flujo.html#cb397-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mar =</span> <span class="fu">c</span>(<span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">4</span>, <span class="dv">0</span>),</span>
+<span id="cb397-2"><a href="flujo.html#cb397-2" aria-hidden="true" tabindex="-1"></a>    <span class="at">cex.axis =</span> <span class="dv">1</span>,</span>
+<span id="cb397-3"><a href="flujo.html#cb397-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">cex.lab =</span> <span class="fl">1.25</span>)</span>
+<span id="cb397-4"><a href="flujo.html#cb397-4" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(</span>
+<span id="cb397-5"><a href="flujo.html#cb397-5" aria-hidden="true" tabindex="-1"></a>  xy,</span>
+<span id="cb397-6"><a href="flujo.html#cb397-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">type =</span> <span class="st">&quot;l&quot;</span>,</span>
+<span id="cb397-7"><a href="flujo.html#cb397-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">axes =</span> F,</span>
+<span id="cb397-8"><a href="flujo.html#cb397-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>),</span>
+<span id="cb397-9"><a href="flujo.html#cb397-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">lwd =</span> <span class="dv">2</span>,</span>
+<span id="cb397-10"><a href="flujo.html#cb397-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">col =</span> <span class="st">&quot;gray50&quot;</span>,</span>
+<span id="cb397-11"><a href="flujo.html#cb397-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">xlab =</span> <span class="st">&quot;Moléculas Absorbentes&quot;</span>,</span>
+<span id="cb397-12"><a href="flujo.html#cb397-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">ylab =</span> <span class="st">&quot;Transmitancia (%)&quot;</span></span>
+<span id="cb397-13"><a href="flujo.html#cb397-13" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb397-14"><a href="flujo.html#cb397-14" aria-hidden="true" tabindex="-1"></a>lbl <span class="ot">&lt;-</span></span>
+<span id="cb397-15"><a href="flujo.html#cb397-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">c</span>(</span>
+<span id="cb397-16"><a href="flujo.html#cb397-16" aria-hidden="true" tabindex="-1"></a>    <span class="fu">expression</span>(O[<span class="dv">2</span>]),</span>
+<span id="cb397-17"><a href="flujo.html#cb397-17" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;&quot;</span>,</span>
+<span id="cb397-18"><a href="flujo.html#cb397-18" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;&quot;</span>,</span>
+<span id="cb397-19"><a href="flujo.html#cb397-19" aria-hidden="true" tabindex="-1"></a>    <span class="fu">expression</span>(<span class="fu">paste</span>(H[<span class="dv">2</span>], O)),</span>
+<span id="cb397-20"><a href="flujo.html#cb397-20" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;&quot;</span>,</span>
+<span id="cb397-21"><a href="flujo.html#cb397-21" aria-hidden="true" tabindex="-1"></a>    <span class="fu">expression</span>(<span class="fu">paste</span>(H[<span class="dv">2</span>], O)),</span>
+<span id="cb397-22"><a href="flujo.html#cb397-22" aria-hidden="true" tabindex="-1"></a>    <span class="fu">expression</span>(CO[<span class="dv">2</span>]),</span>
+<span id="cb397-23"><a href="flujo.html#cb397-23" aria-hidden="true" tabindex="-1"></a>    <span class="fu">expression</span>(<span class="fu">paste</span>(H[<span class="dv">2</span>], O)),</span>
+<span id="cb397-24"><a href="flujo.html#cb397-24" aria-hidden="true" tabindex="-1"></a>    <span class="fu">expression</span>(CO[<span class="dv">2</span>]),</span>
+<span id="cb397-25"><a href="flujo.html#cb397-25" aria-hidden="true" tabindex="-1"></a>    <span class="fu">expression</span>(<span class="fu">paste</span>(<span class="st">&quot;  &quot;</span>, O[<span class="dv">3</span>])),</span>
+<span id="cb397-26"><a href="flujo.html#cb397-26" aria-hidden="true" tabindex="-1"></a>    <span class="fu">expression</span>(<span class="fu">paste</span>(H[<span class="dv">2</span>], O)),</span>
+<span id="cb397-27"><a href="flujo.html#cb397-27" aria-hidden="true" tabindex="-1"></a>    <span class="fu">expression</span>(<span class="fu">paste</span>(CO[<span class="dv">2</span>], <span class="st">&quot;    &quot;</span>)),</span>
+<span id="cb397-28"><a href="flujo.html#cb397-28" aria-hidden="true" tabindex="-1"></a>    <span class="fu">expression</span>(<span class="fu">paste</span>(<span class="st">&quot;    &quot;</span>, O[<span class="dv">3</span>])),</span>
+<span id="cb397-29"><a href="flujo.html#cb397-29" aria-hidden="true" tabindex="-1"></a>    <span class="fu">expression</span>(<span class="fu">paste</span>(H[<span class="dv">2</span>], O)),</span>
+<span id="cb397-30"><a href="flujo.html#cb397-30" aria-hidden="true" tabindex="-1"></a>    <span class="fu">expression</span>(CO[<span class="dv">2</span>]),</span>
+<span id="cb397-31"><a href="flujo.html#cb397-31" aria-hidden="true" tabindex="-1"></a>    <span class="fu">expression</span>(CO[<span class="dv">2</span>])</span>
+<span id="cb397-32"><a href="flujo.html#cb397-32" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb397-33"><a href="flujo.html#cb397-33" aria-hidden="true" tabindex="-1"></a><span class="fu">axis</span>(<span class="dv">1</span>, <span class="at">at =</span> mol, <span class="at">labels =</span> lbl)</span>
+<span id="cb397-34"><a href="flujo.html#cb397-34" aria-hidden="true" tabindex="-1"></a><span class="fu">axis</span>(<span class="dv">2</span>, <span class="at">at =</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">1</span>, .<span class="dv">1</span>), <span class="at">labels =</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">100</span>, <span class="dv">10</span>))</span>
+<span id="cb397-35"><a href="flujo.html#cb397-35" aria-hidden="true" tabindex="-1"></a><span class="fu">axis</span>(</span>
+<span id="cb397-36"><a href="flujo.html#cb397-36" aria-hidden="true" tabindex="-1"></a>  <span class="dv">3</span>,</span>
+<span id="cb397-37"><a href="flujo.html#cb397-37" aria-hidden="true" tabindex="-1"></a>  <span class="at">at =</span> <span class="fu">c</span>(<span class="fl">0.2</span>, <span class="fl">0.8</span>, <span class="fl">1.4</span>, <span class="dv">8</span>, <span class="dv">14</span>),</span>
+<span id="cb397-38"><a href="flujo.html#cb397-38" aria-hidden="true" tabindex="-1"></a>  <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">&quot;0.4&quot;</span>, <span class="st">&quot;0.7&quot;</span>, <span class="st">&quot;1.2&quot;</span>, <span class="st">&quot;8.0&quot;</span>, <span class="st">&quot;14.0&quot;</span>),</span>
+<span id="cb397-39"><a href="flujo.html#cb397-39" aria-hidden="true" tabindex="-1"></a>  <span class="at">las =</span> <span class="dv">1</span>,</span>
+<span id="cb397-40"><a href="flujo.html#cb397-40" aria-hidden="true" tabindex="-1"></a>  <span class="at">cex =</span> <span class="fl">0.9</span></span>
+<span id="cb397-41"><a href="flujo.html#cb397-41" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb397-42"><a href="flujo.html#cb397-42" aria-hidden="true" tabindex="-1"></a><span class="fu">mtext</span>(</span>
+<span id="cb397-43"><a href="flujo.html#cb397-43" aria-hidden="true" tabindex="-1"></a>  <span class="fu">expression</span>(<span class="fu">paste</span>(</span>
+<span id="cb397-44"><a href="flujo.html#cb397-44" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;Longitud de Onda (&quot;</span>, lambda, <span class="st">&quot; &quot;</span>, <span class="fu">paste</span>(mu, m), <span class="st">&quot;)&quot;</span></span>
+<span id="cb397-45"><a href="flujo.html#cb397-45" aria-hidden="true" tabindex="-1"></a>  )),</span>
+<span id="cb397-46"><a href="flujo.html#cb397-46" aria-hidden="true" tabindex="-1"></a>  <span class="at">side =</span> <span class="dv">3</span>,</span>
+<span id="cb397-47"><a href="flujo.html#cb397-47" aria-hidden="true" tabindex="-1"></a>  <span class="at">line =</span> <span class="dv">2</span>,</span>
+<span id="cb397-48"><a href="flujo.html#cb397-48" aria-hidden="true" tabindex="-1"></a>  <span class="at">cex =</span> <span class="fl">1.2</span>,</span>
+<span id="cb397-49"><a href="flujo.html#cb397-49" aria-hidden="true" tabindex="-1"></a>  <span class="at">las =</span> <span class="dv">1</span></span>
+<span id="cb397-50"><a href="flujo.html#cb397-50" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:rs-flow-1"></span>
+<img src="_main_files/figure-html/rs-flow-1-1.png" alt="Transmitancia de la atmósfera terrestre y su relación con las moléculas absorbentes." width="672" />
+<p class="caption">
+Figura 12.3: Transmitancia de la atmósfera terrestre y su relación con las moléculas absorbentes.
+</p>
+</div>
+<p>La existencia de moléculas en la atmósfera capaces de absorber radiación electromagnética limita el rango de longitudes de onda que pueden aplicarse a la medición remota de propiedades atmosféricas. Las zonas del espectro en las que no se produce absorción se suelen denominar <strong>ventanas atmosféricas</strong> (Figura <a href="flujo.html#fig:rs-flow-1">12.3</a>). En dichas ventanas la <em>transmitancia</em> de la atmósfera terrestre es máxima.</p>
+<p>En la parte inferior de la figura se indican las moléculas de gas presentes en la atmósfera y su ubicación relativa de aquellas longitudes de onda que son absorbidas. Mientras que en la parte superior se representan las longitudes de onda límite de las zonas que hemos estudiado.</p>
+</div>
+<div id="disper" class="section level3" number="12.2.3">
+<h3><span class="header-section-number">12.2.3</span> Dispersión</h3>
+<p>La dispersión de la EEM es causada por el reflejo de la radiación solar entrante por gases, aerosoles y vapor de agua presentes en la atmósfera. Como resultado, la radiación detectada por el sensor es una mezcla de energía reflejada tanto por la superficie como por la atmósfera, por lo tanto, contiene un ruido indeseable que se debe eliminar durante la recuperación de las propiedades superficiales.</p>
+<p>En la superficie, la <em>irradiancia</em> directa se reduce, mientras que la difusa aumenta el resplandor (procedente de otros objetos).</p>
+<p>Los <strong>aerosoles</strong> se originan tanto por causas naturales como humanas. Pueden ser oceánicos, causado por el movimiento del agua, o continental, como en polvo en suspensión o partículas emitidas por combustión. Debido a que estas partículas atmosféricas son muy variables en el tiempo y espacio, la corrección de la dispersión atmosférica es bastante problemática. Sin embargo, este factor se debe tener en cuenta siempre que se realice una estimación precisa de la radiancia del suelo.</p>
+<p>Se requiere corregir, por ejemplo, cuando las medidas desde el satélite se comparan con las mediciones radiométricas terrestres o cuando intentamos detectar cambios entre dos imágenes adquiridas con varios años de diferencia. Normalmente, las mediciones atmosféricas <em>in situ</em> no están disponibles en tiempos de adquisición de satélites y, por lo tanto, la corrección de la atmósfera a menudo debe depender de datos extraídos de la propia imagen. Algunos métodos pueden implicar cambios en la <em>reflectancia</em>.</p>
+<p>Según su origen y las características de los aerosoles, varían mucho en tamaño, lo que causa diferentes tipos de dispersión, ya que este proceso es altamente dependiente del diámetro de las partículas dispersas (Figura <a href="flujo.html#fig:rs-flow-1a">12.4</a>) basada en <span class="citation">Richards (2013)</span>).</p>
+<p>Los tres tipos principales de dispersión atmosférica son:</p>
+<ul>
+<li><strong>Rayleigh</strong> que es causada por partículas más pequeñas que la longitud de onda de la radiación.</li>
+<li><strong>Mie</strong> cuando la partícula es de tamaño similar a la longitud de onda.</li>
+<li><strong>No Selectiva</strong> cuando el tamaño de la partícula es mayor que la longitud de onda.</li>
+</ul>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:rs-flow-1a"></span>
+<img src="img/scat.png" alt="Dispersión atmosférica y de partículas. Modificado de Richards(2013)" width="492" />
+<p class="caption">
+Figura 12.4: Dispersión atmosférica y de partículas. Modificado de Richards(2013)
+</p>
+</div>
+<p>La dispersión de Rayleigh depende en gran medida de la longitud de onda y afecta principalmente a las bandas más cortas. Provoca, por ejemplo, el color azul del cielo porque el azul es la longitud de onda más baja del espectro VIS.</p>
+<p>La dispersión de Mie también depende de la longitud de onda de la radiación entrante, aunque en menor grado que la dispersión de Rayleigh. Aerosoles y polvo atmosférico son la principal causa de este tipo de dispersión, aunque también es causada por los incendios forestales o neblina costera.</p>
+<p>Finalmente, la dispersión no selectiva afecta por igual a varias longitudes de onda. Es decir, dispersan las diferentes bandas del espectro VIS de forma similar por ejemplo, las nubes y la niebla tienden a aparecer en tonos grises ya dispersan todos los colores.</p>
+</div>
+<div id="emision" class="section level3" number="12.2.4">
+<h3><span class="header-section-number">12.2.4</span> Emisión</h3>
+<p>También hay influencias de las emisiones atmosféricas que son importantes principalmente en el rango termal (TIR). Esta debe corregirse para obtener con precisión la temperatura de la superficie a partir de imágenes adquiridas por satélite. Todos los materiales con una temperatura superior al cero absoluto, incluyendo la atmósfera emiten energía radiante que viajará en la dirección del sensor y será detectado. Así, al igual que con la dispersión atmosférica, la señal de la emisión de la atmósfera debe ser separada de la señal térmica que emite la superficie (Figura ).</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:rs-flow-10"></span>
+<img src="img/volcano.jpg" alt="Emisión TIR, adicional a la emisión general. Imagen Sentinel-2 sobre el cráter Pu'u 'O'o' del complejo volcánico Kilauea (23 mayo 2018), fuente: ESA." width="171" />
+<p class="caption">
+Figura 12.5: Emisión TIR, adicional a la emisión general. Imagen Sentinel-2 sobre el cráter Pu’u ‘O’o’ del complejo volcánico Kilauea (23 mayo 2018), fuente: ESA.
+</p>
+</div>
+</div>
+</div>
+<div id="fin-ciclo" class="section level2" number="12.3">
+<h2><span class="header-section-number">12.3</span> Últimos pasos</h2>
+<p>Luego de este recorrido de la EEM desde el emisor hasta la superficie terrestre y de regreso al sensor montado en un vehículo espacial cruzando la atmósfera y sufriendo todos los efectos que hemos descrito la EEM impacta en un sensor electrónico y almacena esa magnitud convertida en un valor numérico.</p>
+<p>Finalmente, el receptor retransmite la información a la tierra y la data capturada va a generar como producto final una imagen (un objeto ráster), en cuyas celdas o píxeles va a contener un valor que representan la <strong>intensidad de la radiación</strong>.</p>
+<p>El almacenamiento de datos en unidades de radiancia es difícil y, por lo tanto, los sensores traducen la radiancia medida en <em>números o niveles digitales</em> (DN). Por lo tanto, el rango de energía medido por el sensor se divide en distintas unidades (los números o niveles digitales).</p>
+<p>La calibración específica del sensor determina la cantidad mínima y máxima de radiación que se puede medir. Los DN expresan la cantidad de radiación en relación con estos coeficientes de calibración específicos del sensor. El número total de DN posibles es lo que denominamos <strong>resolución radiométrica</strong> (ver <a href="prop-img.html#res-rad">13.3</a>) del sensor.</p>
+<div id="dn-toa" class="section level3" number="12.3.1">
+<h3><span class="header-section-number">12.3.1</span> DN a TOA</h3>
+<p>Como los DN dependen de la calibración del sensor, a mediciones idénticas producen diferentes DN entre los sensores. <em>Los DN no son físicamente significativos</em>. En lugar de DN, a menudo nos interesa la <strong>reflectancia</strong>.</p>
+<p>La reflectancia expresa la fracción de radiación reflejada en relación con la energía entrante total (es decir, del sol) y se escala entre 0 y 1. Muchas aplicaciones requieren datos convertidos a reflectancia y / o corregidos por la influencia de la atmósfera (Figura <a href="flujo.html#fig:rs-flow-11">12.6</a>).</p>
+<p>Los siguientes pasos son necesarios para convertir DN a (corregido atmosféricamente) reflectancia del fondo de la atmósfera (BOA):</p>
+<ul>
+<li>Calibración del sensor (DN a radiancia).</li>
+<li>Conversión a reflectancia en la parte superior de la atmósfera (radiancia a TOA).</li>
+<li>Corrección atmosférica que produce reflectancia del fondo de la atmósfera (TOA a BOA).</li>
+</ul>
+<p>Se puede realizar fácilmente una conversión de DN en luminosidad. Teniendo en cuenta las geometrías de los sensores solares y la irradiancia solar, podemos inferir fácilmente la reflectancia de la parte superior de la atmósfera (TOA) a partir de la radiación. Esto facilita, por ejemplo, una comparación de medidas de diferentes sensores.</p>
+<p>En la práctica, esto implica un escalado lineal de los valores DN que utiliza dos factores de cambio de escala específicos de la banda. Uno es multiplicativo, uno es aditivo (ver un caso práctico en las imágenes Landsat en <a href="#meta-l8"><strong>??</strong></a>). Con los datos de Landsat Colección 2 Nivel 2 (ver <a href="#niv-lan8"><strong>??</strong></a>) (¡este no es el caso para todos los sensores!), Podemos usar un solo conjunto de coeficientes para convertir DN directamente a reflectancia TOA.</p>
+</div>
+<div id="dn-boa" class="section level3" number="12.3.2">
+<h3><span class="header-section-number">12.3.2</span> TOA a BOA</h3>
+<p>La <strong>corrección atmosférica</strong> es el paso final hacia <em>mediciones comparables</em> de la superficie de la Tierra. Al hacer la corrección atmosférica, (teóricamente) eliminamos la influencia de la atmósfera. Por lo tanto, llamamos al producto <em>reflectancia del fondo de la atmósfera</em> (BOA). En teoría, <strong><em>el BOA medido por un sensor espacial debería ser comparable a las mediciones terrestres</em></strong>. En el caso práctico de las imágenes Landsat Colección 2 Nivel 2 (ver <a href="#niv-lan8"><strong>??</strong></a>) los pasos descritos ya han sido realizados y toda la data disponible está procesada a nivel de BOA.</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:rs-flow-11"></span>
+<img src="img/toaboa.png" alt="Comparación BOA-TOA. Imagen Landsat 8 RGB, TOA (izquierda). BOA (derecha). Área en Nepal mayo3, 2013 (fuente: Michelle Bouchard, USGS)" width="476" />
+<p class="caption">
+Figura 12.6: Comparación BOA-TOA. Imagen Landsat 8 RGB, TOA (izquierda). BOA (derecha). Área en Nepal mayo3, 2013 (fuente: Michelle Bouchard, USGS)
+</p>
+</div>
+
+</div>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="EO-intro.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="prop-img.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": true,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "sepia",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/USERNAME/REPO/edit/BRANCH/10-flujo-RS.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["_main.pdf"],
+"search": {
+"engine": "lunr",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+},
+"info": true
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

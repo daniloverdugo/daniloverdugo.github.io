@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Ráster con R</title>
+  <meta name="description" content="<p>Los fenómenos geográficos se desarrollan de manera continúa sobre una extensión de la superficie terrestre (en, sobre o bajo ella), y ha sido un desafío constante crear un modelo de representación tan simple para ser almacenado, procesado y visualizado con facilidad y tan complejo que permita perder el mínimo de información crítica y versátil que permita mantener el nivel de detalle proporcional a la riqueza del mundo real.
+Ese modelo se ha denominado <strong>modelo ráster</strong> y es el tema principal del presente libro, su origen, fundamentos, propiedades y algunos usos serán descritos en detalle.
+Para ello, se basará en la <strong>Plataforma R</strong> y <strong>RStudio</strong>, unas de las herramientas informáticas más poderosas en la actualidad.
+Desde la instalación de las aplicaciones, pasando por una guía básica de su utilización, hasta una detallada descripción del trabajo con dicho modelo.</p>" />
+  <meta name="generator" content="bookdown 0.24 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Ráster con R" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="<p>Los fenómenos geográficos se desarrollan de manera continúa sobre una extensión de la superficie terrestre (en, sobre o bajo ella), y ha sido un desafío constante crear un modelo de representación tan simple para ser almacenado, procesado y visualizado con facilidad y tan complejo que permita perder el mínimo de información crítica y versátil que permita mantener el nivel de detalle proporcional a la riqueza del mundo real.
+Ese modelo se ha denominado <strong>modelo ráster</strong> y es el tema principal del presente libro, su origen, fundamentos, propiedades y algunos usos serán descritos en detalle.
+Para ello, se basará en la <strong>Plataforma R</strong> y <strong>RStudio</strong>, unas de las herramientas informáticas más poderosas en la actualidad.
+Desde la instalación de las aplicaciones, pasando por una guía básica de su utilización, hasta una detallada descripción del trabajo con dicho modelo.</p>" />
+  <meta name="github-repo" content="rstudio/bookdown-demo" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Ráster con R" />
+  
+  <meta name="twitter:description" content="<p>Los fenómenos geográficos se desarrollan de manera continúa sobre una extensión de la superficie terrestre (en, sobre o bajo ella), y ha sido un desafío constante crear un modelo de representación tan simple para ser almacenado, procesado y visualizado con facilidad y tan complejo que permita perder el mínimo de información crítica y versátil que permita mantener el nivel de detalle proporcional a la riqueza del mundo real.
+Ese modelo se ha denominado <strong>modelo ráster</strong> y es el tema principal del presente libro, su origen, fundamentos, propiedades y algunos usos serán descritos en detalle.
+Para ello, se basará en la <strong>Plataforma R</strong> y <strong>RStudio</strong>, unas de las herramientas informáticas más poderosas en la actualidad.
+Desde la instalación de las aplicaciones, pasando por una guía básica de su utilización, hasta una detallada descripción del trabajo con dicho modelo.</p>" />
+  
+
+<meta name="author" content="Danilo A. Verdugo Chaura" />
+
+
+<meta name="date" content="2022-02-22" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+
+<link rel="next" href="intro-package.html"/>
+<script src="libs/header-attrs-2.11/header-attrs.js"></script>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.0.1/anchor-sections.js"></script>
+<script src="libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Ráster con R</a></li>
+
+<li class="divider"></li>
+<li class="part"><span><b>I Part I</b></span></li>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Plataforma R</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="index.html"><a href="index.html#hist-orig"><i class="fa fa-check"></i><b>1.1</b> Historia y Origen</a></li>
+<li class="chapter" data-level="1.2" data-path="index.html"><a href="index.html#dis-plat"><i class="fa fa-check"></i><b>1.2</b> Diseño de la Plataforma R</a></li>
+<li class="chapter" data-level="1.3" data-path="index.html"><a href="index.html#rstudio"><i class="fa fa-check"></i><b>1.3</b> RStudio</a></li>
+<li class="chapter" data-level="1.4" data-path="index.html"><a href="index.html#car-prin"><i class="fa fa-check"></i><b>1.4</b> Características Principales</a></li>
+<li class="chapter" data-level="1.5" data-path="index.html"><a href="index.html#inst-pla"><i class="fa fa-check"></i><b>1.5</b> Instalación de Plataforma R y RStudio</a></li>
+<li class="chapter" data-level="1.6" data-path="index.html"><a href="index.html#con-pre"><i class="fa fa-check"></i><b>1.6</b> Consideraciones Preliminares</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="intro-package.html"><a href="intro-package.html"><i class="fa fa-check"></i><b>2</b> Paquetes</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="intro-package.html"><a href="intro-package.html#pack-search"><i class="fa fa-check"></i><b>2.1</b> Búsqueda</a></li>
+<li class="chapter" data-level="2.2" data-path="intro-package.html"><a href="intro-package.html#pack-install"><i class="fa fa-check"></i><b>2.2</b> Instalación</a>
+<ul>
+<li class="chapter" data-level="2.2.1" data-path="intro-package.html"><a href="intro-package.html#pack-cuadro"><i class="fa fa-check"></i><b>2.2.1</b> Cuadro Diálogo</a></li>
+<li class="chapter" data-level="2.2.2" data-path="intro-package.html"><a href="intro-package.html#pack-install-code"><i class="fa fa-check"></i><b>2.2.2</b> Función <em>install.packages()</em></a></li>
+</ul></li>
+<li class="chapter" data-level="2.3" data-path="intro-package.html"><a href="intro-package.html#pack-update"><i class="fa fa-check"></i><b>2.3</b> Actualización</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="sin-bas.html"><a href="sin-bas.html"><i class="fa fa-check"></i><b>3</b> Sintaxis Básica de R</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="sin-bas.html"><a href="sin-bas.html#op-num"><i class="fa fa-check"></i><b>3.1</b> Operaciones Numéricas</a></li>
+<li class="chapter" data-level="3.2" data-path="sin-bas.html"><a href="sin-bas.html#asig"><i class="fa fa-check"></i><b>3.2</b> Asignación</a></li>
+<li class="chapter" data-level="3.3" data-path="sin-bas.html"><a href="sin-bas.html#nat-vec"><i class="fa fa-check"></i><b>3.3</b> Naturaleza Vectorial</a>
+<ul>
+<li class="chapter" data-level="3.3.1" data-path="sin-bas.html"><a href="sin-bas.html#fun-c"><i class="fa fa-check"></i><b>3.3.1</b> Función <strong><code>c()</code></strong> para crear vectores</a></li>
+<li class="chapter" data-level="3.3.2" data-path="sin-bas.html"><a href="sin-bas.html#uso-sec"><i class="fa fa-check"></i><b>3.3.2</b> Uso de <strong>Secuencias</strong> para crear vectores</a></li>
+<li class="chapter" data-level="3.3.3" data-path="sin-bas.html"><a href="sin-bas.html#usar-rep"><i class="fa fa-check"></i><b>3.3.3</b> Usar <strong>Repetición</strong> para la creación de vectores</a></li>
+<li class="chapter" data-level="3.3.4" data-path="sin-bas.html"><a href="sin-bas.html#uso-pat"><i class="fa fa-check"></i><b>3.3.4</b> Uso de <strong>Patrones</strong> para crear vectores</a></li>
+<li class="chapter" data-level="3.3.5" data-path="sin-bas.html"><a href="sin-bas.html#vec-log"><i class="fa fa-check"></i><b>3.3.5</b> Vectores Lógicos y Caracteres</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="op-vec.html"><a href="op-vec.html"><i class="fa fa-check"></i><b>4</b> Operación Vectorial</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="op-vec.html"><a href="op-vec.html#op-num-vec"><i class="fa fa-check"></i><b>4.1</b> Operaciones Numéricas</a></li>
+<li class="chapter" data-level="4.2" data-path="op-vec.html"><a href="op-vec.html#val-fal"><i class="fa fa-check"></i><b>4.2</b> Valores Faltantes</a></li>
+<li class="chapter" data-level="4.3" data-path="op-vec.html"><a href="op-vec.html#index-sub"><i class="fa fa-check"></i><b>4.3</b> Indexado y Subconjunto</a>
+<ul>
+<li class="chapter" data-level="4.3.1" data-path="op-vec.html"><a href="op-vec.html#ind-num-pos"><i class="fa fa-check"></i><b>4.3.1</b> Índice Numérico Positivo</a></li>
+<li class="chapter" data-level="4.3.2" data-path="op-vec.html"><a href="op-vec.html#ind-num-neg"><i class="fa fa-check"></i><b>4.3.2</b> Índice Numérico Negativo</a></li>
+<li class="chapter" data-level="4.3.3" data-path="op-vec.html"><a href="op-vec.html#vec-log-1"><i class="fa fa-check"></i><b>4.3.3</b> Vector Lógico</a></li>
+</ul></li>
+<li class="chapter" data-level="4.4" data-path="op-vec.html"><a href="op-vec.html#edic-con"><i class="fa fa-check"></i><b>4.4</b> Edición de Contenido</a></li>
+<li class="chapter" data-level="4.5" data-path="op-vec.html"><a href="op-vec.html#op-avan"><i class="fa fa-check"></i><b>4.5</b> Opciones Avanzadas</a>
+<ul>
+<li class="chapter" data-level="4.5.1" data-path="op-vec.html"><a href="op-vec.html#nom-col"><i class="fa fa-check"></i><b>4.5.1</b> Nombrar los Componentes de un Vector</a></li>
+<li class="chapter" data-level="4.5.2" data-path="op-vec.html"><a href="op-vec.html#info-ad"><i class="fa fa-check"></i><b>4.5.2</b> Información Adicional</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="fac.html"><a href="fac.html"><i class="fa fa-check"></i><b>5</b> Factores</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="fac.html"><a href="fac.html#fac-nom"><i class="fa fa-check"></i><b>5.1</b> Factores Nominales</a></li>
+<li class="chapter" data-level="5.2" data-path="fac.html"><a href="fac.html#fac-or"><i class="fa fa-check"></i><b>5.2</b> Factores Ordinales</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="mat.html"><a href="mat.html"><i class="fa fa-check"></i><b>6</b> Matrices</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="mat.html"><a href="mat.html#op-num-mat"><i class="fa fa-check"></i><b>6.1</b> Operaciones Numéricas</a></li>
+<li class="chapter" data-level="6.2" data-path="mat.html"><a href="mat.html#matriz-index"><i class="fa fa-check"></i><b>6.2</b> Indexado y Subconjunto</a></li>
+<li class="chapter" data-level="6.3" data-path="mat.html"><a href="mat.html#ed-con"><i class="fa fa-check"></i><b>6.3</b> Edición de Contenido</a></li>
+<li class="chapter" data-level="6.4" data-path="mat.html"><a href="mat.html#op-avan-mat"><i class="fa fa-check"></i><b>6.4</b> Opciones Avanzadas</a>
+<ul>
+<li class="chapter" data-level="6.4.1" data-path="mat.html"><a href="mat.html#nom-fil"><i class="fa fa-check"></i><b>6.4.1</b> Nombres de Filas y Columnas</a></li>
+<li class="chapter" data-level="6.4.2" data-path="mat.html"><a href="mat.html#mod-mat"><i class="fa fa-check"></i><b>6.4.2</b> Modificar Tamaño de Matrices</a></li>
+<li class="chapter" data-level="6.4.3" data-path="mat.html"><a href="mat.html#info-adic"><i class="fa fa-check"></i><b>6.4.3</b> Información Adicional</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="dataframe.html"><a href="dataframe.html"><i class="fa fa-check"></i><b>7</b> Dataframes</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="dataframe.html"><a href="dataframe.html#df-detalle"><i class="fa fa-check"></i><b>7.1</b> Creación</a></li>
+<li class="chapter" data-level="7.2" data-path="dataframe.html"><a href="dataframe.html#df-op-num"><i class="fa fa-check"></i><b>7.2</b> Operaciones Numéricas</a></li>
+<li class="chapter" data-level="7.3" data-path="dataframe.html"><a href="dataframe.html#df-index"><i class="fa fa-check"></i><b>7.3</b> Indexado y Subconjunto</a>
+<ul>
+<li class="chapter" data-level="7.3.1" data-path="dataframe.html"><a href="dataframe.html#df-op-avan"><i class="fa fa-check"></i><b>7.3.1</b> Opciones Avanzadas</a></li>
+<li class="chapter" data-level="7.3.2" data-path="dataframe.html"><a href="dataframe.html#df-mod-size"><i class="fa fa-check"></i><b>7.3.2</b> Modificar Tamaño o Estructura</a></li>
+<li class="chapter" data-level="7.3.3" data-path="dataframe.html"><a href="dataframe.html#df-nom-fil-col"><i class="fa fa-check"></i><b>7.3.3</b> Nombres de Filas y Columnas</a></li>
+<li class="chapter" data-level="7.3.4" data-path="dataframe.html"><a href="dataframe.html#df-info"><i class="fa fa-check"></i><b>7.3.4</b> Información Adicional</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="array.html"><a href="array.html"><i class="fa fa-check"></i><b>8</b> Array</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="array.html"><a href="array.html#op-num-arr"><i class="fa fa-check"></i><b>8.1</b> Operaciones Numéricas</a></li>
+<li class="chapter" data-level="8.2" data-path="array.html"><a href="array.html#index-arr"><i class="fa fa-check"></i><b>8.2</b> Indexado y Subconjunto</a></li>
+<li class="chapter" data-level="8.3" data-path="array.html"><a href="array.html#ed-con-arr"><i class="fa fa-check"></i><b>8.3</b> Edición de Contenido</a></li>
+<li class="chapter" data-level="8.4" data-path="array.html"><a href="array.html#op-av-arr"><i class="fa fa-check"></i><b>8.4</b> Opciones Avanzadas</a>
+<ul>
+<li class="chapter" data-level="8.4.1" data-path="array.html"><a href="array.html#nom-fil-arr"><i class="fa fa-check"></i><b>8.4.1</b> Nombres de Filas y Columnas</a></li>
+<li class="chapter" data-level="8.4.2" data-path="array.html"><a href="array.html#info-ad-arr"><i class="fa fa-check"></i><b>8.4.2</b> Información Adicional</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="r-fechas.html"><a href="r-fechas.html"><i class="fa fa-check"></i><b>9</b> Fechas</a>
+<ul>
+<li class="chapter" data-level="9.1" data-path="r-fechas.html"><a href="r-fechas.html#op-fe"><i class="fa fa-check"></i><b>9.1</b> Operaciones con Fecha</a>
+<ul>
+<li class="chapter" data-level="9.1.1" data-path="r-fechas.html"><a href="r-fechas.html#format-date"><i class="fa fa-check"></i><b>9.1.1</b> Formato de Fechas</a></li>
+<li class="chapter" data-level="9.1.2" data-path="r-fechas.html"><a href="r-fechas.html#cambio-formato-date"><i class="fa fa-check"></i><b>9.1.2</b> Cambio de Formato</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="r-hora.html"><a href="r-hora.html"><i class="fa fa-check"></i><b>10</b> Hora</a>
+<ul>
+<li class="chapter" data-level="10.1" data-path="r-hora.html"><a href="r-hora.html#posix"><i class="fa fa-check"></i><b>10.1</b> Formato POSIX</a></li>
+<li class="chapter" data-level="10.2" data-path="r-hora.html"><a href="r-hora.html#ope-time"><i class="fa fa-check"></i><b>10.2</b> Operando con el tiempo</a></li>
+<li class="chapter" data-level="10.3" data-path="r-hora.html"><a href="r-hora.html#zona-hora"><i class="fa fa-check"></i><b>10.3</b> Conversión entre zonas horarias</a></li>
+</ul></li>
+<li class="part"><span><b>II Part II</b></span></li>
+<li class="chapter" data-level="11" data-path="EO-intro.html"><a href="EO-intro.html"><i class="fa fa-check"></i><b>11</b> Observación de la Tierra</a>
+<ul>
+<li class="chapter" data-level="11.1" data-path="EO-intro.html"><a href="EO-intro.html#intro-rs"><i class="fa fa-check"></i><b>11.1</b> Introducción</a></li>
+<li class="chapter" data-level="11.2" data-path="EO-intro.html"><a href="EO-intro.html#rs-eletro"><i class="fa fa-check"></i><b>11.2</b> Energía Electromagnética</a>
+<ul>
+<li class="chapter" data-level="11.2.1" data-path="EO-intro.html"><a href="EO-intro.html#rs-intro-amable"><i class="fa fa-check"></i><b>11.2.1</b> Fundamentos Históricos y Físicos</a></li>
+<li class="chapter" data-level="11.2.2" data-path="EO-intro.html"><a href="EO-intro.html#rs-intro-electro"><i class="fa fa-check"></i><b>11.2.2</b> Fenómeno Eléctrico</a></li>
+<li class="chapter" data-level="11.2.3" data-path="EO-intro.html"><a href="EO-intro.html#rs-intro-magneto"><i class="fa fa-check"></i><b>11.2.3</b> Fenómeno Magnético</a></li>
+</ul></li>
+<li class="chapter" data-level="11.3" data-path="EO-intro.html"><a href="EO-intro.html#rs-relation"><i class="fa fa-check"></i><b>11.3</b> La Relación Electricidad Magnetismo</a>
+<ul>
+<li class="chapter" data-level="11.3.1" data-path="EO-intro.html"><a href="EO-intro.html#rs-campo"><i class="fa fa-check"></i><b>11.3.1</b> El Concepto de Campo</a></li>
+<li class="chapter" data-level="11.3.2" data-path="EO-intro.html"><a href="EO-intro.html#rs-electro-magne"><i class="fa fa-check"></i><b>11.3.2</b> El Electromagnetismo</a></li>
+</ul></li>
+<li class="chapter" data-level="11.4" data-path="EO-intro.html"><a href="EO-intro.html#rs-eem"><i class="fa fa-check"></i><b>11.4</b> Cómo se Produce y Transporta la Energía</a>
+<ul>
+<li class="chapter" data-level="11.4.1" data-path="EO-intro.html"><a href="EO-intro.html#rs-onda"><i class="fa fa-check"></i><b>11.4.1</b> Las Ondas</a></li>
+<li class="chapter" data-level="11.4.2" data-path="EO-intro.html"><a href="EO-intro.html#cuantiluz"><i class="fa fa-check"></i><b>11.4.2</b> Cuantos y Dualidad de la Luz</a></li>
+<li class="chapter" data-level="11.4.3" data-path="EO-intro.html"><a href="EO-intro.html#foton"><i class="fa fa-check"></i><b>11.4.3</b> El Fotón</a></li>
+<li class="chapter" data-level="11.4.4" data-path="EO-intro.html"><a href="EO-intro.html#teo-cuan-ond"><i class="fa fa-check"></i><b>11.4.4</b> Relación entre Teoría Ondulatoria y Cuántica</a></li>
+</ul></li>
+<li class="chapter" data-level="11.5" data-path="EO-intro.html"><a href="EO-intro.html#rs-el-espectro-electro"><i class="fa fa-check"></i><b>11.5</b> El Espectro Electromagnético</a>
+<ul>
+<li class="chapter" data-level="11.5.1" data-path="EO-intro.html"><a href="EO-intro.html#vis"><i class="fa fa-check"></i><b>11.5.1</b> Espectro Visible (VIS)</a></li>
+<li class="chapter" data-level="11.5.2" data-path="EO-intro.html"><a href="EO-intro.html#infra-cer"><i class="fa fa-check"></i><b>11.5.2</b> Infrarrojo Cercano (NIR), Próximo o Reflejado</a></li>
+<li class="chapter" data-level="11.5.3" data-path="EO-intro.html"><a href="EO-intro.html#infra-mir"><i class="fa fa-check"></i><b>11.5.3</b> Infrarrojo Medio (MIR)</a></li>
+<li class="chapter" data-level="11.5.4" data-path="EO-intro.html"><a href="EO-intro.html#infra-ter"><i class="fa fa-check"></i><b>11.5.4</b> Infrarrojo Térmico (TIR)</a></li>
+<li class="chapter" data-level="11.5.5" data-path="EO-intro.html"><a href="EO-intro.html#microwave"><i class="fa fa-check"></i><b>11.5.5</b> Microondas (MW)</a></li>
+</ul></li>
+<li class="chapter" data-level="11.6" data-path="EO-intro.html"><a href="EO-intro.html#concep-unidad"><i class="fa fa-check"></i><b>11.6</b> Conceptos Básicos y sus Unidades</a>
+<ul>
+<li class="chapter" data-level="11.6.1" data-path="EO-intro.html"><a href="EO-intro.html#angsol"><i class="fa fa-check"></i><b>11.6.1</b> Ángulo Sólido</a></li>
+<li class="chapter" data-level="11.6.2" data-path="EO-intro.html"><a href="EO-intro.html#mag-radio"><i class="fa fa-check"></i><b>11.6.2</b> Magnitudes Radiométricas</a></li>
+<li class="chapter" data-level="11.6.3" data-path="EO-intro.html"><a href="EO-intro.html#temp-intro"><i class="fa fa-check"></i><b>11.6.3</b> Importancia de la Temperatura</a></li>
+</ul></li>
+<li class="chapter" data-level="11.7" data-path="EO-intro.html"><a href="EO-intro.html#cuerpo-negro"><i class="fa fa-check"></i><b>11.7</b> Radiación de Cuerpo Negro</a>
+<ul>
+<li class="chapter" data-level="11.7.1" data-path="EO-intro.html"><a href="EO-intro.html#ley-planck"><i class="fa fa-check"></i><b>11.7.1</b> Ley de Planck</a></li>
+<li class="chapter" data-level="11.7.2" data-path="EO-intro.html"><a href="EO-intro.html#wien"><i class="fa fa-check"></i><b>11.7.2</b> Ley de Desplazamiento de Wien</a></li>
+<li class="chapter" data-level="11.7.3" data-path="EO-intro.html"><a href="EO-intro.html#stef"><i class="fa fa-check"></i><b>11.7.3</b> Ley de Stefan-Boltzmann</a></li>
+<li class="chapter" data-level="11.7.4" data-path="EO-intro.html"><a href="EO-intro.html#kirchhoff"><i class="fa fa-check"></i><b>11.7.4</b> Ley de Kirchhoff</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="12" data-path="flujo.html"><a href="flujo.html"><i class="fa fa-check"></i><b>12</b> EEM</a>
+<ul>
+<li class="chapter" data-level="12.1" data-path="flujo.html"><a href="flujo.html#flujo-eem"><i class="fa fa-check"></i><b>12.1</b> Flujo de la EEM</a></li>
+<li class="chapter" data-level="12.2" data-path="flujo.html"><a href="flujo.html#inter-atm-eem"><i class="fa fa-check"></i><b>12.2</b> Interacción EEM con la Atmósfera</a>
+<ul>
+<li class="chapter" data-level="12.2.1" data-path="flujo.html"><a href="flujo.html#atmos"><i class="fa fa-check"></i><b>12.2.1</b> La Atmósfera</a></li>
+<li class="chapter" data-level="12.2.2" data-path="flujo.html"><a href="flujo.html#at-abs"><i class="fa fa-check"></i><b>12.2.2</b> Absorción</a></li>
+<li class="chapter" data-level="12.2.3" data-path="flujo.html"><a href="flujo.html#disper"><i class="fa fa-check"></i><b>12.2.3</b> Dispersión</a></li>
+<li class="chapter" data-level="12.2.4" data-path="flujo.html"><a href="flujo.html#emision"><i class="fa fa-check"></i><b>12.2.4</b> Emisión</a></li>
+</ul></li>
+<li class="chapter" data-level="12.3" data-path="flujo.html"><a href="flujo.html#fin-ciclo"><i class="fa fa-check"></i><b>12.3</b> Últimos pasos</a>
+<ul>
+<li class="chapter" data-level="12.3.1" data-path="flujo.html"><a href="flujo.html#dn-toa"><i class="fa fa-check"></i><b>12.3.1</b> DN a TOA</a></li>
+<li class="chapter" data-level="12.3.2" data-path="flujo.html"><a href="flujo.html#dn-boa"><i class="fa fa-check"></i><b>12.3.2</b> TOA a BOA</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="13" data-path="prop-img.html"><a href="prop-img.html"><i class="fa fa-check"></i><b>13</b> Resoluciones de Imagen</a>
+<ul>
+<li class="chapter" data-level="13.1" data-path="prop-img.html"><a href="prop-img.html#res-spac"><i class="fa fa-check"></i><b>13.1</b> Resolución Espacial</a></li>
+<li class="chapter" data-level="13.2" data-path="prop-img.html"><a href="prop-img.html#res-espec"><i class="fa fa-check"></i><b>13.2</b> Resolución Espectral</a>
+<ul>
+<li class="chapter" data-level="13.2.1" data-path="prop-img.html"><a href="prop-img.html#res-profile"><i class="fa fa-check"></i><b>13.2.1</b> Firma Espectral</a></li>
+<li class="chapter" data-level="13.2.2" data-path="prop-img.html"><a href="prop-img.html#import-ds"><i class="fa fa-check"></i><b>13.2.2</b> Import Dataset</a></li>
+<li class="chapter" data-level="13.2.3" data-path="prop-img.html"><a href="prop-img.html#spec-r"><i class="fa fa-check"></i><b>13.2.3</b> Procesando en R</a></li>
+</ul></li>
+<li class="chapter" data-level="13.3" data-path="prop-img.html"><a href="prop-img.html#res-rad"><i class="fa fa-check"></i><b>13.3</b> Resolución Radiométrica</a></li>
+<li class="chapter" data-level="13.4" data-path="prop-img.html"><a href="prop-img.html#res-temp"><i class="fa fa-check"></i><b>13.4</b> Resolución Temporal</a></li>
+<li class="chapter" data-level="13.5" data-path="prop-img.html"><a href="prop-img.html#res-ang"><i class="fa fa-check"></i><b>13.5</b> Resolución angular</a></li>
+</ul></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Publicado con bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Ráster con R</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="header">
+<h1 class="title">Ráster con R</h1>
+<p class="author"><em>Danilo A. Verdugo Chaura</em></p>
+<p class="date"><em>2022-02-22</em></p>
+</div>
+<div id="index" class="section level1" number="1">
+<h1><span class="header-section-number">Capítulo 1</span> Plataforma R</h1>
+<div id="hist-orig" class="section level2" number="1.1">
+<h2><span class="header-section-number">1.1</span> Historia y Origen</h2>
+<p>R es un <em>sistema</em> o una <em>plataforma</em> que surge de un entorno computacional diseñado originalmente para el cálculo estadístico. Nace como un dialecto de S el cual es un lenguaje de programación desarrollado por John Chambers (Figura <a href="index.html#fig:img-crea-1">1.1</a>) y otros en la antigua “Bell Telephone Laboratorios,” originalmente miembro de AT &amp; T Corp. S se inicia en 1976 como un programa interno de análisis estadístico. En 1988 el sistema fue reescrito desde FORTRAN a C y empezó a parecerse al sistema que tenemos hoy en día (esto fue en la versión 3 del lenguaje S). Lo importante de destacar es el espíritu original por el cual fue diseñado el sistema: facilitar el análisis de datos, primero para ellos y eventualmente, para otros.</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:img-crea-1"></span>
+<img src="img/john-chambers.png" alt="John Chambers creador de S." width="135" />
+<p class="caption">
+Figura 1.1: John Chambers creador de S.
+</p>
+</div>
+<p>John Chambers describe el anhelo al momento de diseñar el lenguaje S con que “los usuarios comenzaran en un entorno interactivo, donde no pensaran conscientemente en sí mismos como programadores. Entonces, cuando sus necesidades fuesen más claras y su sofisticación aumentara, deberían ser capaces de transitar gradualmente a la programación, cuando lenguaje y sistema serían más importantes.” La clave fue la transición de usuario a desarrollador. Ellos querían construir un lenguaje que fácilmente podría dar servicio a ambos tipos de usuario. Técnicamente, necesitaban construir un lenguaje que fuese adecuado para el análisis de datos interactivo (basada en línea de comandos), así como para la escritura de programas (como los lenguajes tradicionales de programación).</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:img-crea"></span>
+<img src="img/creators.jpg" alt="Ross Ihaka y Robert Gentleman, los creadores de R." width="360" />
+<p class="caption">
+Figura 1.2: Ross Ihaka y Robert Gentleman, los creadores de R.
+</p>
+</div>
+<p>En 1991, Ross Ihaka y Robert Gentleman (Figura <a href="index.html#fig:img-crea">1.2</a>) en el Departamento de Estadística de la Universidad de Auckland crean R. Inspirado en la filosofía de S pero como un proyecto totalmente abierto. En 1993, se hace público. La experiencia de Robert y Ross sobre el desarrollo de R está documentada en un interesante artículo de 1996 en el Journal of Computational and Graphical Statistics <span class="citation">(Ihaka and Gentleman 1996)</span>.</p>
+<p>Hoy R se ejecuta en casi cualquier sistema operativo o plataforma informática estándar ¡incluso en una playstation 3! Una característica interesante en muchos proyectos de código abierto son las versiones frecuentes. Estos días se produce una liberación anual importante, por lo general en octubre, donde se incorporan nuevas características principales y lanzadas al público. A lo largo del año, se realizarán lanzamientos de corrección de errores en pequeña escala, según sea necesario. Los lanzamientos frecuentes y ciclo de liberación regular indican un permanente y activo desarrollo del software donde se asegura que los errores serán tratados de una manera oportuna. Por supuesto, el árbol principal de código fuente de R se encuentra bajo el control de un pequeño grupo de desarrolladores. Al momento de escribir estas líneas (mayo 2021) nos encontramos en la versión 4.0.5 o <strong>Shake and Throw</strong>.</p>
+<p>Es interesante notar el dato anecdótico que los nombres propios con que se han designado desde la primera versión liberada <em>Great Pumpkin</em> (versión 2.14.0, noviembre 2011) o <em>Trick or Treat</em> (versión 2.15.2, octubre 2012) entre muchas otras hacen referencia a un capítulo específico de la serie animada <em>Peanuts</em> (Figura <a href="index.html#fig:img-pea">1.3</a>).</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:img-pea"></span>
+<img src="img/Peanuts2014.jpg" alt="Serie animada Peanuts (Snoopy) basada en los comics de Charles Schulz." width="266" />
+<p class="caption">
+Figura 1.3: Serie animada Peanuts (Snoopy) basada en los comics de Charles Schulz.
+</p>
+</div>
+<p>Otra de las ventajas clave que R posee avanzadas capacidades gráficas con <em>calidad de publicación</em> cuya existencia se ha asegurado desde el principio del proyecto mediante el control muy fino en todos los aspectos de la composición gráfica.</p>
+</div>
+<div id="dis-plat" class="section level2" number="1.2">
+<h2><span class="header-section-number">1.2</span> Diseño de la Plataforma R</h2>
+<p>El éxito alcanzado por el proyecto R no tiene nada que ver con las herramientas en sí mismas, sino más bien con lo activa que sea la comunidad de usuarios, hoy miles de ellos en todo el mundo se han unido para realizar contribuciones como también ayudar a otros a usar R para todo tipo de nuevas e insospechadas aplicaciones.</p>
+<p>El sistema R base o core o núcleo de la plataforma se compone de las herramientas mínimas para su funcionamiento que se encuentra disponible para varios sistemas operativos: Linux, Windows, Mac e incluso su Código Fuente en la denominada <em>Red Exhaustiva de Archivos R</em> (Comprehensive R Archive Network, CRAN.</p>
+<p><a href="https://cran.r-project.org/">cran.r-project.org</a>, es una red de servidores ftp y web en todo el mundo que almacenan versiones idénticas y actualizadas de código y documentación para R)</p>
+</div>
+<div id="rstudio" class="section level2" number="1.3">
+<h2><span class="header-section-number">1.3</span> RStudio</h2>
+<p>Aunque R posee un diseño muy avanzado e inteligente a medida que se realizan rutinas para análisis de datos, gráficos, o se generan archivos temporales de esos mismos procesos o se descargan e instalan diversos paquetes de código adicionales se hace muy difícil de mantener y menos aún generar procedimientos claros, organizados y replicables en distintos entornos informáticos, siendo esta última capacidad crítica para la aproximación científica al análisis de datos. RStudio también es una herramienta libre que hace más fácil el trabajo con R, <span class="citation">Loo and De Jonge (2012)</span> definen sus principales características como:</p>
+<ul>
+<li>Editor de texto, explorador de archivos, visualizador de gráficos todo en el mismo entorno.</li>
+<li>Trabaja directo con una instalación subyacente de R.</li>
+<li>Organiza el código y mantiene múltiples proyectos.</li>
+<li>Mantiene mi investigación reproducible.</li>
+<li>Mantiene los paquetes en la instalación de R.</li>
+<li>Crea y comparte reportes.</li>
+<li>Comparte el código y colabora con otros usuarios.</li>
+</ul>
+<p>RStudio hoy es una aplicación y una fundación dedicada al soporte de sus productos de código abierto<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a> como al servicio comercial de capacitación y consultoría en temas estadísticos y R. Su fundador J.J. Allaire también inventa el lenguaje de programación web <em>ColdFusion</em>, <em>Windows Live Writer</em> (programa para escribir y publicar blog), <em>FitNow</em> y <em>LoseIt</em> ambas aplicaciones móviles para ejercicio y pérdida de peso entre otros proyectos tecnológicos.</p>
+</div>
+<div id="car-prin" class="section level2" number="1.4">
+<h2><span class="header-section-number">1.4</span> Características Principales</h2>
+<p>Algunas propiedades que hacen de RStudio el editor ideal para trabajar con R (tomado de <span class="citation">Loo and De Jonge (2012)</span>):<br />
+<strong><em>Integración con la consola R:</em></strong> Escribe comandos directamente en R dentro de RStudio.<br />
+<strong><em>Ejecución de código:</em></strong> Ejecuta código directo desde el editor.<br />
+<strong><em>Paréntesis inteligente:</em></strong> Cierre automático de paréntesis, ilumina selección, cierre de comillas automático. Termina de escribir la palabra previamente iluminada de un menú intellisense.<br />
+<strong><em>Ayuda en línea:</em></strong> Acceso directo a la ayuda de lenguaje y sintaxis.<br />
+<strong><em>Atajos de teclado:</em></strong> Tareas repetitivas son asociadas a combinación de teclas. Integra Ayuda, Permite navegar y buscar en las páginas de ayuda nativas de R.<br />
+<strong><em>Explorador de objetos e Historia:</em></strong> Se puede inspeccionar cada objeto creado en la sesión actual de R y su explorador de historia permite recorrer los comandos utilizados desde el actual hasta el primero de la sesión.<br />
+<strong><em>Navegar por el código:</em></strong> Saltar entre funciones, llamadas y reportes, visor de datos y visualización tipo grilla para explorar el contenido de los objetos en la sesión actual.<br />
+<strong><em>Menús de Importar datos:</em></strong> Para los tipos más comunes de archivo, ofrece un sistema de menú que genera el código R necesario. Integración gráfica con zoom, paneo y capacidades de exportación.<br />
+<strong><em>Gestión de proyectos:</em></strong> Facilita el manejo y control de varios proyectos. Control de versión e integra los sistemas de control git y svn.<br />
+<strong><em>Generación de Documentos:</em></strong> Genera pdf, html y otros formatos de reporte usando RMarkdown, Sweave o knitr.<br />
+<strong><em>Publicación:</em></strong> Publicar reportes y rutinas directo a la web de <em>Rpubs.com.</em></p>
+</div>
+<div id="inst-pla" class="section level2" number="1.5">
+<h2><span class="header-section-number">1.5</span> Instalación de Plataforma R y RStudio</h2>
+<p>Primero se debe descargar el paquete de instalación desde el sitio web <a href="https://www.r-project.org/">www.r-project.org</a> siguiendo el link <strong>CRAN</strong> y buscar en el listado de servidores espejo el más cercano a la ubicación del usuario. Luego, seleccionar la versión correspondiente al sistema operativo de la máquina a instalar. A continuación, prestar atención y ubicar el link <strong>install R for the first time</strong> en el apartado <em>base</em>.</p>
+<p>Finalmente, encontramos el link para la descarga del paquete instalador, siempre será le versión más reciente. Ejecutar el programa y seguir los pasos indicados por el asistente.<a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a></p>
+<p>Una vez terminada la instalación de R procedemos a instalar el programa RStudio desde el sitio <a href="https://www.rstudio.com">www.rstudio.com</a> y buscar en la lista de productos <em>RStudio Desktop.</em> A continuación, seleccionar la versión <em>Open Source Edition</em> que es libre de pago. Finalmente seguir la secuencia de botones correspondiente hasta llegar al punto de descarga del paquete de instalación. Poner especial atención en seleccionar el que corresponda a su versión de sistema operativo. Ejecutar el programa y seguir los pasos indicados por el asistente.</p>
+</div>
+<div id="con-pre" class="section level2" number="1.6">
+<h2><span class="header-section-number">1.6</span> Consideraciones Preliminares</h2>
+<p>El entorno de trabajo de RStudio posee una configuración por defecto que presenta una distribución de funcionalidades orientada al uso como entorno interactivo de cálculo y proceso de datos mediante línea de comandos contenido en la ventana <em>Console</em> y una vista general de los objetos y variables creadas en la sesión actual en la ventana <em>Environment</em> (Figura <a href="index.html#fig:img-gui">1.4</a>).</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:img-gui"></span>
+<img src="img/GUI.png" alt="Configuración por defecto." width="683" />
+<p class="caption">
+Figura 1.4: Configuración por defecto.
+</p>
+</div>
+<p>El tipo de trabajo descrito en el presente texto utiliza metodologías más complejas y extensas que trabajar solo como calculadora o proceso de datos. Por lo tanto, vamos a sugerir una nueva distribución de ventanas que optimicen el trabajo en un tipo de archivos que permiten ir escribiendo largas secuencias de comandos que van desarrollando las tareas de manera secuencial y por seguridad buscamos grabar en disco un archivo que la próxima vez me permita repetir dicha secuencia y continuar o modificar según el caso. Los archivos creados tendrán la extensión <em>.R</em> y los denominaremos <em>scripts</em>.</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:img-gui-1"></span>
+<img src="img/gui-final.png" alt="Configuración sugerida." width="683" />
+<p class="caption">
+Figura 1.5: Configuración sugerida.
+</p>
+</div>
+<p>Una mejor disposición de ventanas es la sugerida en la figura <a href="index.html#fig:img-gui-1">1.5</a>. Donde se privilegia el panel izquierdo para extender a altura completa el editor de texto y maximizar el área disponible para escribir y editar scripts y mantiene el panel derecho la consola con su línea de comando.</p>
+<p>Otro aspecto importante es el uso de un color de fondo obscuro que reduce la fatiga visual cuando se sienta frente al monitor durante períodos muy prolongados.</p>
+<p>Otra característica configurada por defecto es que al momento de salir de una sesión, es guardar el <em>espacio de trabajo</em> lo que significa que se crea una imagen de las variables y funciones actuales en un archivo llamado ”.RData”.</p>
+<p>Cuando se vuelve a abrir R desde el mismo directorio de trabajo, el espacio de trabajo se cargará y todas estas cosas estarán disponibles. Pero no recomendamos ese comportamiento. Cargar un espacio de trabajo guardado convierte el script cuidadosamente escrito donde todo sucede lógicamente de acuerdo con un plan a algo parecido a un cajón de sastre, lleno de páginas y cuadernos variados que pueden ser o no pertenecientes al trabajo actual.</p>
+<p>Para configurar nuestro programa recomendamos cambiar algunos parámetros en la configuración general de la aplicación, para ellos debemos ir a la opción de menú <strong><em>Tools/Global Options</em></strong>. (Figura <a href="index.html#fig:img-gui-2">1.6</a>).</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:img-gui-2"></span>
+<img src="img/mnuOptions.png" alt="Opción de menú para configuración general." width="138" />
+<p class="caption">
+Figura 1.6: Opción de menú para configuración general.
+</p>
+</div>
+<p>El cuadro de dialogo resume un gran número de parámetros que abarcan detalles del funcionamiento general de RStudio (Figura <a href="index.html#fig:img-gui-op-1">1.7</a>).</p>
+<p>Los siguientes cambios son necesarios para configurar los aspectos mencionados en punto anterior:</p>
+<ul>
+<li><em>General:</em> Para quitar la carga automática de variables y funciones de la última sesión, debemos en el grupo <strong>Workspace</strong> quitar el check de <em>Restore .RData into…</em> y seleccionar la opción <strong><em>Never</em></strong> de la lista <em>Save workspce to .RData…</em> (Figura <a href="index.html#fig:img-gui-op-1">1.7</a>).</li>
+</ul>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:img-gui-op-1"></span>
+<img src="img/ops-general.png" alt="Panel de configuración general." width="294" />
+<p class="caption">
+Figura 1.7: Panel de configuración general.
+</p>
+</div>
+<ul>
+<li><em>Appearance:</em> La configuración de colores en el editor de texto y los otros cuadros se selecciona en la lista <em>Editor theme:</em> y se debe tener especial cuidado en elegir aquel con un fondo negro o muy obscuro (Figura <a href="index.html#fig:img-gui-op-2">1.8</a>).</li>
+</ul>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:img-gui-op-2"></span>
+<img src="img/ops-app.png" alt="Selección para configuración de colores." width="292" />
+<p class="caption">
+Figura 1.8: Selección para configuración de colores.
+</p>
+</div>
+<ul>
+<li><em>Pane Layout:</em> La distribución de los espacios disponibles para optimizar el editor de texto y mantener la línea de comando visible se configura siguiendo las opciones en indicadas en la figura <a href="index.html#fig:img-gui-op-3">1.9</a>).</li>
+</ul>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:img-gui-op-3"></span>
+<img src="img/ops-panes.png" alt="Configuración de paneles y cuadros." width="294" />
+<p class="caption">
+Figura 1.9: Configuración de paneles y cuadros.
+</p>
+</div>
+</div>
+</div>
+<div class="footnotes">
+<hr />
+<ol start="1">
+<li id="fn1"><p><a href="https://www.rstudio.com/">www.rstudio.com</a><a href="index.html#fnref1" class="footnote-back">↩︎</a></p></li>
+<li id="fn2"><p>Es importante señalar que el <em>nombre de usuario</em> de la sesión Windows donde se realizará la instalación <strong>no existan</strong> espacios e idealmente no contenga tildes. De ser así, es recomendable crear una nueva sesión con un nombre sin espacios ni tildes.<a href="index.html#fnref2" class="footnote-back">↩︎</a></p></li>
+</ol>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+
+<a href="intro-package.html" class="navigation navigation-next navigation-unique" aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": true,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "sepia",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/USERNAME/REPO/edit/BRANCH/01-Introduccion.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["_main.pdf"],
+"search": {
+"engine": "lunr",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+},
+"info": true
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

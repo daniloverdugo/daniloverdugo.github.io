@@ -1,0 +1,1137 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Capítulo 11 Observación de la Tierra | Ráster con R</title>
+  <meta name="description" content="<p>Los fenómenos geográficos se desarrollan de manera continúa sobre una extensión de la superficie terrestre (en, sobre o bajo ella), y ha sido un desafío constante crear un modelo de representación tan simple para ser almacenado, procesado y visualizado con facilidad y tan complejo que permita perder el mínimo de información crítica y versátil que permita mantener el nivel de detalle proporcional a la riqueza del mundo real.
+Ese modelo se ha denominado <strong>modelo ráster</strong> y es el tema principal del presente libro, su origen, fundamentos, propiedades y algunos usos serán descritos en detalle.
+Para ello, se basará en la <strong>Plataforma R</strong> y <strong>RStudio</strong>, unas de las herramientas informáticas más poderosas en la actualidad.
+Desde la instalación de las aplicaciones, pasando por una guía básica de su utilización, hasta una detallada descripción del trabajo con dicho modelo.</p>" />
+  <meta name="generator" content="bookdown 0.24 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Capítulo 11 Observación de la Tierra | Ráster con R" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="<p>Los fenómenos geográficos se desarrollan de manera continúa sobre una extensión de la superficie terrestre (en, sobre o bajo ella), y ha sido un desafío constante crear un modelo de representación tan simple para ser almacenado, procesado y visualizado con facilidad y tan complejo que permita perder el mínimo de información crítica y versátil que permita mantener el nivel de detalle proporcional a la riqueza del mundo real.
+Ese modelo se ha denominado <strong>modelo ráster</strong> y es el tema principal del presente libro, su origen, fundamentos, propiedades y algunos usos serán descritos en detalle.
+Para ello, se basará en la <strong>Plataforma R</strong> y <strong>RStudio</strong>, unas de las herramientas informáticas más poderosas en la actualidad.
+Desde la instalación de las aplicaciones, pasando por una guía básica de su utilización, hasta una detallada descripción del trabajo con dicho modelo.</p>" />
+  <meta name="github-repo" content="rstudio/bookdown-demo" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Capítulo 11 Observación de la Tierra | Ráster con R" />
+  
+  <meta name="twitter:description" content="<p>Los fenómenos geográficos se desarrollan de manera continúa sobre una extensión de la superficie terrestre (en, sobre o bajo ella), y ha sido un desafío constante crear un modelo de representación tan simple para ser almacenado, procesado y visualizado con facilidad y tan complejo que permita perder el mínimo de información crítica y versátil que permita mantener el nivel de detalle proporcional a la riqueza del mundo real.
+Ese modelo se ha denominado <strong>modelo ráster</strong> y es el tema principal del presente libro, su origen, fundamentos, propiedades y algunos usos serán descritos en detalle.
+Para ello, se basará en la <strong>Plataforma R</strong> y <strong>RStudio</strong>, unas de las herramientas informáticas más poderosas en la actualidad.
+Desde la instalación de las aplicaciones, pasando por una guía básica de su utilización, hasta una detallada descripción del trabajo con dicho modelo.</p>" />
+  
+
+<meta name="author" content="Danilo A. Verdugo Chaura" />
+
+
+<meta name="date" content="2022-02-22" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="r-hora.html"/>
+<link rel="next" href="flujo.html"/>
+<script src="libs/header-attrs-2.11/header-attrs.js"></script>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.0.1/anchor-sections.js"></script>
+<script src="libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Ráster con R</a></li>
+
+<li class="divider"></li>
+<li class="part"><span><b>I Part I</b></span></li>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Plataforma R</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="index.html"><a href="index.html#hist-orig"><i class="fa fa-check"></i><b>1.1</b> Historia y Origen</a></li>
+<li class="chapter" data-level="1.2" data-path="index.html"><a href="index.html#dis-plat"><i class="fa fa-check"></i><b>1.2</b> Diseño de la Plataforma R</a></li>
+<li class="chapter" data-level="1.3" data-path="index.html"><a href="index.html#rstudio"><i class="fa fa-check"></i><b>1.3</b> RStudio</a></li>
+<li class="chapter" data-level="1.4" data-path="index.html"><a href="index.html#car-prin"><i class="fa fa-check"></i><b>1.4</b> Características Principales</a></li>
+<li class="chapter" data-level="1.5" data-path="index.html"><a href="index.html#inst-pla"><i class="fa fa-check"></i><b>1.5</b> Instalación de Plataforma R y RStudio</a></li>
+<li class="chapter" data-level="1.6" data-path="index.html"><a href="index.html#con-pre"><i class="fa fa-check"></i><b>1.6</b> Consideraciones Preliminares</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="intro-package.html"><a href="intro-package.html"><i class="fa fa-check"></i><b>2</b> Paquetes</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="intro-package.html"><a href="intro-package.html#pack-search"><i class="fa fa-check"></i><b>2.1</b> Búsqueda</a></li>
+<li class="chapter" data-level="2.2" data-path="intro-package.html"><a href="intro-package.html#pack-install"><i class="fa fa-check"></i><b>2.2</b> Instalación</a>
+<ul>
+<li class="chapter" data-level="2.2.1" data-path="intro-package.html"><a href="intro-package.html#pack-cuadro"><i class="fa fa-check"></i><b>2.2.1</b> Cuadro Diálogo</a></li>
+<li class="chapter" data-level="2.2.2" data-path="intro-package.html"><a href="intro-package.html#pack-install-code"><i class="fa fa-check"></i><b>2.2.2</b> Función <em>install.packages()</em></a></li>
+</ul></li>
+<li class="chapter" data-level="2.3" data-path="intro-package.html"><a href="intro-package.html#pack-update"><i class="fa fa-check"></i><b>2.3</b> Actualización</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="sin-bas.html"><a href="sin-bas.html"><i class="fa fa-check"></i><b>3</b> Sintaxis Básica de R</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="sin-bas.html"><a href="sin-bas.html#op-num"><i class="fa fa-check"></i><b>3.1</b> Operaciones Numéricas</a></li>
+<li class="chapter" data-level="3.2" data-path="sin-bas.html"><a href="sin-bas.html#asig"><i class="fa fa-check"></i><b>3.2</b> Asignación</a></li>
+<li class="chapter" data-level="3.3" data-path="sin-bas.html"><a href="sin-bas.html#nat-vec"><i class="fa fa-check"></i><b>3.3</b> Naturaleza Vectorial</a>
+<ul>
+<li class="chapter" data-level="3.3.1" data-path="sin-bas.html"><a href="sin-bas.html#fun-c"><i class="fa fa-check"></i><b>3.3.1</b> Función <strong><code>c()</code></strong> para crear vectores</a></li>
+<li class="chapter" data-level="3.3.2" data-path="sin-bas.html"><a href="sin-bas.html#uso-sec"><i class="fa fa-check"></i><b>3.3.2</b> Uso de <strong>Secuencias</strong> para crear vectores</a></li>
+<li class="chapter" data-level="3.3.3" data-path="sin-bas.html"><a href="sin-bas.html#usar-rep"><i class="fa fa-check"></i><b>3.3.3</b> Usar <strong>Repetición</strong> para la creación de vectores</a></li>
+<li class="chapter" data-level="3.3.4" data-path="sin-bas.html"><a href="sin-bas.html#uso-pat"><i class="fa fa-check"></i><b>3.3.4</b> Uso de <strong>Patrones</strong> para crear vectores</a></li>
+<li class="chapter" data-level="3.3.5" data-path="sin-bas.html"><a href="sin-bas.html#vec-log"><i class="fa fa-check"></i><b>3.3.5</b> Vectores Lógicos y Caracteres</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="op-vec.html"><a href="op-vec.html"><i class="fa fa-check"></i><b>4</b> Operación Vectorial</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="op-vec.html"><a href="op-vec.html#op-num-vec"><i class="fa fa-check"></i><b>4.1</b> Operaciones Numéricas</a></li>
+<li class="chapter" data-level="4.2" data-path="op-vec.html"><a href="op-vec.html#val-fal"><i class="fa fa-check"></i><b>4.2</b> Valores Faltantes</a></li>
+<li class="chapter" data-level="4.3" data-path="op-vec.html"><a href="op-vec.html#index-sub"><i class="fa fa-check"></i><b>4.3</b> Indexado y Subconjunto</a>
+<ul>
+<li class="chapter" data-level="4.3.1" data-path="op-vec.html"><a href="op-vec.html#ind-num-pos"><i class="fa fa-check"></i><b>4.3.1</b> Índice Numérico Positivo</a></li>
+<li class="chapter" data-level="4.3.2" data-path="op-vec.html"><a href="op-vec.html#ind-num-neg"><i class="fa fa-check"></i><b>4.3.2</b> Índice Numérico Negativo</a></li>
+<li class="chapter" data-level="4.3.3" data-path="op-vec.html"><a href="op-vec.html#vec-log-1"><i class="fa fa-check"></i><b>4.3.3</b> Vector Lógico</a></li>
+</ul></li>
+<li class="chapter" data-level="4.4" data-path="op-vec.html"><a href="op-vec.html#edic-con"><i class="fa fa-check"></i><b>4.4</b> Edición de Contenido</a></li>
+<li class="chapter" data-level="4.5" data-path="op-vec.html"><a href="op-vec.html#op-avan"><i class="fa fa-check"></i><b>4.5</b> Opciones Avanzadas</a>
+<ul>
+<li class="chapter" data-level="4.5.1" data-path="op-vec.html"><a href="op-vec.html#nom-col"><i class="fa fa-check"></i><b>4.5.1</b> Nombrar los Componentes de un Vector</a></li>
+<li class="chapter" data-level="4.5.2" data-path="op-vec.html"><a href="op-vec.html#info-ad"><i class="fa fa-check"></i><b>4.5.2</b> Información Adicional</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="fac.html"><a href="fac.html"><i class="fa fa-check"></i><b>5</b> Factores</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="fac.html"><a href="fac.html#fac-nom"><i class="fa fa-check"></i><b>5.1</b> Factores Nominales</a></li>
+<li class="chapter" data-level="5.2" data-path="fac.html"><a href="fac.html#fac-or"><i class="fa fa-check"></i><b>5.2</b> Factores Ordinales</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="mat.html"><a href="mat.html"><i class="fa fa-check"></i><b>6</b> Matrices</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="mat.html"><a href="mat.html#op-num-mat"><i class="fa fa-check"></i><b>6.1</b> Operaciones Numéricas</a></li>
+<li class="chapter" data-level="6.2" data-path="mat.html"><a href="mat.html#matriz-index"><i class="fa fa-check"></i><b>6.2</b> Indexado y Subconjunto</a></li>
+<li class="chapter" data-level="6.3" data-path="mat.html"><a href="mat.html#ed-con"><i class="fa fa-check"></i><b>6.3</b> Edición de Contenido</a></li>
+<li class="chapter" data-level="6.4" data-path="mat.html"><a href="mat.html#op-avan-mat"><i class="fa fa-check"></i><b>6.4</b> Opciones Avanzadas</a>
+<ul>
+<li class="chapter" data-level="6.4.1" data-path="mat.html"><a href="mat.html#nom-fil"><i class="fa fa-check"></i><b>6.4.1</b> Nombres de Filas y Columnas</a></li>
+<li class="chapter" data-level="6.4.2" data-path="mat.html"><a href="mat.html#mod-mat"><i class="fa fa-check"></i><b>6.4.2</b> Modificar Tamaño de Matrices</a></li>
+<li class="chapter" data-level="6.4.3" data-path="mat.html"><a href="mat.html#info-adic"><i class="fa fa-check"></i><b>6.4.3</b> Información Adicional</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="dataframe.html"><a href="dataframe.html"><i class="fa fa-check"></i><b>7</b> Dataframes</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="dataframe.html"><a href="dataframe.html#df-detalle"><i class="fa fa-check"></i><b>7.1</b> Creación</a></li>
+<li class="chapter" data-level="7.2" data-path="dataframe.html"><a href="dataframe.html#df-op-num"><i class="fa fa-check"></i><b>7.2</b> Operaciones Numéricas</a></li>
+<li class="chapter" data-level="7.3" data-path="dataframe.html"><a href="dataframe.html#df-index"><i class="fa fa-check"></i><b>7.3</b> Indexado y Subconjunto</a>
+<ul>
+<li class="chapter" data-level="7.3.1" data-path="dataframe.html"><a href="dataframe.html#df-op-avan"><i class="fa fa-check"></i><b>7.3.1</b> Opciones Avanzadas</a></li>
+<li class="chapter" data-level="7.3.2" data-path="dataframe.html"><a href="dataframe.html#df-mod-size"><i class="fa fa-check"></i><b>7.3.2</b> Modificar Tamaño o Estructura</a></li>
+<li class="chapter" data-level="7.3.3" data-path="dataframe.html"><a href="dataframe.html#df-nom-fil-col"><i class="fa fa-check"></i><b>7.3.3</b> Nombres de Filas y Columnas</a></li>
+<li class="chapter" data-level="7.3.4" data-path="dataframe.html"><a href="dataframe.html#df-info"><i class="fa fa-check"></i><b>7.3.4</b> Información Adicional</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="array.html"><a href="array.html"><i class="fa fa-check"></i><b>8</b> Array</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="array.html"><a href="array.html#op-num-arr"><i class="fa fa-check"></i><b>8.1</b> Operaciones Numéricas</a></li>
+<li class="chapter" data-level="8.2" data-path="array.html"><a href="array.html#index-arr"><i class="fa fa-check"></i><b>8.2</b> Indexado y Subconjunto</a></li>
+<li class="chapter" data-level="8.3" data-path="array.html"><a href="array.html#ed-con-arr"><i class="fa fa-check"></i><b>8.3</b> Edición de Contenido</a></li>
+<li class="chapter" data-level="8.4" data-path="array.html"><a href="array.html#op-av-arr"><i class="fa fa-check"></i><b>8.4</b> Opciones Avanzadas</a>
+<ul>
+<li class="chapter" data-level="8.4.1" data-path="array.html"><a href="array.html#nom-fil-arr"><i class="fa fa-check"></i><b>8.4.1</b> Nombres de Filas y Columnas</a></li>
+<li class="chapter" data-level="8.4.2" data-path="array.html"><a href="array.html#info-ad-arr"><i class="fa fa-check"></i><b>8.4.2</b> Información Adicional</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="r-fechas.html"><a href="r-fechas.html"><i class="fa fa-check"></i><b>9</b> Fechas</a>
+<ul>
+<li class="chapter" data-level="9.1" data-path="r-fechas.html"><a href="r-fechas.html#op-fe"><i class="fa fa-check"></i><b>9.1</b> Operaciones con Fecha</a>
+<ul>
+<li class="chapter" data-level="9.1.1" data-path="r-fechas.html"><a href="r-fechas.html#format-date"><i class="fa fa-check"></i><b>9.1.1</b> Formato de Fechas</a></li>
+<li class="chapter" data-level="9.1.2" data-path="r-fechas.html"><a href="r-fechas.html#cambio-formato-date"><i class="fa fa-check"></i><b>9.1.2</b> Cambio de Formato</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="r-hora.html"><a href="r-hora.html"><i class="fa fa-check"></i><b>10</b> Hora</a>
+<ul>
+<li class="chapter" data-level="10.1" data-path="r-hora.html"><a href="r-hora.html#posix"><i class="fa fa-check"></i><b>10.1</b> Formato POSIX</a></li>
+<li class="chapter" data-level="10.2" data-path="r-hora.html"><a href="r-hora.html#ope-time"><i class="fa fa-check"></i><b>10.2</b> Operando con el tiempo</a></li>
+<li class="chapter" data-level="10.3" data-path="r-hora.html"><a href="r-hora.html#zona-hora"><i class="fa fa-check"></i><b>10.3</b> Conversión entre zonas horarias</a></li>
+</ul></li>
+<li class="part"><span><b>II Part II</b></span></li>
+<li class="chapter" data-level="11" data-path="EO-intro.html"><a href="EO-intro.html"><i class="fa fa-check"></i><b>11</b> Observación de la Tierra</a>
+<ul>
+<li class="chapter" data-level="11.1" data-path="EO-intro.html"><a href="EO-intro.html#intro-rs"><i class="fa fa-check"></i><b>11.1</b> Introducción</a></li>
+<li class="chapter" data-level="11.2" data-path="EO-intro.html"><a href="EO-intro.html#rs-eletro"><i class="fa fa-check"></i><b>11.2</b> Energía Electromagnética</a>
+<ul>
+<li class="chapter" data-level="11.2.1" data-path="EO-intro.html"><a href="EO-intro.html#rs-intro-amable"><i class="fa fa-check"></i><b>11.2.1</b> Fundamentos Históricos y Físicos</a></li>
+<li class="chapter" data-level="11.2.2" data-path="EO-intro.html"><a href="EO-intro.html#rs-intro-electro"><i class="fa fa-check"></i><b>11.2.2</b> Fenómeno Eléctrico</a></li>
+<li class="chapter" data-level="11.2.3" data-path="EO-intro.html"><a href="EO-intro.html#rs-intro-magneto"><i class="fa fa-check"></i><b>11.2.3</b> Fenómeno Magnético</a></li>
+</ul></li>
+<li class="chapter" data-level="11.3" data-path="EO-intro.html"><a href="EO-intro.html#rs-relation"><i class="fa fa-check"></i><b>11.3</b> La Relación Electricidad Magnetismo</a>
+<ul>
+<li class="chapter" data-level="11.3.1" data-path="EO-intro.html"><a href="EO-intro.html#rs-campo"><i class="fa fa-check"></i><b>11.3.1</b> El Concepto de Campo</a></li>
+<li class="chapter" data-level="11.3.2" data-path="EO-intro.html"><a href="EO-intro.html#rs-electro-magne"><i class="fa fa-check"></i><b>11.3.2</b> El Electromagnetismo</a></li>
+</ul></li>
+<li class="chapter" data-level="11.4" data-path="EO-intro.html"><a href="EO-intro.html#rs-eem"><i class="fa fa-check"></i><b>11.4</b> Cómo se Produce y Transporta la Energía</a>
+<ul>
+<li class="chapter" data-level="11.4.1" data-path="EO-intro.html"><a href="EO-intro.html#rs-onda"><i class="fa fa-check"></i><b>11.4.1</b> Las Ondas</a></li>
+<li class="chapter" data-level="11.4.2" data-path="EO-intro.html"><a href="EO-intro.html#cuantiluz"><i class="fa fa-check"></i><b>11.4.2</b> Cuantos y Dualidad de la Luz</a></li>
+<li class="chapter" data-level="11.4.3" data-path="EO-intro.html"><a href="EO-intro.html#foton"><i class="fa fa-check"></i><b>11.4.3</b> El Fotón</a></li>
+<li class="chapter" data-level="11.4.4" data-path="EO-intro.html"><a href="EO-intro.html#teo-cuan-ond"><i class="fa fa-check"></i><b>11.4.4</b> Relación entre Teoría Ondulatoria y Cuántica</a></li>
+</ul></li>
+<li class="chapter" data-level="11.5" data-path="EO-intro.html"><a href="EO-intro.html#rs-el-espectro-electro"><i class="fa fa-check"></i><b>11.5</b> El Espectro Electromagnético</a>
+<ul>
+<li class="chapter" data-level="11.5.1" data-path="EO-intro.html"><a href="EO-intro.html#vis"><i class="fa fa-check"></i><b>11.5.1</b> Espectro Visible (VIS)</a></li>
+<li class="chapter" data-level="11.5.2" data-path="EO-intro.html"><a href="EO-intro.html#infra-cer"><i class="fa fa-check"></i><b>11.5.2</b> Infrarrojo Cercano (NIR), Próximo o Reflejado</a></li>
+<li class="chapter" data-level="11.5.3" data-path="EO-intro.html"><a href="EO-intro.html#infra-mir"><i class="fa fa-check"></i><b>11.5.3</b> Infrarrojo Medio (MIR)</a></li>
+<li class="chapter" data-level="11.5.4" data-path="EO-intro.html"><a href="EO-intro.html#infra-ter"><i class="fa fa-check"></i><b>11.5.4</b> Infrarrojo Térmico (TIR)</a></li>
+<li class="chapter" data-level="11.5.5" data-path="EO-intro.html"><a href="EO-intro.html#microwave"><i class="fa fa-check"></i><b>11.5.5</b> Microondas (MW)</a></li>
+</ul></li>
+<li class="chapter" data-level="11.6" data-path="EO-intro.html"><a href="EO-intro.html#concep-unidad"><i class="fa fa-check"></i><b>11.6</b> Conceptos Básicos y sus Unidades</a>
+<ul>
+<li class="chapter" data-level="11.6.1" data-path="EO-intro.html"><a href="EO-intro.html#angsol"><i class="fa fa-check"></i><b>11.6.1</b> Ángulo Sólido</a></li>
+<li class="chapter" data-level="11.6.2" data-path="EO-intro.html"><a href="EO-intro.html#mag-radio"><i class="fa fa-check"></i><b>11.6.2</b> Magnitudes Radiométricas</a></li>
+<li class="chapter" data-level="11.6.3" data-path="EO-intro.html"><a href="EO-intro.html#temp-intro"><i class="fa fa-check"></i><b>11.6.3</b> Importancia de la Temperatura</a></li>
+</ul></li>
+<li class="chapter" data-level="11.7" data-path="EO-intro.html"><a href="EO-intro.html#cuerpo-negro"><i class="fa fa-check"></i><b>11.7</b> Radiación de Cuerpo Negro</a>
+<ul>
+<li class="chapter" data-level="11.7.1" data-path="EO-intro.html"><a href="EO-intro.html#ley-planck"><i class="fa fa-check"></i><b>11.7.1</b> Ley de Planck</a></li>
+<li class="chapter" data-level="11.7.2" data-path="EO-intro.html"><a href="EO-intro.html#wien"><i class="fa fa-check"></i><b>11.7.2</b> Ley de Desplazamiento de Wien</a></li>
+<li class="chapter" data-level="11.7.3" data-path="EO-intro.html"><a href="EO-intro.html#stef"><i class="fa fa-check"></i><b>11.7.3</b> Ley de Stefan-Boltzmann</a></li>
+<li class="chapter" data-level="11.7.4" data-path="EO-intro.html"><a href="EO-intro.html#kirchhoff"><i class="fa fa-check"></i><b>11.7.4</b> Ley de Kirchhoff</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="12" data-path="flujo.html"><a href="flujo.html"><i class="fa fa-check"></i><b>12</b> EEM</a>
+<ul>
+<li class="chapter" data-level="12.1" data-path="flujo.html"><a href="flujo.html#flujo-eem"><i class="fa fa-check"></i><b>12.1</b> Flujo de la EEM</a></li>
+<li class="chapter" data-level="12.2" data-path="flujo.html"><a href="flujo.html#inter-atm-eem"><i class="fa fa-check"></i><b>12.2</b> Interacción EEM con la Atmósfera</a>
+<ul>
+<li class="chapter" data-level="12.2.1" data-path="flujo.html"><a href="flujo.html#atmos"><i class="fa fa-check"></i><b>12.2.1</b> La Atmósfera</a></li>
+<li class="chapter" data-level="12.2.2" data-path="flujo.html"><a href="flujo.html#at-abs"><i class="fa fa-check"></i><b>12.2.2</b> Absorción</a></li>
+<li class="chapter" data-level="12.2.3" data-path="flujo.html"><a href="flujo.html#disper"><i class="fa fa-check"></i><b>12.2.3</b> Dispersión</a></li>
+<li class="chapter" data-level="12.2.4" data-path="flujo.html"><a href="flujo.html#emision"><i class="fa fa-check"></i><b>12.2.4</b> Emisión</a></li>
+</ul></li>
+<li class="chapter" data-level="12.3" data-path="flujo.html"><a href="flujo.html#fin-ciclo"><i class="fa fa-check"></i><b>12.3</b> Últimos pasos</a>
+<ul>
+<li class="chapter" data-level="12.3.1" data-path="flujo.html"><a href="flujo.html#dn-toa"><i class="fa fa-check"></i><b>12.3.1</b> DN a TOA</a></li>
+<li class="chapter" data-level="12.3.2" data-path="flujo.html"><a href="flujo.html#dn-boa"><i class="fa fa-check"></i><b>12.3.2</b> TOA a BOA</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="13" data-path="prop-img.html"><a href="prop-img.html"><i class="fa fa-check"></i><b>13</b> Resoluciones de Imagen</a>
+<ul>
+<li class="chapter" data-level="13.1" data-path="prop-img.html"><a href="prop-img.html#res-spac"><i class="fa fa-check"></i><b>13.1</b> Resolución Espacial</a></li>
+<li class="chapter" data-level="13.2" data-path="prop-img.html"><a href="prop-img.html#res-espec"><i class="fa fa-check"></i><b>13.2</b> Resolución Espectral</a>
+<ul>
+<li class="chapter" data-level="13.2.1" data-path="prop-img.html"><a href="prop-img.html#res-profile"><i class="fa fa-check"></i><b>13.2.1</b> Firma Espectral</a></li>
+<li class="chapter" data-level="13.2.2" data-path="prop-img.html"><a href="prop-img.html#import-ds"><i class="fa fa-check"></i><b>13.2.2</b> Import Dataset</a></li>
+<li class="chapter" data-level="13.2.3" data-path="prop-img.html"><a href="prop-img.html#spec-r"><i class="fa fa-check"></i><b>13.2.3</b> Procesando en R</a></li>
+</ul></li>
+<li class="chapter" data-level="13.3" data-path="prop-img.html"><a href="prop-img.html#res-rad"><i class="fa fa-check"></i><b>13.3</b> Resolución Radiométrica</a></li>
+<li class="chapter" data-level="13.4" data-path="prop-img.html"><a href="prop-img.html#res-temp"><i class="fa fa-check"></i><b>13.4</b> Resolución Temporal</a></li>
+<li class="chapter" data-level="13.5" data-path="prop-img.html"><a href="prop-img.html#res-ang"><i class="fa fa-check"></i><b>13.5</b> Resolución angular</a></li>
+</ul></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Publicado con bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Ráster con R</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="EO-intro" class="section level1" number="11">
+<h1><span class="header-section-number">Capítulo 11</span> Observación de la Tierra</h1>
+<div id="intro-rs" class="section level2" number="11.1">
+<h2><span class="header-section-number">11.1</span> Introducción</h2>
+<p>En la actualidad a tomado relevancia el concepto de <strong>Observación de la Tierra</strong> desde el espacio (EO del inglés) que hace referencia a las actividades de captura de datos de la superficie terrestre a partir de vehículos espaciales diseñados específicamente para observar en un amplio espectro de la energía radiante de la tierra.</p>
+<p>También al realizar la observación desde lejos (sin contacto con el objeto de estudio) se denominan ya desde principios de la década del 60 como <em>técnicas de teledetección</em>.</p>
+<p>Las actividades de EO o teledetección incluyen una amplia gama de técnicas para la adquisición, almacenamiento y transmisión de los datos los cuales luego deben ser convertidos en información relevante, que finalmente debe llegar de manera oportuna a una amplia variedad de usuarios finales potencial para el uso de agricultores, como pescadores, periodistas, glaciólogos, ecologistas, geógrafos y un amplio etcétera.</p>
+<p>De las diversas fuentes de datos hoy las imágenes de satélite de resolución media (el nivel de detalle observable) y de acceso libre (gratis en realidad) se han vuelto ampliamente accesibles, proporcionan cobertura mundial con una amplia variación espectral (región del espectro que pueden sensar) y temporal (período de tiempo entre las observaciones para el mismo punto geográfico), lo que les hace aptos para una amplia gama de estudios.</p>
+<p>La señal de energía radiante que es detectada y medida por el sensor satelital es almacenada en la memoria a bordo del satélite o transmitida a un receptor en tierra para su posterior interpretación.</p>
+<p>La teledetección y la EO también incluyen el <strong>análisis</strong> y la <strong>interpretación</strong> de los datos adquiridos.</p>
+<p>La extracción de información relevante requiere de una buena comprensión de la base física, el proceso de adquisición y un conocimiento sólido de los algoritmos utilizados para procesar los datos originales.</p>
+</div>
+<div id="rs-eletro" class="section level2" number="11.2">
+<h2><span class="header-section-number">11.2</span> Energía Electromagnética</h2>
+<p>La observación remota requiere algún tipo de interacción energética entre el objetivo y el sensor. La señal detectada por el sensor puede ser energía solar (generada en el Sol) que es reflejada por la superficie de la Tierra, como también puede ser energía emitida desde la superficie por sí misma o la generada por el mismo sensor que produce su propio pulso de energía.</p>
+<p>Todo este proceso tiene una fuerte base física, ya que implica recopilar señales electromagnéticas (EM) provenientes de objetos con diferentes propiedades físicas y químicas. Y necesariamente debemos comenzar con una descripción básica e histórica de la física que soporta todo este desarrollo.</p>
+<div id="rs-intro-amable" class="section level3" number="11.2.1">
+<h3><span class="header-section-number">11.2.1</span> Fundamentos Históricos y Físicos</h3>
+Todo comienza con dos fenómenos muy simples y observables en la vida diaria, uno el típico chispazo que sentimos en la punta de los dedos luego de caminar sobre una alfombra, o cuando se erizan los cabellos cuando se roza con un trozo de tela o los rayos que observamos en una tormenta, todos ellos productos de la <strong>electricidad</strong> y dos, el efecto que hace funcionar los imanes o una brújula, el <strong>magnetismo</strong>.
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:rs-intro-0"></span>
+<img src="img/Ambar.jpg" alt="Muestra de Ámbar. (foto: De Hannes Grobe-Trabajo propio, CC BY-SA 2.5)" width="906" />
+<p class="caption">
+Figura 11.1: Muestra de Ámbar. (foto: De Hannes Grobe-Trabajo propio, CC BY-SA 2.5)
+</p>
+</div>
+</div>
+<div id="rs-intro-electro" class="section level3" number="11.2.2">
+<h3><span class="header-section-number">11.2.2</span> Fenómeno Eléctrico</h3>
+<p>Ya en la antigua Grecia Tales de Mileto notó que al frotar una piedra de ámbar (Figura <a href="EO-intro.html#fig:rs-intro-0">11.1</a>) era capaz de atraer por el aire pequeños objetos (ámbar en griego es élektron y de allí deriva la palabra electricidad) y trató de buscar una explicación, aunque para encontrar una verdaderamente moderna del fenómeno de la electricidad, hubo que esperar unos dos mil años por el descubrimiento del <strong>electrón</strong>, gracias a los trabajos de Sir J.J. Thompson (Figura <a href="EO-intro.html#fig:rs-intro-2">11.2</a>).</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:rs-intro-2"></span>
+<img src="img/jjthom.jpg" alt="Físico Inglés Sir J.J.Thomson." width="256" />
+<p class="caption">
+Figura 11.2: Físico Inglés Sir J.J.Thomson.
+</p>
+</div>
+<p>El electrón es una partícula muy ligera y con gran movilidad que existe dentro de los átomos, una partícula que como responde a los efectos eléctricos se dice que está <em>cargada eléctricamente</em>; de hecho, hoy entendemos la electricidad como un movimiento de electrones en un conductor y esta es la base por ejemplo de toda la electrónica moderna y como electrones hay en todas partes es muy fácil generar fenómenos eléctricos.</p>
+</div>
+<div id="rs-intro-magneto" class="section level3" number="11.2.3">
+<h3><span class="header-section-number">11.2.3</span> Fenómeno Magnético</h3>
+<p>También desde la antigüedad (otra vez los griegos y otra vez Tales de Mileto) constatan una extraña fuerza que entre ciertas piedras muy comunes en la Región de Magnesia y ahí su nombre: <strong>magnetismo</strong> (Figura <a href="EO-intro.html#fig:rs-intro-1">11.3</a>).</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:rs-intro-1"></span>
+<img src="img/magnesia.jpg" alt="Los Propileos de Magnesia del Meandro.Turquía. (foto: De Vadimph-Trabajo propio,CC BY-SA 3.0)" width="960" />
+<p class="caption">
+Figura 11.3: Los Propileos de Magnesia del Meandro.Turquía. (foto: De Vadimph-Trabajo propio,CC BY-SA 3.0)
+</p>
+</div>
+<p>La explicación moderna a este magnetismo natural se explica también por los electrones que componen la materia. Hay que imaginar los electrones como pequeños imanes dentro de los materiales normales (aunque por ejemplo en la madera estos pequeños imanes están todos desorientados de forma tal que el efecto general difiere a lo que ocurre en esas piedras especiales).</p>
+<p>Estos “pequeños imanes” en los materiales magnéticos están ordenados según una orientación específica, lo que genera un efecto global, lo que genera un gran imán, caracterizado como ya saben por el polo norte y el polo sur, hoy a estos pequeños imanes en los electrones lo conocemos con el nombre de <strong>spin</strong>, una propiedad cuántica muy peculiar.</p>
+<p>Los imanes hoy en día los encuentras por todas partes y son una pieza fundamental del desarrollo moderno.</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:rs-intro-3"></span>
+<img src="img/Hans.jpg" alt="Daguerrotipo de Hans Christian Ørsted." width="154" />
+<p class="caption">
+Figura 11.4: Daguerrotipo de Hans Christian Ørsted.
+</p>
+</div>
+</div>
+</div>
+<div id="rs-relation" class="section level2" number="11.3">
+<h2><span class="header-section-number">11.3</span> La Relación Electricidad Magnetismo</h2>
+<p>Si ambos fenómenos se relacionan íntimamente con los electrones alguna conexión entre el <em>magnetismo</em> y la <em>electricidad</em> debía existir.</p>
+<p>La primera indicación de que eran fenómenos realmente conectados la observó Hans Christian Ørsted (Figura <a href="EO-intro.html#fig:rs-intro-3">11.4</a>) un físico danés en el siglo 19.</p>
+<p>Todo fue a raíz de una observación muy importante pero que ocurrió de manera casual, durante una demostración en clases al conectar la corriente en un circuito eléctrico observó que la aguja de una brújula cercana se desviaba y tras numerosas pruebas y experimentos llegó esencialmente a la conclusión correcta: <em>el flujo de cargas -una corriente eléctrica- genera un fenómeno magnético alrededor del cable</em> y esto da lugar a un nuevo tipo de imanes, el <strong>electroimán</strong>.</p>
+<p>Si haces pasar una corriente eléctrica por un cable circular (una <em>espira</em>) se crea un campo magnético como el de un imán con un polo norte y un polo sur. Este mecanismo es fundamental en la sociedad moderna dando lugar a los motores eléctricos: la transformación de electricidad en movimiento.</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:rs-intro-4"></span>
+<img src="img/ampere.jpg" alt="Grabado de André-Marie Ampère por Ambrose Tardieu." width="128" />
+<p class="caption">
+Figura 11.5: Grabado de André-Marie Ampère por Ambrose Tardieu.
+</p>
+</div>
+<p>Ørsted publica sus resultados y un joven científico francés muy talentoso, André-Marie Ampère (Figura <a href="EO-intro.html#fig:rs-intro-4">11.5</a>) decide probar por su cuenta, dando con lo que se conoce como <em>la ley de Ampère</em>, relativa a las fuerzas de dos cables que conducen corriente.</p>
+<p>Michael Faraday (Figura <a href="EO-intro.html#fig:rs-intro-5">11.6</a>) un joven inglés sin ninguna formación científica oye de estos nuevos desarrollos y se pregunta si una corriente eléctrica es capaz de producir magnetismo ¿el magnetismo será capaz también de crear una corriente eléctrica? una intuición maravillosa y muy científica, luego de un arduo trabajo consiguió probarlo, no sin antes romperse la cabeza ya que esta intuición venía con una <em>pequeña sutileza</em>, no es la presencia del imán en el conductor lo que consigue generar una corriente sino su movimiento.</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:rs-intro-5"></span>
+<img src="img/faraday.jpg" alt="Retrato de Michael Faraday pintado por H.W. Pickersgill." width="128" />
+<p class="caption">
+Figura 11.6: Retrato de Michael Faraday pintado por H.W. Pickersgill.
+</p>
+</div>
+<p>Es la variación del magnetismo lo que crea la electricidad, aunque la gran revolución estaba aún por llegar, en todo esto, había algo que no le encajaba al joven Faraday, unas fuerzas misteriosas la eléctrica y magnética se desplazaban por el aire sin ningún tipo de sustento, esto parecía poco físico para él y varios experimentos le hicieron apuntar en la dirección correcta: primero consiguió en un cristal ver una conexión entre la electricidad y la luz y luego tenía el famoso experimento de las limaduras de hierro que espolvoreadas en un papel y pones debajo un imán ves que se generaban patrones que recorrían la distancia entre los polos, para Faraday tenía que existir agua invisible en el aire algo que no podemos ver pero que de alguna forma estaba guiando las limaduras (Figura <a href="EO-intro.html#fig:rs-intro-7">11.7</a>) tomada de <span class="citation">Black (1913)</span>.</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:rs-intro-7"></span>
+<img src="img/magneto.png" alt="Las limaduras de hierro permiten mostrar la dirección del campo magnético de un imán permanente." width="222" />
+<p class="caption">
+Figura 11.7: Las limaduras de hierro permiten mostrar la dirección del campo magnético de un imán permanente.
+</p>
+</div>
+<p>Faraday llamó a este peculiar fenómeno <strong>campo</strong>, este concepto resultó ser uno de los conceptos más poderosos de la historia de la ciencia: <em>un objeto altera las propiedades de su entorno cuando otro cuerpo se acerca a este</em>, es el propio espacio el que ejerce la acción sobre el cuerpo es una forma de transmitir una fuerza por el espacio, una forma que usaría el mismo Albert Einstein en su teoría de la gravedad en la <em>relatividad general</em>.</p>
+<div id="rs-campo" class="section level3" number="11.3.1">
+<h3><span class="header-section-number">11.3.1</span> El Concepto de Campo</h3>
+<p>El concepto de campo fue una de las ideas más importantes de la ciencia, hoy en día todas las modernas teorías de fuerzas e interacciones están basadas en el concepto de campo, la fuerza eléctrica y magnética se transmiten por medio de campos.</p>
+<p>Con esta revolución se está creando una nueva área de la ciencia y el puntapié inicial la da un joven escocés James Clerk Maxwell (Figura <a href="EO-intro.html#fig:rs-intro-6">11.8</a>). Maxwell era un científico sobresaliente de gran intuición y una formación matemática muy sólida y ve en el concepto de campo una herramienta fundamental para llevar al próximo nivel la idea de electricidad y magnetismo apoyado en esta sorprendente simetría.</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:rs-intro-6"></span>
+<img src="img/maxwell.png" alt="Grabado de James Clerk Maxwell por G. J. Stodart." width="166" />
+<p class="caption">
+Figura 11.8: Grabado de James Clerk Maxwell por G. J. Stodart.
+</p>
+</div>
+<p>Con la ayuda de los desarrollos teóricos previos junto con el concepto de campo Maxwell desarrolla un todo unificado. Inicialmente 20 ecuaciones que hoy reducidas a cuatro son las famosas ecuaciones de Maxwell uno de los desarrollos más prodigiosos, potentes y revolucionarios que han surgido nunca del intelecto humano.</p>
+</div>
+<div id="rs-electro-magne" class="section level3" number="11.3.2">
+<h3><span class="header-section-number">11.3.2</span> El Electromagnetismo</h3>
+<p>Cuando Maxwell se propuso resolver sus ecuaciones observó algo muy peculiar: la solución de sus ecuaciones eran una onda. Una onda de electricidad y magnetismo, una onda <strong>electromagnética</strong>, una onda que se auto sustentaba en el espacio.</p>
+<p>Una de las propiedades de esta onda es que la velocidad a la que se desplaza es exactamente la velocidad de la luz. Ese descubrimiento le lleva a teorizar:</p>
+<blockquote>
+<p><em>“Esta velocidad es tan próxima a la de la luz, que parece que tenemos sólidas razones para concluir que la propia luz (incluyendo el calor radiante, y otras radiaciones si las hay) es una perturbación electromagnética en forma de ondas que se propagan de acuerdo con las leyes del electromagnetismo”</em>.</p>
+</blockquote>
+<p>Como hemos descubierto hasta ahora, si la variación del campo magnético es el que genera el campo eléctrico y viceversa, podemos pensar en el caso de la luz, tomamos un electrón en el vacío que de repente oscila, esto hace que se genere el magnetismo -un campo magnético- que tiene la propiedad de penetrar el vacío, luego, ese campo magnético va decreciendo y esta variación a su vez genera un campo eléctrico que se va haciendo cada vez más grande según el campo magnético va disminuyendo y en ese momento ocurre lo contrario, el campo eléctrico empieza a disminuir lo que va generando un campo magnético y así sucesivamente. Ambos de forma acoplada se van reformando y reforzando, permitiendo que la <em>perturbación viaje hasta el infinito</em>.</p>
+<p>Así el campo eléctrico y el campo magnético en una onda electromagnética vibran perpendicularmente (90°) entre sí (Figura <a href="EO-intro.html#fig:rs-intro-8">11.9</a>).</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:rs-intro-8"></span>
+<img src="img/onde_electromagnetique.png" alt="Onda electromagnética. Fuente: SuperManu, CC BY-SA 3.0." width="215" />
+<p class="caption">
+Figura 11.9: Onda electromagnética. Fuente: SuperManu, CC BY-SA 3.0.
+</p>
+</div>
+</div>
+</div>
+<div id="rs-eem" class="section level2" number="11.4">
+<h2><span class="header-section-number">11.4</span> Cómo se Produce y Transporta la Energía</h2>
+<div id="rs-onda" class="section level3" number="11.4.1">
+<h3><span class="header-section-number">11.4.1</span> Las Ondas</h3>
+<p>Una <em>onda</em> se puede describir usando algunos atributos básicos (Figura <a href="EO-intro.html#fig:rs-intro-12">11.10</a>):</p>
+<div class="sourceCode" id="cb385"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb385-1"><a href="EO-intro.html#cb385-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mar=</span><span class="fu">c</span>(<span class="dv">3</span>,<span class="dv">3</span>,<span class="dv">3</span>,<span class="dv">3</span>), <span class="at">cex=</span><span class="fl">0.65</span>)</span>
+<span id="cb385-2"><a href="EO-intro.html#cb385-2" aria-hidden="true" tabindex="-1"></a>t <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="dv">0</span>,<span class="dv">20</span>,<span class="fl">0.025</span>)</span>
+<span id="cb385-3"><a href="EO-intro.html#cb385-3" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">sin</span>(t)</span>
+<span id="cb385-4"><a href="EO-intro.html#cb385-4" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(t,y,<span class="at">type=</span><span class="st">&quot;l&quot;</span>, <span class="at">xlab=</span><span class="st">&quot;time&quot;</span>, <span class="at">ylab=</span><span class="st">&quot;Sine wave&quot;</span>, <span class="at">lwd=</span><span class="fl">1.75</span>, <span class="at">bty=</span><span class="st">&quot;o&quot;</span>, <span class="at">ylim=</span><span class="fu">c</span>(<span class="sc">-</span><span class="dv">1</span>,<span class="fl">1.25</span>),<span class="at">xaxt =</span> <span class="st">&quot;n&quot;</span>, <span class="at">yaxt =</span> <span class="st">&quot;n&quot;</span>,<span class="at">col=</span><span class="st">&quot;gray70&quot;</span>)</span>
+<span id="cb385-5"><a href="EO-intro.html#cb385-5" aria-hidden="true" tabindex="-1"></a><span class="fu">segments</span>(<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">20</span>,<span class="dv">0</span>,<span class="at">col=</span><span class="st">&quot;gray40&quot;</span>,<span class="at">lwd=</span><span class="fl">0.75</span>, <span class="at">lty=</span><span class="dv">1</span>)</span>
+<span id="cb385-6"><a href="EO-intro.html#cb385-6" aria-hidden="true" tabindex="-1"></a><span class="fu">arrows</span>(<span class="fl">1.5707</span>,<span class="fl">0.015</span>,<span class="fl">1.5707</span>,<span class="fl">0.98</span>,<span class="at">col=</span><span class="st">&quot;gray20&quot;</span>, <span class="at">lty=</span><span class="dv">1</span>, <span class="at">lwd=</span><span class="fl">0.5</span>,<span class="at">code=</span><span class="dv">3</span>,<span class="at">length =</span> .<span class="dv">05</span>)</span>
+<span id="cb385-7"><a href="EO-intro.html#cb385-7" aria-hidden="true" tabindex="-1"></a><span class="co">#segments(1.5707*5,0,1.5707*5,1,col=&quot;gray60&quot;, lty=1, lwd=0.5)</span></span>
+<span id="cb385-8"><a href="EO-intro.html#cb385-8" aria-hidden="true" tabindex="-1"></a><span class="fu">arrows</span>(<span class="fl">1.65</span>,<span class="dv">1</span>,<span class="fl">1.5707</span><span class="sc">*</span><span class="dv">5</span>,<span class="dv">1</span>,<span class="at">col=</span><span class="st">&quot;gray20&quot;</span>, <span class="at">lty=</span><span class="dv">1</span>, <span class="at">lwd=</span><span class="fl">0.5</span>,<span class="at">code=</span><span class="dv">3</span>,<span class="at">length =</span> .<span class="dv">05</span>)</span>
+<span id="cb385-9"><a href="EO-intro.html#cb385-9" aria-hidden="true" tabindex="-1"></a><span class="fu">text</span>(<span class="fl">1.5707</span><span class="sc">*</span><span class="fl">2.5</span> <span class="sc">+</span> <span class="dv">1</span>, <span class="fl">1.15</span>,<span class="fu">expression</span>(<span class="fu">paste</span>(<span class="st">&quot;Longitud de onda (&quot;</span>, lambda,<span class="st">&quot;)&quot;</span>)), <span class="at">srt=</span><span class="dv">0</span>)</span>
+<span id="cb385-10"><a href="EO-intro.html#cb385-10" aria-hidden="true" tabindex="-1"></a><span class="fu">text</span>(<span class="fl">1.15</span>,<span class="fl">0.45</span>,<span class="at">labels=</span> <span class="fu">c</span>(<span class="st">&quot;Amplitud (A)&quot;</span>), <span class="at">srt=</span><span class="dv">90</span>)</span>
+<span id="cb385-11"><a href="EO-intro.html#cb385-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb385-12"><a href="EO-intro.html#cb385-12" aria-hidden="true" tabindex="-1"></a><span class="fu">segments</span>(<span class="fl">1.5707</span><span class="sc">*</span><span class="dv">10</span>,<span class="sc">-</span><span class="dv">1</span>,<span class="fl">1.5707</span><span class="sc">*</span><span class="dv">10</span>,<span class="dv">1</span>,<span class="at">col=</span><span class="st">&quot;gray60&quot;</span>,<span class="at">lwd=</span><span class="fl">0.5</span>, <span class="at">lty=</span><span class="dv">5</span>)</span>
+<span id="cb385-13"><a href="EO-intro.html#cb385-13" aria-hidden="true" tabindex="-1"></a><span class="fu">text</span>(<span class="fl">1.5707</span><span class="sc">*</span><span class="dv">10</span>,<span class="fl">1.1</span>,<span class="fu">expression</span>(<span class="fu">paste</span>(<span class="st">&quot;Frecuencia (&quot;</span>, nu,<span class="st">&quot;)&quot;</span>)), <span class="at">srt=</span><span class="dv">0</span>)</span></code></pre></div>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:rs-intro-12"></span>
+<img src="_main_files/figure-html/rs-intro-12-1.png" alt="Descripción general de una onda." width="672" />
+<p class="caption">
+Figura 11.10: Descripción general de una onda.
+</p>
+</div>
+<ul>
+<li><p><strong>Amplitud (A)</strong>: Distancia entre el punto central y la <em>cresta</em> (punto de altura máxima), la unidad depende del tipo de onda (m, v/m).</p></li>
+<li><p><strong>Longitud de Onda (<span class="math inline">\(\lambda\)</span>)</strong>: Distancia entre dos crestas o <em>valles</em> (punto de altura mínima), se mide en unidad de distancia (m, mm, <span class="math inline">\(\mu m\)</span>).</p></li>
+<li><p><strong>Frecuencia (<span class="math inline">\(\nu\)</span>)</strong>: Número de crestas que pasan por un punto dado por unidad de tiempo. La unidad de medida es el hercio (HZ), que equivale a un ciclo por segundo (un ciclo es el paso de dos crestas).</p></li>
+<li><p><strong>Período (T)</strong>: Tiempo transcurrido entre el paso de dos crestas por un punto.</p></li>
+<li><p><strong>Fase (<span class="math inline">\(\varphi\)</span>)</strong>: El <em>ángulo de fase</em> o <em>fase</em> de una onda se refiere a su desplazamiento hacia la derecha o la izquierda con respecto a una referencia. Se mide en grados (°) o radianes (rad).</p></li>
+</ul>
+<p>Algunas relaciones que se desprenden de esta descripción son:</p>
+<ol style="list-style-type: decimal">
+<li><p>Frecuencia y Período son recíprocas entre sí:
+<span class="math display" id="eq:rs-frec-per">\[\begin{equation} 
+\nu= \frac{1}{T} 
+\tag{11.1}
+\end{equation}\]</span></p></li>
+<li><p>La longitud de onda <span class="math inline">\(\lambda\)</span> y frecuencia <span class="math inline">\(\nu\)</span> están inversamente relacionadas:
+<span class="math display" id="eq:rs-lambda-frec">\[\begin{equation} 
+c= \lambda \nu   
+\tag{11.2}
+\end{equation}\]</span></p></li>
+</ol>
+<p>Donde <span class="math inline">\(c\)</span> es la velocidad de la luz en el vacío, ~<span class="math inline">\(3 \times 10^8 \frac{m}{s}\)</span>.</p>
+</div>
+<div id="cuantiluz" class="section level3" number="11.4.2">
+<h3><span class="header-section-number">11.4.2</span> Cuantos y Dualidad de la Luz</h3>
+<p>De acuerdo con la física clásica, la materia estaba compuesta por partículas que tenían masa, cuya posición en el espacio podía ser conocida; por otro lado, consideraban que las ondas luminosas no tenían masa, y que su posición en el espacio no podía ser determinada. Puesto que pensaban que pertenecían a diferentes categorías, los científicos no tenían una buena comprensión de cómo interactuaban la luz con la materia. Sin embargo, esto cambió en 1900, cuando el físico alemán Max Planck (Figura <a href="EO-intro.html#fig:rs-intro-16">11.11</a>) comenzó a estudiar cuerpos negros (cuerpos que se calientan hasta que empiezan a brillar).</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:rs-intro-16"></span>
+<img src="img/maxplanck.jpg" alt="Max Planck. Fuente: Bundesarchiv, Bild 183-R0116-504 CC-BY-SA 3.0." width="128" />
+<p class="caption">
+Figura 11.11: Max Planck. Fuente: Bundesarchiv, Bild 183-R0116-504 CC-BY-SA 3.0.
+</p>
+</div>
+<p>Planck encontró que la radiación electromagnética emitida por un cuerpo negro no podía ser explicada por la física clásica, que postula que la materia puede absorber y emitir cualquier cantidad de radiación electromagnética. Planck observó que, de hecho, la materia absorbía o emitía energía solo en múltiplos enteros del valor <span class="math inline">\(h \nu\)</span>, donde <span class="math inline">\(\nu\)</span> es la frecuencia de la luz absorbida o emitida y <span class="math inline">\(h\)</span> es la constante de Planck, <span class="math inline">\(6.626 \times 10^{-34}Js\)</span>. Este fue un descubrimiento sorprendente, pues desafió la idea de que la energía era continua y que se podía transferir en cualquier cantidad. La realidad, que descubrió Planck, es que la energía no es continua, sino que está cuantizada (es decir, que solo puede transferirse en <em>paquetes</em> individuales o -partículas- de tamaño <span class="math inline">\(\nu h\)</span>). Cada uno de estos paquetes de energía es conocido como <strong>cuanto</strong> (cuantos, en plural).</p>
+<p>El descubrimiento de Planck de que la radiación electromagnética está cuantizada cambió para siempre la idea de que la luz se comporta solamente como onda. En realidad, <em>parecía que la luz tenía tanto propiedades de onda como de partícula</em>.</p>
+</div>
+<div id="foton" class="section level3" number="11.4.3">
+<h3><span class="header-section-number">11.4.3</span> El Fotón</h3>
+<p>Los descubrimientos de Planck pavimentaron el camino para el descubrimiento del fotón. El fotón es la partícula elemental, o cuanto, de la luz. Como pronto veremos, los átomos y las moléculas pueden absorber o emitir fotones. Cuando un átomo o una molécula absorbe un fotón, este le transfiere su energía. Ya que la energía está cuantizada, se transfiere toda la energía del fotón (recuerda que no puede transferirse en fracciones de cuantos, que son los “paquetes de energía” más pequeños posibles). El proceso inverso también es verdadero. Cuando un átomo o una molécula pierde energía, emite un fotón con exactamente la misma cantidad de energía que perdió. Este cambio en la energía es directamente proporcional a la frecuencia del fotón emitido o absorbido, y está dado por la famosa ecuación de Planck:</p>
+<p><span class="math display" id="eq:planck">\[\begin{equation} 
+E= h \nu
+\tag{11.3}
+\end{equation}\]</span></p>
+<p>donde <span class="math inline">\(E\)</span> es la energía del fotón absorbido o emitido (dada en joules, <span class="math inline">\(J\)</span>), <span class="math inline">\(\nu\)</span> es la frecuencia del fotón (dada en hertz, <span class="math inline">\(Hz\)</span>) y <span class="math inline">\(h\)</span> es la constante de Planck (<span class="math inline">\(6.626 \times 10^{-34}Js\)</span>).</p>
+</div>
+<div id="teo-cuan-ond" class="section level3" number="11.4.4">
+<h3><span class="header-section-number">11.4.4</span> Relación entre Teoría Ondulatoria y Cuántica</h3>
+<p>Ahora estamos listos para integrar las naturalezas ondulatoria y cuántica de la luz, el movimiento de toda partícula lleva asociada una onda de longitud <span class="math inline">\(\lambda\)</span> y de energía <span class="math inline">\(E\)</span>:</p>
+<p>De la ecuación <a href="EO-intro.html#eq:rs-lambda-frec">(11.2)</a> reorganizamos los componentes para expresar la frecuencia <span class="math inline">\(\nu\)</span> en función de la velocidad de la luz <span class="math inline">\(c\)</span> y longitud de onda <span class="math inline">\(\lambda\)</span>:</p>
+<p><span class="math display" id="eq:rs-frec">\[\begin{equation} 
+\nu= \frac{c}{\lambda}
+\tag{11.4}
+\end{equation}\]</span></p>
+<p>y reemplazamos en <a href="EO-intro.html#eq:planck">(11.3)</a> tenemos la energía <span class="math inline">\(E\)</span> de la partícula expresada en términos de dos constantes (<span class="math inline">\(c\)</span> y <span class="math inline">\(h\)</span>) y longitud de onda <span class="math inline">\(\lambda\)</span>:</p>
+<p><span class="math display" id="eq:energia">\[\begin{equation} 
+E= h \frac{c}{\lambda}
+\tag{11.5}
+\end{equation}\]</span></p>
+<p>Y de la atenta observación de la formula resultante encontramos que a menor longitud de onda mayor energía y viceversa.</p>
+</div>
+</div>
+<div id="rs-el-espectro-electro" class="section level2" number="11.5">
+<h2><span class="header-section-number">11.5</span> El Espectro Electromagnético</h2>
+<p>El espectro electromagnético es el conjunto de todas las frecuencias posibles a las que se produce radiación electromagnética.</p>
+<p>El límite teórico inferior del espectro electromagnético es <span class="math inline">\(0\)</span> (ya que no existen frecuencias negativas) y el teórico superior es <span class="math inline">\(\infty\)</span>. Con los medios técnicos actuales, se han detectado frecuencias electromagnéticas inferiores a <span class="math inline">\(30 Hz\)</span> y superiores a <span class="math inline">\(2,9 \times 10^{27} Hz\)</span>.</p>
+<p>Aunque formalmente el espectro es infinito y continuo, se cree que la longitud de onda electromagnética (distancia entre dos valores de amplitud máxima de la onda) más pequeña posible es la <strong>longitud de Planck</strong> (<span class="math inline">\(l_P \approx 1,616252 \times 10^{-35} m\)</span>), distancia o escala de longitud por debajo de la cual se espera que el espacio deje de tener una geometría clásica (medidas inferiores no pueden ser tratadas en los modelos de física actuales debido a la aparición de efectos de gravedad cuántica).</p>
+<p>Igualmente, se piensa que el límite máximo para la longitud de una onda electromagnética sería el tamaño del universo.</p>
+<p>En el paquete <em>SpecHelpers</em> <span class="citation">Hanson (2017)</span> encontramos la función <code>emSpectrum()</code> que dibuja un espectro electromagnético:</p>
+<div class="sourceCode" id="cb386"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb386-1"><a href="EO-intro.html#cb386-1" aria-hidden="true" tabindex="-1"></a>SpecHelpers<span class="sc">::</span><span class="fu">emSpectrum</span>(<span class="at">molecular =</span> F, <span class="at">applications =</span> T)</span></code></pre></div>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:rs-intro-11"></span>
+<img src="_main_files/figure-html/rs-intro-11-1.png" alt="Espectro Electromagnético. Gráfico generado por el paquete SpecHelpers." width="672" />
+<p class="caption">
+Figura 11.12: Espectro Electromagnético. Gráfico generado por el paquete SpecHelpers.
+</p>
+</div>
+<p>En orden decreciente de longitud de onda (y creciente de energía) encontramos las regiones llamadas <em>ondas de radio</em>, <em>infrarrojo</em>, <em>luz visible</em>, <em>ultravioleta</em>, <em>rayos x</em> y <em>rayos gamma</em> (ver Figura <a href="EO-intro.html#fig:rs-intro-11">11.12</a>). Algunas de estas regiones del espectro son útiles para la EO.</p>
+<div id="vis" class="section level3" number="11.5.1">
+<h3><span class="header-section-number">11.5.1</span> Espectro Visible (VIS)</h3>
+<p>La retina del ojo humano es sensible a las ondas electromagnéticas con frecuencias entre <span class="math inline">\(0.4 - 0.7 \mu m\)</span>. Por lo tanto, esta banda de frecuencias se llama región visible del espectro electromagnético y coincide con las longitudes de onda donde la radiación solar es máxima.</p>
+</div>
+<div id="infra-cer" class="section level3" number="11.5.2">
+<h3><span class="header-section-number">11.5.2</span> Infrarrojo Cercano (NIR), Próximo o Reflejado</h3>
+<p>La región del infrarrojo (IR) cercano NIR (del inglés <em>near</em> IR) <span class="math inline">\(0.7 - 1.2 \mu m\)</span>. Esta parte del espectro se encuentra un poco más allá de la capacidad de percepción del ojo humano y a veces se conoce también como el infrarrojo reflectante o infrarrojo fotográfico, porque parte de este espectro (la región (<span class="math inline">\(0.7 - 0.9 \mu m\)</span>) se puede detectar con películas especiales. El NIR es de especial interés debido a su sensibilidad para determinar el estado fitosanitario. También permite diferenciar coberturas vegetales y contenidos de agua.</p>
+</div>
+<div id="infra-mir" class="section level3" number="11.5.3">
+<h3><span class="header-section-number">11.5.3</span> Infrarrojo Medio (MIR)</h3>
+<p>Esta región espectral se encuentra entre las regiones NIR y TIR. De <span class="math inline">\(1.2 - 8 \mu m\)</span>. la influencia de la energía del sol sigue siendo muy relevante, El intervalo entre <span class="math inline">\(1.3 - 2.5 \mu m\)</span> es denominado Infrarrojo de Onda Corta (SWIR) y es utilizado para estimar contenidos de humedad en vegetación y suelos. Esta región proporciona las mejores estimaciones del contenido de humedad del suelo y vegetación. De <span class="math inline">\(3 - 8 \mu m\)</span>, la señal se vuelve una mezcla continua de energía reflejada por el sol y emitida por la superficie, convirtiéndose el componente emitido más relevante a medida que las longitudes de onda se hacen más largas. El intervalo de <span class="math inline">\(3 - 5 \mu m\)</span> es particularmente útil para detectar fuentes de altas temperaturas, como volcanes o incendios forestales.</p>
+</div>
+<div id="infra-ter" class="section level3" number="11.5.4">
+<h3><span class="header-section-number">11.5.4</span> Infrarrojo Térmico (TIR)</h3>
+<p>Región <span class="math inline">\(8 - 14 \mu m\)</span>. Este es emitido por la energía de superficie de la Tierra que se usa comúnmente para mapear las temperaturas de la superficie. La región termal ha sido ampliamente utilizada para detectar evapotranspiración (ET) vegetal, propiedades del hielo y las nubes, efectos del calor urbano y para la discriminación de rocas.</p>
+</div>
+<div id="microwave" class="section level3" number="11.5.5">
+<h3><span class="header-section-number">11.5.5</span> Microondas (MW)</h3>
+<p>Para radiaciones superiores a <span class="math inline">\(1 cm\)</span>. Esta región espectral es donde funcionan los sistemas de radar. Su principal ventaja es la absorción atmosférica muy baja, lo que nos permite “ver” a través de las nubes. La radiación de MW también puede penetrar en las copas de los bosques a varias profundidades y muy útil en análisis de humedad del suelo y rugosidad superficial. Requiere de la emisión de un haz energético por parte del sensor.</p>
+<p>Las señales recibidas por un sensor en estas diferentes regiones espectrales varían con el tipo de cobertura terrestre y con las propiedades biofísicas y bioquímicas de los componentes de la superficie. Pero primero presentamos algunos de los conceptos básicos de energía y unidades de medida utilizados en teledetección para comprender mejor las propiedades características
+de mediciones espaciales.</p>
+</div>
+</div>
+<div id="concep-unidad" class="section level2" number="11.6">
+<h2><span class="header-section-number">11.6</span> Conceptos Básicos y sus Unidades</h2>
+<div id="angsol" class="section level3" number="11.6.1">
+<h3><span class="header-section-number">11.6.1</span> Ángulo Sólido</h3>
+<p>El análisis de un campo de radiación a menudo requiere la consideración de la cantidad de energía radiante confinada a un elemento de <em>ángulo sólido</em>. Un ángulo sólido se define como la relación entre el área <span class="math inline">\(o\)</span> de una superficie esférica interceptada en el centro del cuadrado de radio <span class="math inline">\(r\)</span>, como se indica en la figura <a href="EO-intro.html#fig:rs-intro-13">11.13</a> basada en <span class="citation">Liou (2002)</span>. Puede escribirse como:
+<span class="math display" id="eq:angsoldef">\[\begin{equation} 
+\Omega = o / r^2
+\tag{11.6}
+\end{equation}\]</span></p>
+<p>Las unidades de ángulo sólido se expresan en términos de estereorradián (<span class="math inline">\(sr\)</span>). Una esfera cuya área superficial es <span class="math inline">\(4\pi r^2\)</span> el ángulo sólido correspondiente sería de <span class="math inline">\(4\pi sr\)</span>.</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:rs-intro-13"></span>
+<img src="img/solido.png" alt="Definición de ángulo sólido donde o es el área y r la distancia." width="336" />
+<p class="caption">
+Figura 11.13: Definición de ángulo sólido donde o es el área y r la distancia.
+</p>
+</div>
+</div>
+<div id="mag-radio" class="section level3" number="11.6.2">
+<h3><span class="header-section-number">11.6.2</span> Magnitudes Radiométricas</h3>
+<p>Una observación remota requiere una fuente de energía y un sensor que puede detectar dicha energía EM emitida (o reflejada) por la superficie de la Tierra hacia el campo de visión del sensor. La energía electromagnética (EEM) de interés tiene una cierta intensidad, composición espectral, y dirección (es decir, la energía puede dirigirse hacia o lejos de la superficie).</p>
+<p>A continuación, describimos las unidades comúnmente utilizadas en aplicaciones de EO. Las fórmulas para cada uno de estos términos energéticos se incluyen en el cuadro <a href="EO-intro.html#tab:tabla-rs-01">11.1</a>.</p>
+<table style="NAborder-bottom: 0;">
+<caption>
+<span id="tab:tabla-rs-01">Tabla 11.1: </span>Magnitudes Físicas.
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+Concepto
+</th>
+<th style="text-align:center;">
+Fórmula
+</th>
+<th style="text-align:center;">
+Unidad
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Energía Radiante (<span class="math inline">\(Q\)</span>)
+</td>
+<td style="text-align:center;">
+</td>
+<td style="text-align:center;">
+julios (<span class="math inline">\(J\)</span>)
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Flujo Radiante (<span class="math inline">\(\phi\)</span>)
+</td>
+<td style="text-align:center;">
+<span class="math inline">\(\partial Q/\partial t\)</span>
+</td>
+<td style="text-align:center;">
+vatios (<span class="math inline">\(W\)</span>)
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Irradiancia (<span class="math inline">\(E\)</span>)
+</td>
+<td style="text-align:center;">
+<span class="math inline">\(\partial \phi/\partial A\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\(Wm^{-2}\)</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Emitancia (<span class="math inline">\(M\)</span>)
+</td>
+<td style="text-align:center;">
+<span class="math inline">\(\partial \phi/\partial A\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\(Wm^{-2}\)</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Intensidad Radiante (<span class="math inline">\(I\)</span>)
+</td>
+<td style="text-align:center;">
+<span class="math inline">\(\partial \phi/\partial \Omega\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\(Wsr^{-1}\)</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Radiancia (<span class="math inline">\(L\)</span>)
+</td>
+<td style="text-align:center;">
+<span class="math inline">\(\partial I/\partial A \; cos(\Theta)\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\(Wm^{-2}sr^{-1}\)</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Radiancia Espectral (<span class="math inline">\(L_{\lambda}\)</span>)
+</td>
+<td style="text-align:center;">
+<span class="math inline">\(\partial L/\partial_\lambda\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\(Wm^{-2}sr^{-1}\mu m^{-1}\)</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Emisividad (<span class="math inline">\(\epsilon\)</span>)
+</td>
+<td style="text-align:center;">
+<span class="math inline">\(M/M_n\)</span>
+</td>
+<td style="text-align:center;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Reflectividad (<span class="math inline">\(\rho\)</span>)
+</td>
+<td style="text-align:center;">
+<span class="math inline">\(\phi_r/\phi_i\)</span>
+</td>
+<td style="text-align:center;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Absortividad (<span class="math inline">\(\alpha\)</span>)
+</td>
+<td style="text-align:center;">
+<span class="math inline">\(\phi_a/\phi_i\)</span>
+</td>
+<td style="text-align:center;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Transmisividad (<span class="math inline">\(\tau\)</span>)
+</td>
+<td style="text-align:center;">
+<span class="math inline">\(\phi_t/\phi_i\)</span>
+</td>
+<td style="text-align:center;">
+</td>
+</tr>
+</tbody>
+<tfoot>
+<tr>
+<td style="padding: 0; " colspan="100%">
+<span style="font-style: italic;">Nota:</span>
+</td>
+</tr>
+<tr>
+<td style="padding: 0; " colspan="100%">
+<sup></sup> <span class="math inline">\(t\)</span>: Unidad de Tiempo.
+</td>
+</tr>
+<tr>
+<td style="padding: 0; " colspan="100%">
+<sup></sup> <span class="math inline">\(A\)</span>: Unidad de Área.
+</td>
+</tr>
+<tr>
+<td style="padding: 0; " colspan="100%">
+<sup></sup> <span class="math inline">\(\Omega\)</span>: Ángulo sólido.
+</td>
+</tr>
+<tr>
+<td style="padding: 0; " colspan="100%">
+<sup></sup> <span class="math inline">\(\Theta\)</span>: Ángulo entre dirección del flujo enegético y la normal.
+</td>
+</tr>
+<tr>
+<td style="padding: 0; " colspan="100%">
+<sup></sup> <span class="math inline">\(\phi_r\)</span>: Flujo Reflejado.
+</td>
+</tr>
+<tr>
+<td style="padding: 0; " colspan="100%">
+<sup></sup> <span class="math inline">\(\phi_a\)</span>: Flujo Absorbido.
+</td>
+</tr>
+<tr>
+<td style="padding: 0; " colspan="100%">
+<sup></sup> <span class="math inline">\(\phi_i\)</span>: Flujo Incidente.
+</td>
+</tr>
+<tr>
+<td style="padding: 0; " colspan="100%">
+<sup></sup> <span class="math inline">\(\phi_t\)</span>: Flujo Transmitido.
+</td>
+</tr>
+</tfoot>
+</table>
+<ul>
+<li><p><strong>Energía Radiante (<span class="math inline">\(Q\)</span>)</strong>: Medida en julios (<span class="math inline">\(J\)</span>), es la unidad de energía más básica y se refiere a la <em>energía total irradiada</em> en todas las direcciones hacia superficie.</p></li>
+<li><p><strong>Flujo Radiante (<span class="math inline">\(\phi\)</span>)</strong>: medido en vatios (<span class="math inline">\(W\)</span>), es la cantidad de julios por segundo (<span class="math inline">\(J s^{-1} = W\)</span>) y representa la tasa de transferencia de energía en todas las direcciones por unidad de tiempo.</p></li>
+<li><p><strong>Densidad de Flujo Radiante</strong>: es la tasa de transferencia de energía por unidad de área medida en vatios por metro cuadrado (<span class="math inline">\(W m^{-2}\)</span>).</p></li>
+<li><p> <strong>Exitancia Radiante o Emitancia (<span class="math inline">\(M\)</span>)</strong>: es la densidad de flujo radiante que sale de la superficie en todas las direcciones por unidad de área y por unidad de tiempo (<span class="math inline">\(W m^{-2}\)</span>).</p></li>
+<li><p><strong>Irradiancia Radiante (<span class="math inline">\(E\)</span>)</strong>: es la densidad de flujo radiante que incide sobre la superficie por unidad de área y por unidad de tiempo (<span class="math inline">\(W m^{-2}\)</span>). Es el mismo concepto que la emitancia, pero en este caso se refiere a la energía que llega a la superficie en lugar de aquella que sale de la superficie.</p></li>
+<li><p><strong>Intensidad Radiante (<span class="math inline">\(I\)</span>)</strong>: es la energía total que sale de la superficie por unidad de tiempo y dentro de una unidad de ángulo sólido (<span class="math inline">\(\Omega\)</span>). Así, la intensidad radiante se mide en vatios por estereorradián (<span class="math inline">\(W sr^{-1}\)</span>).</p></li>
+<li><p><strong>Radiancia (<span class="math inline">\(L\)</span>)</strong>: es la energía total que sale en una determinada dirección por unidad de área y ángulo sólido. Es el término más fundamental en teledetección, ya que describe <strong>exactamente lo que mide el sensor</strong>. La radiancia es expresada en vatios por metro cuadrado por estereorradián (<span class="math inline">\(W m^{-2} sr^{-1}\)</span>).</p></li>
+</ul>
+<p>Si expresamos la radiancia en función de las longitudes de onda a sensar podemos expresar como:
+<span class="math display" id="eq:radiancia">\[\begin{equation}
+L\left( \lambda_1,\lambda_2 \right)= \int_{\lambda_1}^{\lambda_2} L_\lambda \partial\lambda
+\tag{11.7}
+\end{equation}\]</span></p>
+<p>Donde vemos que es la integral (sumatoria continua) de energía entre dos longitudes de onda (rango válido del sensor).</p>
+<p>Así, los términos de energía anteriores también se pueden expresar en base a longitudes de onda y tienen el sufijo <em>espectral</em> aplicado a ellos, como <em>radiancia</em> o <em>irradiancia espectral</em>.</p>
+<p>Por ejemplo, el término <em>radiación espectral</em>, <span class="math inline">\(L_{\lambda}\)</span>, se refiere a la producción de energía por una unidad de área por unidad de ángulo sólido y longitud de onda o <span class="math inline">\(L_{\lambda} = W m^{-2} sr^{-1} \lambda^{-1}\)</span>. De manera similar, la irradiancia espectral, <span class="math inline">\(E\lambda\)</span>, se refiere a la energía incidente sobre una superficie por unidad de longitud de onda.</p>
+<p>También hay una serie de términos de energía adimensional, que varían de 0 a 1, que son
+ampliamente utilizados para caracterizar las propiedades espectrales de la superficie de la Tierra:</p>
+<ul>
+<li><p><strong>Emisividad (<span class="math inline">\(\epsilon\)</span>)</strong>: es la relación entre la salida radiante de un superficie (<span class="math inline">\(M\)</span>) relativa a la de un emisor perfecto a la misma temperatura (<span class="math inline">\(M_n\)</span>). Un emisor perfecto también se conoce como cuerpo negro y tiene emisividad 1. Los materiales naturales, por otro lado, son emisores imperfectos con emisividad van de 0 a &lt;1. Valores de emisividad en diferentes longitudes de onda son útiles para caracterizar materiales.</p></li>
+<li><p><strong>Reflectividad (<span class="math inline">\(\rho\)</span>)</strong>: es la relación entre la energía reflejada por una superficie y la energía incidente sobre esa superficie.</p></li>
+<li><p><strong>Absortividad (<span class="math inline">\(\alpha\)</span>)</strong>: es la relación entre la energía absorbida por la superficie y la energía incidente sobre esa superficie.</p></li>
+<li><p><strong>Transmitividad (<span class="math inline">\(\tau\)</span>)</strong>: es la relación entre la energía transmitida a través de una superficie y la energía incidente sobre esa superficie.</p></li>
+</ul>
+<p>Es importante destacar que por el principio de conservación de la energía tenemos la relación:
+<span class="math display" id="eq:equile">\[\begin{equation} 
+\alpha + \rho + \tau = 1
+\tag{11.8}
+\end{equation}\]</span></p>
+<p>A estos términos sin unidades también se les puede agregar el sufijo <em>espectral</em>, como en la <em>reflectancia espectral</em>. Hay algunas relaciones útiles que se derivan de los términos energéticos mencionados anteriormente.</p>
+<p>El término <em>albedo</em> es la relación entre toda la energía saliente y la energía incidente para una superficie determinada. Más específicamente, albedo es la relación de la <em>emitancia</em> (<span class="math inline">\(M\)</span>) sobre la <em>irradiancia</em> (<span class="math inline">\(E\)</span>) sobre todas las longitudes de onda reflectantes solares o de onda corta y es el equivalente de la reflectancia hemisférica, es decir, la reflectancia integrada en todas las direcciones (Ecuación <a href="EO-intro.html#eq:albedo">(11.9)</a>).</p>
+<p><span class="math display" id="eq:albedo">\[\begin{equation} 
+ALBEDO= \rho_{hemisferico} = \frac{M}{E}
+\tag{11.9}
+\end{equation}\]</span></p>
+<p>El albedo es una variable fundamental en estudios de balance energético, modelización climática y estudios de degradación del suelo. Albedo espectral se refiere a la salida dividida por la irradiancia para una banda espectral específica (Ecuación <a href="EO-intro.html#eq:albedospec">(11.10)</a>).</p>
+<p><span class="math display" id="eq:albedospec">\[\begin{equation} 
+ALBEDO\;ESPECTRAL= \rho_{hemisferico,\lambda} = \frac{M_\lambda}{E_\lambda}
+\tag{11.10}
+\end{equation}\]</span></p>
+<p>Es importante tener en cuenta que un sensor satelital no mide las señales hemisféricas de la energía emitidas en todas las direcciones, sino que mide la radiancia espectral (<span class="math inline">\(L\lambda\)</span>) desde un campo de visión angular estrecho. La radiancia direccional espectral (<span class="math inline">\(L\lambda\)</span>) está relacionada con la emitancia espectral hemisférica (<span class="math inline">\(M\lambda\)</span>) de la siguiente forma (<span class="citation">Slater (1980)</span>):
+<span class="math display" id="eq:emitspec">\[\begin{equation} 
+M_\lambda = \pi L_\lambda
+\tag{11.11}
+\end{equation}\]</span></p>
+<p>De manera similar, las reflectancias de la superficie derivadas de las mediciones satélitales son reflectancias direccionales, ya que se refieren a una geometría de medición específica entre sensor de satélite y el Sol, en relación con la superficie. La relación entre el valor de radiancia espectral recibidos por <em>un sensor de satélite</em> (<span class="math inline">\(L_{sen(\lambda)}\)</span>) y la reflectancia espectral de superficie (<span class="math inline">\(\rho_\lambda\)</span>) se convierte en:
+<span class="math display" id="eq:refspecsup">\[\begin{equation} 
+\rho_\lambda = \frac{\pi L_\lambda}{E_{0,\lambda}}
+\tag{11.12}
+\end{equation}\]</span></p>
+<p>donde <span class="math inline">\(E_{0,\lambda}\)</span> es la irradiancia solar que llega a la superficie.</p>
+</div>
+<div id="temp-intro" class="section level3" number="11.6.3">
+<h3><span class="header-section-number">11.6.3</span> Importancia de la Temperatura</h3>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:rs-intro-19"></span>
+<img src="img/kelvin.jpg" alt="Fotografía de William Thomson, primer Barón Kelvin. Fuente: Librería Smithsoniana." width="128" />
+<p class="caption">
+Figura 11.14: Fotografía de William Thomson, primer Barón Kelvin. Fuente: Librería Smithsoniana.
+</p>
+</div>
+<p>Las temperaturas son expresadas en unidades <strong>Kelvin</strong> en honor al físico británico Willian Thomson primer Barón de Kelvin (Figura <a href="EO-intro.html#fig:rs-intro-19">11.14</a>) quien determinó y fijó el cero absoluto en los <span class="math inline">\(-273,15°C\)</span>. La escala de temperatura de Kelvin constituye la escala natural en la que se anotan las ecuaciones termodinámicas y la unidad de temperatura en el Sistema Internacional de Unidades.</p>
+</div>
+</div>
+<div id="cuerpo-negro" class="section level2" number="11.7">
+<h2><span class="header-section-number">11.7</span> Radiación de Cuerpo Negro</h2>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:rs-intro-20"></span>
+<img src="img/blackbody.png" alt="Idealización aproximada de un cuerpo negro como un pequeño agujero en un recinto aislado. Fuente:AG Caesar.Wikipedia." width="320" />
+<p class="caption">
+Figura 11.15: Idealización aproximada de un cuerpo negro como un pequeño agujero en un recinto aislado. Fuente:AG Caesar.Wikipedia.
+</p>
+</div>
+<p>Las leyes de la radiación del cuerpo negro son básicas para comprender la <em>absorción</em> y
+procesos de <em>emisión</em>. Un <em>cuerpo negro</em> (Figura <a href="EO-intro.html#fig:rs-intro-20">11.15</a>) es un concepto básico en física y se puede visualizar considerando una cavidad con un pequeño orificio de entrada. La mayoría del flujo radiante que ingresa a este orificio desde el exterior quedará atrapada dentro de la cavidad, independientemente del material y las características superficiales de la pared. Los reflejos se repiten internamente ocurren hasta que todos los flujos son absorbidos por la pared. La probabilidad de que cualquiera de los flujos entrantes escapará a través del orificio es tan pequeño que el interior aparece oscuro. El término <em>cuerpo negro</em> se utiliza para una configuración de material donde la absorción será completa.</p>
+<p>La emisión de un cuerpo negro es lo opuesto a la absorción. El flujo emitido por cualquier área pequeña de la pared se refleja repetidamente y en cada encuentro con la pared, el flujo es debilitado por la absorción y reforzado por una nueva emisión. Después de numerosos encuentros, la emisión y la absorción alcanzan una condición de equilibrio con respecto a la temperatura de la pared.</p>
+<p>A continuación, presentamos cuatro leyes fundamentales que gobiernan la radiación del cuerpo negro, comenzando con la ley de Planck.</p>
+<div id="ley-planck" class="section level3" number="11.7.1">
+<h3><span class="header-section-number">11.7.1</span> Ley de Planck</h3>
+<p>La cantidad de energía que contiene un flujo radiante es inversamente proporcional a su longitud de onda. La distribución espectral de dicha radiación EM emitida por un cuerpo negro (un emisor perfecto) se puede caracterizar por la ley de radiación de Planck (Figura <a href="EO-intro.html#fig:rs-intro-16">11.11</a>) como sigue:</p>
+<p><span class="math display" id="eq:law-planck">\[\begin{equation} 
+M_{n,\lambda} = \frac{C_1}{\lambda^5 e^{\left({\frac{c_2}{\lambda T}}\right)} -1}
+\tag{11.13}
+\end{equation}\]</span></p>
+<p>Donde:</p>
+<p><span class="math inline">\(M_{n,\lambda} (W \; m^{-2} \; \mu m^{-1})\)</span> indica la emitancia espectral en una longitud de onda <span class="math inline">\(\lambda\)</span> en <span class="math inline">\(\mu m\)</span>.</p>
+<p>Constantes <span class="math inline">\(C_1 = 3,741 \times 10^8 \; W m^{-2} \mu m^4\)</span> y <span class="math inline">\(C_2 = 1,438 \times 10^4 \; \mu m \;K\)</span>.</p>
+<p><span class="math inline">\(T\)</span> temperatura en <span class="math inline">\(K\)</span>.</p>
+<p>Esta ecuación describe la distribución espectral de salida de un cuerpo negro a cierta
+temperatura como una curva suave con un único máximo (Figura <a href="EO-intro.html#fig:rs-intro-18">11.16</a>). La ecuación indica que cualquier objeto más caliente que el cero absoluto (<span class="math inline">\(-273,15 °C\)</span>) emite energía radiante y que la energía aumenta en proporción a su temperatura.</p>
+<div class="sourceCode" id="cb387"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb387-1"><a href="EO-intro.html#cb387-1" aria-hidden="true" tabindex="-1"></a>blackBodyRadiationColors <span class="ot">&lt;-</span> <span class="cf">function</span>(x, <span class="at">max_value=</span><span class="dv">1</span>) {</span>
+<span id="cb387-2"><a href="EO-intro.html#cb387-2" aria-hidden="true" tabindex="-1"></a>    foo <span class="ot">&lt;-</span> <span class="fu">colorRamp</span>(<span class="fu">c</span>(<span class="fu">rgb</span>(<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>),<span class="fu">rgb</span>(<span class="dv">1</span>,<span class="dv">0</span>,<span class="dv">0</span>),<span class="fu">rgb</span>(<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">0</span>),<span class="fu">rgb</span>(<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>)))(x<span class="sc">*</span>max_value)<span class="sc">/</span><span class="dv">255</span></span>
+<span id="cb387-3"><a href="EO-intro.html#cb387-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">apply</span>(foo,<span class="dv">1</span>,<span class="cf">function</span>(bar)<span class="fu">rgb</span>(bar[<span class="dv">1</span>],bar[<span class="dv">2</span>],bar[<span class="dv">3</span>]))</span>
+<span id="cb387-4"><a href="EO-intro.html#cb387-4" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb387-5"><a href="EO-intro.html#cb387-5" aria-hidden="true" tabindex="-1"></a>col <span class="ot">&lt;-</span> <span class="fu">blackBodyRadiationColors</span>(<span class="fu">seq</span>(<span class="dv">0</span>,<span class="fl">0.6</span>,<span class="at">length.out=</span><span class="dv">7</span>))</span>
+<span id="cb387-6"><a href="EO-intro.html#cb387-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb387-7"><a href="EO-intro.html#cb387-7" aria-hidden="true" tabindex="-1"></a>x<span class="ot">=</span><span class="fu">seq</span>(<span class="fl">0.1</span>,<span class="dv">100</span>,<span class="at">by=</span><span class="fl">0.01</span>)</span>
+<span id="cb387-8"><a href="EO-intro.html#cb387-8" aria-hidden="true" tabindex="-1"></a>f<span class="ot">=</span><span class="cf">function</span>(x,T){<span class="fl">3.741e8</span><span class="sc">/</span>(x<span class="sc">^</span><span class="dv">5</span><span class="sc">*</span>(<span class="fu">exp</span>(<span class="fl">1.438e4</span><span class="sc">/</span>(x<span class="sc">*</span>T))<span class="sc">-</span><span class="dv">1</span>))}</span>
+<span id="cb387-9"><a href="EO-intro.html#cb387-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb387-10"><a href="EO-intro.html#cb387-10" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mar=</span><span class="fu">c</span>(<span class="dv">5</span>,<span class="fl">7.5</span>,<span class="dv">3</span>,<span class="dv">3</span>))</span>
+<span id="cb387-11"><a href="EO-intro.html#cb387-11" aria-hidden="true" tabindex="-1"></a>y<span class="ot">=</span> <span class="fu">f</span>(x,<span class="dv">288</span>)</span>
+<span id="cb387-12"><a href="EO-intro.html#cb387-12" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(x,y, <span class="at">type =</span> <span class="st">&quot;l&quot;</span>, <span class="at">xlim=</span><span class="fu">c</span>(<span class="fl">0.1</span>,<span class="dv">100</span>), <span class="at">ylim=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="fl">1e9</span>), <span class="at">log=</span><span class="st">&quot;xy&quot;</span>, <span class="at">col=</span>col[<span class="dv">2</span>], <span class="at">axes=</span>F, <span class="at">xlab=</span><span class="fu">expression</span>(<span class="fu">paste</span>(lambda, <span class="st">&quot;(&quot;</span>,mu, <span class="st">&quot;m)&quot;</span>)), <span class="at">ylab=</span><span class="st">&quot;&quot;</span>)</span>
+<span id="cb387-13"><a href="EO-intro.html#cb387-13" aria-hidden="true" tabindex="-1"></a><span class="fu">axis</span>(<span class="dv">2</span>,<span class="at">at=</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">10</span>, <span class="dv">100</span>, <span class="dv">1000</span>, <span class="dv">10000</span>, <span class="dv">100000</span>, <span class="dv">1000000</span>, <span class="dv">10000000</span>, <span class="dv">100000000</span>), <span class="at">labels=</span> <span class="fu">c</span>(<span class="st">&quot;1&quot;</span>, <span class="st">&quot;10&quot;</span>, <span class="st">&quot;100&quot;</span>, <span class="st">&quot;1.000&quot;</span>, <span class="st">&quot;10.000&quot;</span>, <span class="st">&quot;100.000&quot;</span>, <span class="st">&quot;1.000.000&quot;</span>, <span class="st">&quot;10.000.000&quot;</span>, <span class="st">&quot;100.000.000&quot;</span>), <span class="at">las=</span><span class="dv">2</span>)</span>
+<span id="cb387-14"><a href="EO-intro.html#cb387-14" aria-hidden="true" tabindex="-1"></a><span class="fu">mtext</span>(<span class="at">text =</span> <span class="fu">expression</span>(<span class="fu">paste</span>(<span class="st">&quot;Emitancia Espectral (W&quot;</span>,m<span class="sc">^-</span><span class="dv">2</span>,mu,m<span class="sc">^-</span><span class="dv">1</span>,<span class="st">&quot;)&quot;</span>)), <span class="at">side =</span> <span class="dv">2</span>, <span class="at">line =</span> <span class="dv">5</span>)</span>
+<span id="cb387-15"><a href="EO-intro.html#cb387-15" aria-hidden="true" tabindex="-1"></a><span class="fu">axis</span>(<span class="dv">1</span>,<span class="at">at=</span> <span class="fu">c</span>(.<span class="dv">1</span>,<span class="fl">0.4</span>, <span class="fl">0.7</span>, <span class="fl">1.2</span>, <span class="dv">8</span>, <span class="dv">14</span>, <span class="dv">100</span>), <span class="at">labels=</span> <span class="fu">c</span>(<span class="st">&quot;0.1&quot;</span>,<span class="st">&quot;0.4&quot;</span>,<span class="st">&quot;0.7&quot;</span>, <span class="st">&quot;1.2&quot;</span>,<span class="st">&quot;8.0&quot;</span>, <span class="st">&quot;14.0&quot;</span>, <span class="st">&quot;100.0&quot;</span>), <span class="at">las=</span><span class="dv">1</span>)</span>
+<span id="cb387-16"><a href="EO-intro.html#cb387-16" aria-hidden="true" tabindex="-1"></a>y<span class="ot">=</span> <span class="fu">f</span>(x,<span class="dv">500</span>)</span>
+<span id="cb387-17"><a href="EO-intro.html#cb387-17" aria-hidden="true" tabindex="-1"></a><span class="fu">points</span>(x,y, <span class="at">type=</span><span class="st">&quot;l&quot;</span>, <span class="at">col=</span>col[<span class="dv">3</span>])</span>
+<span id="cb387-18"><a href="EO-intro.html#cb387-18" aria-hidden="true" tabindex="-1"></a>y<span class="ot">=</span> <span class="fu">f</span>(x,<span class="dv">1000</span>)</span>
+<span id="cb387-19"><a href="EO-intro.html#cb387-19" aria-hidden="true" tabindex="-1"></a><span class="fu">points</span>(x,y, <span class="at">type=</span><span class="st">&quot;l&quot;</span>, <span class="at">col=</span>col[<span class="dv">4</span>])</span>
+<span id="cb387-20"><a href="EO-intro.html#cb387-20" aria-hidden="true" tabindex="-1"></a>y<span class="ot">=</span> <span class="fu">f</span>(x,<span class="dv">2000</span>)</span>
+<span id="cb387-21"><a href="EO-intro.html#cb387-21" aria-hidden="true" tabindex="-1"></a><span class="fu">points</span>(x,y, <span class="at">type=</span><span class="st">&quot;l&quot;</span>, <span class="at">col=</span>col[<span class="dv">5</span>])</span>
+<span id="cb387-22"><a href="EO-intro.html#cb387-22" aria-hidden="true" tabindex="-1"></a>y<span class="ot">=</span> <span class="fu">f</span>(x,<span class="dv">4000</span>)</span>
+<span id="cb387-23"><a href="EO-intro.html#cb387-23" aria-hidden="true" tabindex="-1"></a><span class="fu">points</span>(x,y, <span class="at">type=</span><span class="st">&quot;l&quot;</span>, <span class="at">col=</span>col[<span class="dv">6</span>])</span>
+<span id="cb387-24"><a href="EO-intro.html#cb387-24" aria-hidden="true" tabindex="-1"></a>y<span class="ot">=</span> <span class="fu">f</span>(x,<span class="dv">5778</span>)</span>
+<span id="cb387-25"><a href="EO-intro.html#cb387-25" aria-hidden="true" tabindex="-1"></a><span class="fu">points</span>(x,y, <span class="at">type=</span><span class="st">&quot;l&quot;</span>, <span class="at">col=</span>col[<span class="dv">7</span>])</span>
+<span id="cb387-26"><a href="EO-intro.html#cb387-26" aria-hidden="true" tabindex="-1"></a><span class="fu">text</span>(<span class="dv">7</span>,<span class="dv">40</span>,<span class="st">&quot;TIERRA (288 K)&quot;</span>, <span class="at">col=</span>col[<span class="dv">2</span>])</span>
+<span id="cb387-27"><a href="EO-intro.html#cb387-27" aria-hidden="true" tabindex="-1"></a><span class="fu">text</span>(<span class="dv">4</span>,<span class="dv">650</span>,<span class="st">&quot;500 K&quot;</span>, <span class="at">col=</span>col[<span class="dv">3</span>])</span>
+<span id="cb387-28"><a href="EO-intro.html#cb387-28" aria-hidden="true" tabindex="-1"></a><span class="fu">text</span>(<span class="dv">2</span>,<span class="dv">20000</span>,<span class="st">&quot;1.000 K&quot;</span>, <span class="at">col=</span>col[<span class="dv">4</span>])</span>
+<span id="cb387-29"><a href="EO-intro.html#cb387-29" aria-hidden="true" tabindex="-1"></a><span class="fu">text</span>(<span class="dv">1</span>,<span class="dv">700000</span>,<span class="st">&quot;2.000 K&quot;</span>, <span class="at">col=</span>col[<span class="dv">5</span>])</span>
+<span id="cb387-30"><a href="EO-intro.html#cb387-30" aria-hidden="true" tabindex="-1"></a><span class="fu">text</span>(<span class="fl">0.5</span>,<span class="dv">20000000</span>,<span class="st">&quot;4.000 K&quot;</span>, <span class="at">col=</span>col[<span class="dv">6</span>])</span>
+<span id="cb387-31"><a href="EO-intro.html#cb387-31" aria-hidden="true" tabindex="-1"></a><span class="fu">text</span>(<span class="fl">0.3</span>,<span class="dv">140000000</span>,<span class="st">&quot;SOL (5.778 K)&quot;</span>, <span class="at">col=</span>col[<span class="dv">7</span>])</span></code></pre></div>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:rs-intro-18"></span>
+<img src="_main_files/figure-html/rs-intro-18-1.png" alt="Curvas de Emitancia Espectral de Cuerpo Negro a varias temperaturas." width="672" />
+<p class="caption">
+Figura 11.16: Curvas de Emitancia Espectral de Cuerpo Negro a varias temperaturas.
+</p>
+</div>
+<p>Veamos un caso práctico, la temperatura promedio del planeta tierra se ha fijado en <span class="math inline">\(288 K\)</span> y podemos calcular usando la ley de Planck las longitudes de onda dónde se produce el máximo de energía radiante:</p>
+<div class="sourceCode" id="cb388"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb388-1"><a href="EO-intro.html#cb388-1" aria-hidden="true" tabindex="-1"></a>t_k <span class="ot">&lt;-</span> <span class="dv">288</span></span>
+<span id="cb388-2"><a href="EO-intro.html#cb388-2" aria-hidden="true" tabindex="-1"></a>lambda <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="dv">8</span>,<span class="dv">15</span>,<span class="dv">1</span>)</span>
+<span id="cb388-3"><a href="EO-intro.html#cb388-3" aria-hidden="true" tabindex="-1"></a>M <span class="ot">&lt;-</span> <span class="fl">3.741e8</span><span class="sc">/</span>(lambda<span class="sc">^</span><span class="dv">5</span> <span class="sc">*</span> (<span class="fu">exp</span>(<span class="fl">1.438e4</span><span class="sc">/</span>(lambda <span class="sc">*</span> t_k))<span class="sc">-</span><span class="dv">1</span>))</span>
+<span id="cb388-4"><a href="EO-intro.html#cb388-4" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(M) <span class="ot">&lt;-</span> lambda</span>
+<span id="cb388-5"><a href="EO-intro.html#cb388-5" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(M,<span class="dv">3</span>) </span></code></pre></div>
+<pre><code>##      8      9     10     11     12     13     14     15 
+## 22.275 24.778 25.556 25.082 23.816 22.113 20.225 18.312</code></pre>
+<p>Encontramos el máximo de energía radiante entorno a los <span class="math inline">\(11 \; \mu m\)</span> que cae dentro del rango del espectro que hemos denominado TIR o infrarrojo térmico (ver <a href="EO-intro.html#infra-ter">11.5.4</a>).</p>
+<p>Y en el caso de sol cuya temperatura estimada es <span class="math inline">\(5778 K\)</span>:</p>
+<div class="sourceCode" id="cb390"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb390-1"><a href="EO-intro.html#cb390-1" aria-hidden="true" tabindex="-1"></a>t_k <span class="ot">&lt;-</span> <span class="dv">5778</span></span>
+<span id="cb390-2"><a href="EO-intro.html#cb390-2" aria-hidden="true" tabindex="-1"></a>lambda <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="fl">0.0</span>,<span class="dv">2</span>,<span class="fl">0.5</span>)</span>
+<span id="cb390-3"><a href="EO-intro.html#cb390-3" aria-hidden="true" tabindex="-1"></a>M <span class="ot">&lt;-</span> <span class="fl">3.741e8</span><span class="sc">/</span>(lambda<span class="sc">^</span><span class="dv">5</span> <span class="sc">*</span> (<span class="fu">exp</span>(<span class="fl">1.438e4</span><span class="sc">/</span>(lambda <span class="sc">*</span> t_k))<span class="sc">-</span><span class="dv">1</span>))</span>
+<span id="cb390-4"><a href="EO-intro.html#cb390-4" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(M) <span class="ot">&lt;-</span> lambda</span>
+<span id="cb390-5"><a href="EO-intro.html#cb390-5" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(M<span class="sc">/</span><span class="fl">1e6</span>,<span class="dv">0</span>) </span></code></pre></div>
+<pre><code>##   0 0.5   1 1.5   2 
+## NaN  83  34  12   5</code></pre>
+<p>Encontramos los máximos de energía radiante en las longitudes de onda del rango visible (ver <a href="EO-intro.html#vis">11.5.1</a>) e infrarrojo cercano (ver <a href="EO-intro.html#infra-cer">11.5.2</a>).</p>
+</div>
+<div id="wien" class="section level3" number="11.7.2">
+<h3><span class="header-section-number">11.7.2</span> Ley de Desplazamiento de Wien</h3>
+<p>El sol como fuente primaria de energía se encuentra a una temperatura de aproximadamente 5778 K y de acuerdo a la ley de radiación del <em>cuerpo negro de Planck</em> (ver <a href="EO-intro.html#cuerpo-negro">11.7</a>) donde se relaciona la cantidad energía que emite un cuerpo con la distribución espectral (longitudes de onda de los máximos (Figura <a href="EO-intro.html#fig:rs-intro-18">11.16</a>), caen en el que llamamos espectro visible (ver <a href="EO-intro.html#vis">11.5.1</a>) y por eso nuestra visión se ha adecuado precisamente a ese rango.</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:rs-intro-25"></span>
+<img src="img/wien.jpg" alt="Wilhelm Wien, físico esloveno, fuente: nobelprize.org." width="105" />
+<p class="caption">
+Figura 11.17: Wilhelm Wien, físico esloveno, fuente: nobelprize.org.
+</p>
+</div>
+<p>La superficie terrestre tal como se ve en la figura <a href="EO-intro.html#fig:rs-intro-18">11.16</a> tiene sus máximos alrededor de las longitudes de onda en el rango 8 – 14 <span class="math inline">\(\mu m\)</span> identificado anteriormente como TIR (ver <a href="EO-intro.html#infra-ter">11.5.4</a>).</p>
+<p>Como se aprecia en estos ejemplos, la temperatura es clave al momento de definir el máximo de emitancia de un objeto (por lo tanto, el mejor rango de longitud de onda para diseñar nuestro sensor) ya que todo objeto con temperatura superior a los <span class="math inline">\(0 \; K\)</span> emite energía, requisito básico para ser percibido por dicho sensor.</p>
+<p>La ley de desplazamiento de Wien (Figura <a href="EO-intro.html#fig:rs-intro-25">11.17</a>) establece que la longitud de onda de la intensidad máxima de la radiación del cuerpo negro <span class="math inline">\(\lambda_{max}\)</span> es inversamente proporcional a la temperatura:</p>
+<div class="sourceCode" id="cb392"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb392-1"><a href="EO-intro.html#cb392-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mar=</span><span class="fu">c</span>(<span class="dv">4</span>,<span class="fl">4.5</span>,<span class="dv">2</span>,<span class="dv">3</span>),<span class="at">cex=</span><span class="dv">1</span>)</span>
+<span id="cb392-2"><a href="EO-intro.html#cb392-2" aria-hidden="true" tabindex="-1"></a>f<span class="ot">=</span><span class="cf">function</span>(x,T){<span class="fl">3.741e8</span><span class="sc">/</span>(x<span class="sc">^</span><span class="dv">5</span><span class="sc">*</span>(<span class="fu">exp</span>(<span class="fl">1.438e4</span><span class="sc">/</span>(x<span class="sc">*</span>T))<span class="sc">-</span><span class="dv">1</span>))}</span>
+<span id="cb392-3"><a href="EO-intro.html#cb392-3" aria-hidden="true" tabindex="-1"></a>x<span class="ot">=</span><span class="fu">seq</span>(<span class="fl">0.1</span>,<span class="dv">5</span>,<span class="at">by=</span><span class="fl">0.05</span>)</span>
+<span id="cb392-4"><a href="EO-intro.html#cb392-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb392-5"><a href="EO-intro.html#cb392-5" aria-hidden="true" tabindex="-1"></a>y<span class="ot">=</span> <span class="fu">f</span>(x,<span class="dv">4000</span>)</span>
+<span id="cb392-6"><a href="EO-intro.html#cb392-6" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(x,y, <span class="at">type =</span> <span class="st">&quot;l&quot;</span>, <span class="at">xlim=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">10</span>), <span class="at">ylim=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="fl">1e8</span>), <span class="at">col=</span>col[<span class="dv">2</span>], <span class="at">axes=</span>F, <span class="at">xlab=</span><span class="fu">expression</span>(<span class="fu">paste</span>(lambda, <span class="st">&quot;(&quot;</span>,mu, <span class="st">&quot;m)&quot;</span>)), <span class="at">ylab=</span><span class="fu">expression</span>(<span class="fu">paste</span>(<span class="st">&quot;Emitancia Espectral (W&quot;</span>,m<span class="sc">^-</span><span class="dv">2</span>,mu,m<span class="sc">^-</span><span class="dv">1</span>,<span class="st">&quot;)&quot;</span>)))</span>
+<span id="cb392-7"><a href="EO-intro.html#cb392-7" aria-hidden="true" tabindex="-1"></a><span class="fu">axis</span>(<span class="dv">2</span>,<span class="at">at=</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="fl">1e7</span>,<span class="fl">5e7</span>,<span class="fl">1e8</span>,<span class="fl">5e8</span>), <span class="at">labels=</span> <span class="fu">c</span>(<span class="st">&quot;0&quot;</span>, <span class="st">&quot;1e7&quot;</span>, <span class="st">&quot;5e7&quot;</span>, <span class="st">&quot;1e8&quot;</span>, <span class="st">&quot;5e8&quot;</span>), <span class="at">las=</span><span class="dv">2</span>)</span>
+<span id="cb392-8"><a href="EO-intro.html#cb392-8" aria-hidden="true" tabindex="-1"></a><span class="co">#mtext(text = expression(paste(&quot;Emitancia Espectral (W&quot;,m^-2,mu,m^-1,&quot;)&quot;)), side = 2, line = 3)</span></span>
+<span id="cb392-9"><a href="EO-intro.html#cb392-9" aria-hidden="true" tabindex="-1"></a><span class="fu">axis</span>(<span class="dv">1</span>,<span class="at">at=</span> <span class="dv">0</span><span class="sc">:</span><span class="dv">5</span>,  <span class="at">las=</span><span class="dv">1</span>)</span>
+<span id="cb392-10"><a href="EO-intro.html#cb392-10" aria-hidden="true" tabindex="-1"></a>y<span class="ot">=</span> <span class="fu">f</span>(x,<span class="dv">5000</span>)</span>
+<span id="cb392-11"><a href="EO-intro.html#cb392-11" aria-hidden="true" tabindex="-1"></a><span class="fu">points</span>(x,y, <span class="at">type=</span><span class="st">&quot;l&quot;</span>, <span class="at">col=</span>col[<span class="dv">4</span>])</span>
+<span id="cb392-12"><a href="EO-intro.html#cb392-12" aria-hidden="true" tabindex="-1"></a>y<span class="ot">=</span> <span class="fu">f</span>(x,<span class="dv">6000</span>)</span>
+<span id="cb392-13"><a href="EO-intro.html#cb392-13" aria-hidden="true" tabindex="-1"></a><span class="fu">points</span>(x,y, <span class="at">type=</span><span class="st">&quot;l&quot;</span>, <span class="at">col=</span>col[<span class="dv">6</span>])</span>
+<span id="cb392-14"><a href="EO-intro.html#cb392-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb392-15"><a href="EO-intro.html#cb392-15" aria-hidden="true" tabindex="-1"></a><span class="fu">text</span>(<span class="dv">2</span>,<span class="dv">16000000</span>,<span class="st">&quot;4.000 K&quot;</span>, <span class="at">col=</span>col[<span class="dv">2</span>])</span>
+<span id="cb392-16"><a href="EO-intro.html#cb392-16" aria-hidden="true" tabindex="-1"></a><span class="fu">text</span>(<span class="dv">2</span>,<span class="dv">43000000</span>,<span class="st">&quot;5.000 K&quot;</span>, <span class="at">col=</span>col[<span class="dv">4</span>])</span>
+<span id="cb392-17"><a href="EO-intro.html#cb392-17" aria-hidden="true" tabindex="-1"></a><span class="fu">text</span>(<span class="dv">2</span>,<span class="dv">101500000</span>,<span class="st">&quot;6.000 K&quot;</span>, <span class="at">col=</span>col[<span class="dv">6</span>])</span></code></pre></div>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:rs-intro-21"></span>
+<img src="_main_files/figure-html/rs-intro-21-1.png" alt="Longitud de Onda y Emitancia Espectral de Cuerpo Negro a varias temperaturas." width="672" />
+<p class="caption">
+Figura 11.18: Longitud de Onda y Emitancia Espectral de Cuerpo Negro a varias temperaturas.
+</p>
+</div>
+<p><span class="math display" id="eq:law-wien">\[\begin{equation} 
+\lambda_{max} =\frac{2.897,6 \; \mu m \;K}{T}
+\tag{11.14}
+\end{equation}\]</span></p>
+<p>Donde <span class="math inline">\(T\)</span> es la temperatura en unidades Kelvin.</p>
+<p>La dependencia de la posición de la intensidad máxima de la temperatura es evidente a partir de las curvas de cuerpo negro que se muestran en la figura <a href="EO-intro.html#fig:rs-intro-21">11.18</a>.</p>
+<p>Si la temperatura del sol la estimamos en 6000 K (la fotosfera) encontramos el pico de longitud de onda <span class="math inline">\(\lambda_{max}\)</span> es:</p>
+<div class="sourceCode" id="cb393"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb393-1"><a href="EO-intro.html#cb393-1" aria-hidden="true" tabindex="-1"></a>t_sol <span class="ot">&lt;-</span> <span class="dv">6000</span></span>
+<span id="cb393-2"><a href="EO-intro.html#cb393-2" aria-hidden="true" tabindex="-1"></a>l_max <span class="ot">&lt;-</span> <span class="dv">2898</span> <span class="sc">/</span> t_sol</span>
+<span id="cb393-3"><a href="EO-intro.html#cb393-3" aria-hidden="true" tabindex="-1"></a>l_max</span></code></pre></div>
+<pre><code>## [1] 0.483</code></pre>
+<p>Valor expresado en <span class="math inline">\(\mu m\)</span> (Lo ubica dentro del rango visible del espectro).</p>
+</div>
+<div id="stef" class="section level3" number="11.7.3">
+<h3><span class="header-section-number">11.7.3</span> Ley de Stefan-Boltzmann</h3>
+<p>Para conocer el total de la energía radiante espectral de un cuerpo negro se debe integrar la curva de Planck sobre el dominio de las longitudes de onda de <span class="math inline">\(0\)</span> a <span class="math inline">\(\infty\)</span>.</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:rs-intro-23"></span>
+<img src="img/stefan.jpg" alt="Jožef Stefan, físico esloveno, fuente: Grabado por K. Schönbauer." width="128" />
+<p class="caption">
+Figura 11.19: Jožef Stefan, físico esloveno, fuente: Grabado por K. Schönbauer.
+</p>
+</div>
+<p><span class="math display" id="eq:law-stef">\[\begin{equation} 
+M(T) = \sigma \; T^4
+\tag{11.15}
+\end{equation}\]</span></p>
+<p>Donde <span class="math inline">\(\sigma\)</span> es la constante de Stefan-Boltzmann:</p>
+<p><span class="math inline">\(5,67 \times 10^{-8} \; W \; m^{-2} \; K^{-4}\)</span> y la temperatura <span class="math inline">\(T\)</span> en Kelvin.</p>
+<p>La ley fue deducida en 1879 por el físico austriaco Jožef Stefan (Figura <a href="EO-intro.html#fig:rs-intro-23">11.19</a>) y la ley fue derivada en 1884 a partir de consideraciones teóricas por Ludwig Boltzmann (Figura <a href="EO-intro.html#fig:rs-intro-24">11.20</a>).</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:rs-intro-24"></span>
+<img src="img/ludwig.jpg" alt="Ludwig Eduard Boltzmann, físico austríaco, fuente: Universität Wien." width="189" />
+<p class="caption">
+Figura 11.20: Ludwig Eduard Boltzmann, físico austríaco, fuente: Universität Wien.
+</p>
+</div>
+<p>La emitancia total de un objeto es función de su temperatura. Pequeños cambios en la temperatura suponen cambios notables en su emitancia radiante. Debido a esta dependencia en la cuarta potencia, la emisión de radiación por los cuerpos terrestres cambia considerablemente durante el día o a través de las
+estaciones.</p>
+</div>
+<div id="kirchhoff" class="section level3" number="11.7.4">
+<h3><span class="header-section-number">11.7.4</span> Ley de Kirchhoff</h3>
+<p>Las tres leyes fundamentales anteriores se refieren a la intensidad radiante emitida por un cuerpo negro, que depende de la longitud de onda emisora y la temperatura del medio. Un medio puede absorber radiación de una longitud de onda particular, y al mismo tiempo también emiten radiación de la misma longitud de onda. La razón a la cual la emisión toma lugar es función de la temperatura y la longitud de onda. Esta es la propiedad fundamental de un medio en condiciones de <em>equilibrio termodinámico</em>. La declaración física en cuanto a absorción y emisión fue propuesta por primera vez por el físico Alemán Gustav Kirchhoff (Figura <a href="EO-intro.html#fig:rs-intro-22">11.21</a>).</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:rs-intro-22"></span>
+<img src="img/Kirchhoff.jpg" alt="Gustav Robert Kirchhoff fuente: Librería Smithsoniana." width="128" />
+<p class="caption">
+Figura 11.21: Gustav Robert Kirchhoff fuente: Librería Smithsoniana.
+</p>
+</div>
+<p>Para comprender el significado físico de la ley de Kirchhoff, consideremos un recinto aislado con paredes negras. Suponga que este sistema ha alcanzado el estado de equilibrio termodinámico caracterizado por una temperatura uniforme y una radiación isotrópica. Debido a que las paredes son negras, la radiación emitida por el sistema es absorbido por las paredes. Además, debido a que existe un equilibrio, la misma cantidad de radiación absorbida por las paredes también es emitida. Dado que el cuerpo negro absorbe el máximo posible radiación, tiene que emitir la misma cantidad de radiación. Si emitiera más, el equilibrio no sería posible y esto violaría la segunda ley de la termodinámica.</p>
+<p>La radiación dentro del sistema se conoce como radiación de cuerpo negro como ya se ha mencionado, y la cantidad de intensidad radiante es una función de la temperatura y longitud de onda.</p>
+<p>Sobre la base de la discusión anterior, la emisividad de una longitud de onda dada, <span class="math inline">\(\epsilon_\lambda\)</span>, de un medio es igual a la absortividad, <span class="math inline">\(\alpha_\lambda\)</span> ", de ese medio en equilibrio termodinámico. Por lo tanto, podemos escribir:</p>
+<p><span class="math display" id="eq:eps-lam">\[\begin{equation} 
+\epsilon_\lambda = \alpha_\lambda
+\tag{11.16}
+\end{equation}\]</span></p>
+<p>Un medio con una absortividad <span class="math inline">\(\alpha_\lambda\)</span> absorbe solo <span class="math inline">\(\alpha_\lambda\)</span> veces la intensidad radiante del cuerpo negro, por lo tanto, emite <span class="math inline">\(\epsilon _\lambda\)</span> veces la intensidad radiante del cuerpo negro.</p>
+<p>Si en la ecuación <a href="EO-intro.html#eq:equile">(11.8)</a> en su versión espectral, hacemos la transmitividad <span class="math inline">\(\tau_\lambda = 0\)</span> (suponiendo un objeto opaco) y usando <span class="math inline">\(\epsilon_\lambda = \alpha_\lambda\)</span> reemplazamos resulta:</p>
+<p><span class="math display" id="eq:eps-lam1">\[\begin{equation}
+\rho_\lambda + \epsilon_\lambda = 1
+\tag{11.17}
+\end{equation}\]</span></p>
+<p>Entonces, para mantener el equilibrio térmico, el exceso de energía absorbida debe ser emitido:</p>
+<ul>
+<li><p>Las superficies con alta reflectividad espectral (por ejemplo, nieve) son muy poco emisivas.</p></li>
+<li><p>Las superficies con baja reflectividad espectral (agua) son muy emisivas.</p></li>
+</ul>
+
+</div>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="r-hora.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="flujo.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": true,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "sepia",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/USERNAME/REPO/edit/BRANCH/09-intro-RS.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["_main.pdf"],
+"search": {
+"engine": "lunr",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+},
+"info": true
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

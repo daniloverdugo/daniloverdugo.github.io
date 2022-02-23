@@ -1,0 +1,1128 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Capítulo 13 Resoluciones de Imagen | Ráster con R</title>
+  <meta name="description" content="<p>Los fenómenos geográficos se desarrollan de manera continúa sobre una extensión de la superficie terrestre (en, sobre o bajo ella), y ha sido un desafío constante crear un modelo de representación tan simple para ser almacenado, procesado y visualizado con facilidad y tan complejo que permita perder el mínimo de información crítica y versátil que permita mantener el nivel de detalle proporcional a la riqueza del mundo real.
+Ese modelo se ha denominado <strong>modelo ráster</strong> y es el tema principal del presente libro, su origen, fundamentos, propiedades y algunos usos serán descritos en detalle.
+Para ello, se basará en la <strong>Plataforma R</strong> y <strong>RStudio</strong>, unas de las herramientas informáticas más poderosas en la actualidad.
+Desde la instalación de las aplicaciones, pasando por una guía básica de su utilización, hasta una detallada descripción del trabajo con dicho modelo.</p>" />
+  <meta name="generator" content="bookdown 0.24 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Capítulo 13 Resoluciones de Imagen | Ráster con R" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="<p>Los fenómenos geográficos se desarrollan de manera continúa sobre una extensión de la superficie terrestre (en, sobre o bajo ella), y ha sido un desafío constante crear un modelo de representación tan simple para ser almacenado, procesado y visualizado con facilidad y tan complejo que permita perder el mínimo de información crítica y versátil que permita mantener el nivel de detalle proporcional a la riqueza del mundo real.
+Ese modelo se ha denominado <strong>modelo ráster</strong> y es el tema principal del presente libro, su origen, fundamentos, propiedades y algunos usos serán descritos en detalle.
+Para ello, se basará en la <strong>Plataforma R</strong> y <strong>RStudio</strong>, unas de las herramientas informáticas más poderosas en la actualidad.
+Desde la instalación de las aplicaciones, pasando por una guía básica de su utilización, hasta una detallada descripción del trabajo con dicho modelo.</p>" />
+  <meta name="github-repo" content="rstudio/bookdown-demo" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Capítulo 13 Resoluciones de Imagen | Ráster con R" />
+  
+  <meta name="twitter:description" content="<p>Los fenómenos geográficos se desarrollan de manera continúa sobre una extensión de la superficie terrestre (en, sobre o bajo ella), y ha sido un desafío constante crear un modelo de representación tan simple para ser almacenado, procesado y visualizado con facilidad y tan complejo que permita perder el mínimo de información crítica y versátil que permita mantener el nivel de detalle proporcional a la riqueza del mundo real.
+Ese modelo se ha denominado <strong>modelo ráster</strong> y es el tema principal del presente libro, su origen, fundamentos, propiedades y algunos usos serán descritos en detalle.
+Para ello, se basará en la <strong>Plataforma R</strong> y <strong>RStudio</strong>, unas de las herramientas informáticas más poderosas en la actualidad.
+Desde la instalación de las aplicaciones, pasando por una guía básica de su utilización, hasta una detallada descripción del trabajo con dicho modelo.</p>" />
+  
+
+<meta name="author" content="Danilo A. Verdugo Chaura" />
+
+
+<meta name="date" content="2022-02-22" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="flujo.html"/>
+
+<script src="libs/header-attrs-2.11/header-attrs.js"></script>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.0.1/anchor-sections.js"></script>
+<script src="libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Ráster con R</a></li>
+
+<li class="divider"></li>
+<li class="part"><span><b>I Part I</b></span></li>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Plataforma R</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="index.html"><a href="index.html#hist-orig"><i class="fa fa-check"></i><b>1.1</b> Historia y Origen</a></li>
+<li class="chapter" data-level="1.2" data-path="index.html"><a href="index.html#dis-plat"><i class="fa fa-check"></i><b>1.2</b> Diseño de la Plataforma R</a></li>
+<li class="chapter" data-level="1.3" data-path="index.html"><a href="index.html#rstudio"><i class="fa fa-check"></i><b>1.3</b> RStudio</a></li>
+<li class="chapter" data-level="1.4" data-path="index.html"><a href="index.html#car-prin"><i class="fa fa-check"></i><b>1.4</b> Características Principales</a></li>
+<li class="chapter" data-level="1.5" data-path="index.html"><a href="index.html#inst-pla"><i class="fa fa-check"></i><b>1.5</b> Instalación de Plataforma R y RStudio</a></li>
+<li class="chapter" data-level="1.6" data-path="index.html"><a href="index.html#con-pre"><i class="fa fa-check"></i><b>1.6</b> Consideraciones Preliminares</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="intro-package.html"><a href="intro-package.html"><i class="fa fa-check"></i><b>2</b> Paquetes</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="intro-package.html"><a href="intro-package.html#pack-search"><i class="fa fa-check"></i><b>2.1</b> Búsqueda</a></li>
+<li class="chapter" data-level="2.2" data-path="intro-package.html"><a href="intro-package.html#pack-install"><i class="fa fa-check"></i><b>2.2</b> Instalación</a>
+<ul>
+<li class="chapter" data-level="2.2.1" data-path="intro-package.html"><a href="intro-package.html#pack-cuadro"><i class="fa fa-check"></i><b>2.2.1</b> Cuadro Diálogo</a></li>
+<li class="chapter" data-level="2.2.2" data-path="intro-package.html"><a href="intro-package.html#pack-install-code"><i class="fa fa-check"></i><b>2.2.2</b> Función <em>install.packages()</em></a></li>
+</ul></li>
+<li class="chapter" data-level="2.3" data-path="intro-package.html"><a href="intro-package.html#pack-update"><i class="fa fa-check"></i><b>2.3</b> Actualización</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="sin-bas.html"><a href="sin-bas.html"><i class="fa fa-check"></i><b>3</b> Sintaxis Básica de R</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="sin-bas.html"><a href="sin-bas.html#op-num"><i class="fa fa-check"></i><b>3.1</b> Operaciones Numéricas</a></li>
+<li class="chapter" data-level="3.2" data-path="sin-bas.html"><a href="sin-bas.html#asig"><i class="fa fa-check"></i><b>3.2</b> Asignación</a></li>
+<li class="chapter" data-level="3.3" data-path="sin-bas.html"><a href="sin-bas.html#nat-vec"><i class="fa fa-check"></i><b>3.3</b> Naturaleza Vectorial</a>
+<ul>
+<li class="chapter" data-level="3.3.1" data-path="sin-bas.html"><a href="sin-bas.html#fun-c"><i class="fa fa-check"></i><b>3.3.1</b> Función <strong><code>c()</code></strong> para crear vectores</a></li>
+<li class="chapter" data-level="3.3.2" data-path="sin-bas.html"><a href="sin-bas.html#uso-sec"><i class="fa fa-check"></i><b>3.3.2</b> Uso de <strong>Secuencias</strong> para crear vectores</a></li>
+<li class="chapter" data-level="3.3.3" data-path="sin-bas.html"><a href="sin-bas.html#usar-rep"><i class="fa fa-check"></i><b>3.3.3</b> Usar <strong>Repetición</strong> para la creación de vectores</a></li>
+<li class="chapter" data-level="3.3.4" data-path="sin-bas.html"><a href="sin-bas.html#uso-pat"><i class="fa fa-check"></i><b>3.3.4</b> Uso de <strong>Patrones</strong> para crear vectores</a></li>
+<li class="chapter" data-level="3.3.5" data-path="sin-bas.html"><a href="sin-bas.html#vec-log"><i class="fa fa-check"></i><b>3.3.5</b> Vectores Lógicos y Caracteres</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="op-vec.html"><a href="op-vec.html"><i class="fa fa-check"></i><b>4</b> Operación Vectorial</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="op-vec.html"><a href="op-vec.html#op-num-vec"><i class="fa fa-check"></i><b>4.1</b> Operaciones Numéricas</a></li>
+<li class="chapter" data-level="4.2" data-path="op-vec.html"><a href="op-vec.html#val-fal"><i class="fa fa-check"></i><b>4.2</b> Valores Faltantes</a></li>
+<li class="chapter" data-level="4.3" data-path="op-vec.html"><a href="op-vec.html#index-sub"><i class="fa fa-check"></i><b>4.3</b> Indexado y Subconjunto</a>
+<ul>
+<li class="chapter" data-level="4.3.1" data-path="op-vec.html"><a href="op-vec.html#ind-num-pos"><i class="fa fa-check"></i><b>4.3.1</b> Índice Numérico Positivo</a></li>
+<li class="chapter" data-level="4.3.2" data-path="op-vec.html"><a href="op-vec.html#ind-num-neg"><i class="fa fa-check"></i><b>4.3.2</b> Índice Numérico Negativo</a></li>
+<li class="chapter" data-level="4.3.3" data-path="op-vec.html"><a href="op-vec.html#vec-log-1"><i class="fa fa-check"></i><b>4.3.3</b> Vector Lógico</a></li>
+</ul></li>
+<li class="chapter" data-level="4.4" data-path="op-vec.html"><a href="op-vec.html#edic-con"><i class="fa fa-check"></i><b>4.4</b> Edición de Contenido</a></li>
+<li class="chapter" data-level="4.5" data-path="op-vec.html"><a href="op-vec.html#op-avan"><i class="fa fa-check"></i><b>4.5</b> Opciones Avanzadas</a>
+<ul>
+<li class="chapter" data-level="4.5.1" data-path="op-vec.html"><a href="op-vec.html#nom-col"><i class="fa fa-check"></i><b>4.5.1</b> Nombrar los Componentes de un Vector</a></li>
+<li class="chapter" data-level="4.5.2" data-path="op-vec.html"><a href="op-vec.html#info-ad"><i class="fa fa-check"></i><b>4.5.2</b> Información Adicional</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="fac.html"><a href="fac.html"><i class="fa fa-check"></i><b>5</b> Factores</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="fac.html"><a href="fac.html#fac-nom"><i class="fa fa-check"></i><b>5.1</b> Factores Nominales</a></li>
+<li class="chapter" data-level="5.2" data-path="fac.html"><a href="fac.html#fac-or"><i class="fa fa-check"></i><b>5.2</b> Factores Ordinales</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="mat.html"><a href="mat.html"><i class="fa fa-check"></i><b>6</b> Matrices</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="mat.html"><a href="mat.html#op-num-mat"><i class="fa fa-check"></i><b>6.1</b> Operaciones Numéricas</a></li>
+<li class="chapter" data-level="6.2" data-path="mat.html"><a href="mat.html#matriz-index"><i class="fa fa-check"></i><b>6.2</b> Indexado y Subconjunto</a></li>
+<li class="chapter" data-level="6.3" data-path="mat.html"><a href="mat.html#ed-con"><i class="fa fa-check"></i><b>6.3</b> Edición de Contenido</a></li>
+<li class="chapter" data-level="6.4" data-path="mat.html"><a href="mat.html#op-avan-mat"><i class="fa fa-check"></i><b>6.4</b> Opciones Avanzadas</a>
+<ul>
+<li class="chapter" data-level="6.4.1" data-path="mat.html"><a href="mat.html#nom-fil"><i class="fa fa-check"></i><b>6.4.1</b> Nombres de Filas y Columnas</a></li>
+<li class="chapter" data-level="6.4.2" data-path="mat.html"><a href="mat.html#mod-mat"><i class="fa fa-check"></i><b>6.4.2</b> Modificar Tamaño de Matrices</a></li>
+<li class="chapter" data-level="6.4.3" data-path="mat.html"><a href="mat.html#info-adic"><i class="fa fa-check"></i><b>6.4.3</b> Información Adicional</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="dataframe.html"><a href="dataframe.html"><i class="fa fa-check"></i><b>7</b> Dataframes</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="dataframe.html"><a href="dataframe.html#df-detalle"><i class="fa fa-check"></i><b>7.1</b> Creación</a></li>
+<li class="chapter" data-level="7.2" data-path="dataframe.html"><a href="dataframe.html#df-op-num"><i class="fa fa-check"></i><b>7.2</b> Operaciones Numéricas</a></li>
+<li class="chapter" data-level="7.3" data-path="dataframe.html"><a href="dataframe.html#df-index"><i class="fa fa-check"></i><b>7.3</b> Indexado y Subconjunto</a>
+<ul>
+<li class="chapter" data-level="7.3.1" data-path="dataframe.html"><a href="dataframe.html#df-op-avan"><i class="fa fa-check"></i><b>7.3.1</b> Opciones Avanzadas</a></li>
+<li class="chapter" data-level="7.3.2" data-path="dataframe.html"><a href="dataframe.html#df-mod-size"><i class="fa fa-check"></i><b>7.3.2</b> Modificar Tamaño o Estructura</a></li>
+<li class="chapter" data-level="7.3.3" data-path="dataframe.html"><a href="dataframe.html#df-nom-fil-col"><i class="fa fa-check"></i><b>7.3.3</b> Nombres de Filas y Columnas</a></li>
+<li class="chapter" data-level="7.3.4" data-path="dataframe.html"><a href="dataframe.html#df-info"><i class="fa fa-check"></i><b>7.3.4</b> Información Adicional</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="array.html"><a href="array.html"><i class="fa fa-check"></i><b>8</b> Array</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="array.html"><a href="array.html#op-num-arr"><i class="fa fa-check"></i><b>8.1</b> Operaciones Numéricas</a></li>
+<li class="chapter" data-level="8.2" data-path="array.html"><a href="array.html#index-arr"><i class="fa fa-check"></i><b>8.2</b> Indexado y Subconjunto</a></li>
+<li class="chapter" data-level="8.3" data-path="array.html"><a href="array.html#ed-con-arr"><i class="fa fa-check"></i><b>8.3</b> Edición de Contenido</a></li>
+<li class="chapter" data-level="8.4" data-path="array.html"><a href="array.html#op-av-arr"><i class="fa fa-check"></i><b>8.4</b> Opciones Avanzadas</a>
+<ul>
+<li class="chapter" data-level="8.4.1" data-path="array.html"><a href="array.html#nom-fil-arr"><i class="fa fa-check"></i><b>8.4.1</b> Nombres de Filas y Columnas</a></li>
+<li class="chapter" data-level="8.4.2" data-path="array.html"><a href="array.html#info-ad-arr"><i class="fa fa-check"></i><b>8.4.2</b> Información Adicional</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="r-fechas.html"><a href="r-fechas.html"><i class="fa fa-check"></i><b>9</b> Fechas</a>
+<ul>
+<li class="chapter" data-level="9.1" data-path="r-fechas.html"><a href="r-fechas.html#op-fe"><i class="fa fa-check"></i><b>9.1</b> Operaciones con Fecha</a>
+<ul>
+<li class="chapter" data-level="9.1.1" data-path="r-fechas.html"><a href="r-fechas.html#format-date"><i class="fa fa-check"></i><b>9.1.1</b> Formato de Fechas</a></li>
+<li class="chapter" data-level="9.1.2" data-path="r-fechas.html"><a href="r-fechas.html#cambio-formato-date"><i class="fa fa-check"></i><b>9.1.2</b> Cambio de Formato</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="r-hora.html"><a href="r-hora.html"><i class="fa fa-check"></i><b>10</b> Hora</a>
+<ul>
+<li class="chapter" data-level="10.1" data-path="r-hora.html"><a href="r-hora.html#posix"><i class="fa fa-check"></i><b>10.1</b> Formato POSIX</a></li>
+<li class="chapter" data-level="10.2" data-path="r-hora.html"><a href="r-hora.html#ope-time"><i class="fa fa-check"></i><b>10.2</b> Operando con el tiempo</a></li>
+<li class="chapter" data-level="10.3" data-path="r-hora.html"><a href="r-hora.html#zona-hora"><i class="fa fa-check"></i><b>10.3</b> Conversión entre zonas horarias</a></li>
+</ul></li>
+<li class="part"><span><b>II Part II</b></span></li>
+<li class="chapter" data-level="11" data-path="EO-intro.html"><a href="EO-intro.html"><i class="fa fa-check"></i><b>11</b> Observación de la Tierra</a>
+<ul>
+<li class="chapter" data-level="11.1" data-path="EO-intro.html"><a href="EO-intro.html#intro-rs"><i class="fa fa-check"></i><b>11.1</b> Introducción</a></li>
+<li class="chapter" data-level="11.2" data-path="EO-intro.html"><a href="EO-intro.html#rs-eletro"><i class="fa fa-check"></i><b>11.2</b> Energía Electromagnética</a>
+<ul>
+<li class="chapter" data-level="11.2.1" data-path="EO-intro.html"><a href="EO-intro.html#rs-intro-amable"><i class="fa fa-check"></i><b>11.2.1</b> Fundamentos Históricos y Físicos</a></li>
+<li class="chapter" data-level="11.2.2" data-path="EO-intro.html"><a href="EO-intro.html#rs-intro-electro"><i class="fa fa-check"></i><b>11.2.2</b> Fenómeno Eléctrico</a></li>
+<li class="chapter" data-level="11.2.3" data-path="EO-intro.html"><a href="EO-intro.html#rs-intro-magneto"><i class="fa fa-check"></i><b>11.2.3</b> Fenómeno Magnético</a></li>
+</ul></li>
+<li class="chapter" data-level="11.3" data-path="EO-intro.html"><a href="EO-intro.html#rs-relation"><i class="fa fa-check"></i><b>11.3</b> La Relación Electricidad Magnetismo</a>
+<ul>
+<li class="chapter" data-level="11.3.1" data-path="EO-intro.html"><a href="EO-intro.html#rs-campo"><i class="fa fa-check"></i><b>11.3.1</b> El Concepto de Campo</a></li>
+<li class="chapter" data-level="11.3.2" data-path="EO-intro.html"><a href="EO-intro.html#rs-electro-magne"><i class="fa fa-check"></i><b>11.3.2</b> El Electromagnetismo</a></li>
+</ul></li>
+<li class="chapter" data-level="11.4" data-path="EO-intro.html"><a href="EO-intro.html#rs-eem"><i class="fa fa-check"></i><b>11.4</b> Cómo se Produce y Transporta la Energía</a>
+<ul>
+<li class="chapter" data-level="11.4.1" data-path="EO-intro.html"><a href="EO-intro.html#rs-onda"><i class="fa fa-check"></i><b>11.4.1</b> Las Ondas</a></li>
+<li class="chapter" data-level="11.4.2" data-path="EO-intro.html"><a href="EO-intro.html#cuantiluz"><i class="fa fa-check"></i><b>11.4.2</b> Cuantos y Dualidad de la Luz</a></li>
+<li class="chapter" data-level="11.4.3" data-path="EO-intro.html"><a href="EO-intro.html#foton"><i class="fa fa-check"></i><b>11.4.3</b> El Fotón</a></li>
+<li class="chapter" data-level="11.4.4" data-path="EO-intro.html"><a href="EO-intro.html#teo-cuan-ond"><i class="fa fa-check"></i><b>11.4.4</b> Relación entre Teoría Ondulatoria y Cuántica</a></li>
+</ul></li>
+<li class="chapter" data-level="11.5" data-path="EO-intro.html"><a href="EO-intro.html#rs-el-espectro-electro"><i class="fa fa-check"></i><b>11.5</b> El Espectro Electromagnético</a>
+<ul>
+<li class="chapter" data-level="11.5.1" data-path="EO-intro.html"><a href="EO-intro.html#vis"><i class="fa fa-check"></i><b>11.5.1</b> Espectro Visible (VIS)</a></li>
+<li class="chapter" data-level="11.5.2" data-path="EO-intro.html"><a href="EO-intro.html#infra-cer"><i class="fa fa-check"></i><b>11.5.2</b> Infrarrojo Cercano (NIR), Próximo o Reflejado</a></li>
+<li class="chapter" data-level="11.5.3" data-path="EO-intro.html"><a href="EO-intro.html#infra-mir"><i class="fa fa-check"></i><b>11.5.3</b> Infrarrojo Medio (MIR)</a></li>
+<li class="chapter" data-level="11.5.4" data-path="EO-intro.html"><a href="EO-intro.html#infra-ter"><i class="fa fa-check"></i><b>11.5.4</b> Infrarrojo Térmico (TIR)</a></li>
+<li class="chapter" data-level="11.5.5" data-path="EO-intro.html"><a href="EO-intro.html#microwave"><i class="fa fa-check"></i><b>11.5.5</b> Microondas (MW)</a></li>
+</ul></li>
+<li class="chapter" data-level="11.6" data-path="EO-intro.html"><a href="EO-intro.html#concep-unidad"><i class="fa fa-check"></i><b>11.6</b> Conceptos Básicos y sus Unidades</a>
+<ul>
+<li class="chapter" data-level="11.6.1" data-path="EO-intro.html"><a href="EO-intro.html#angsol"><i class="fa fa-check"></i><b>11.6.1</b> Ángulo Sólido</a></li>
+<li class="chapter" data-level="11.6.2" data-path="EO-intro.html"><a href="EO-intro.html#mag-radio"><i class="fa fa-check"></i><b>11.6.2</b> Magnitudes Radiométricas</a></li>
+<li class="chapter" data-level="11.6.3" data-path="EO-intro.html"><a href="EO-intro.html#temp-intro"><i class="fa fa-check"></i><b>11.6.3</b> Importancia de la Temperatura</a></li>
+</ul></li>
+<li class="chapter" data-level="11.7" data-path="EO-intro.html"><a href="EO-intro.html#cuerpo-negro"><i class="fa fa-check"></i><b>11.7</b> Radiación de Cuerpo Negro</a>
+<ul>
+<li class="chapter" data-level="11.7.1" data-path="EO-intro.html"><a href="EO-intro.html#ley-planck"><i class="fa fa-check"></i><b>11.7.1</b> Ley de Planck</a></li>
+<li class="chapter" data-level="11.7.2" data-path="EO-intro.html"><a href="EO-intro.html#wien"><i class="fa fa-check"></i><b>11.7.2</b> Ley de Desplazamiento de Wien</a></li>
+<li class="chapter" data-level="11.7.3" data-path="EO-intro.html"><a href="EO-intro.html#stef"><i class="fa fa-check"></i><b>11.7.3</b> Ley de Stefan-Boltzmann</a></li>
+<li class="chapter" data-level="11.7.4" data-path="EO-intro.html"><a href="EO-intro.html#kirchhoff"><i class="fa fa-check"></i><b>11.7.4</b> Ley de Kirchhoff</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="12" data-path="flujo.html"><a href="flujo.html"><i class="fa fa-check"></i><b>12</b> EEM</a>
+<ul>
+<li class="chapter" data-level="12.1" data-path="flujo.html"><a href="flujo.html#flujo-eem"><i class="fa fa-check"></i><b>12.1</b> Flujo de la EEM</a></li>
+<li class="chapter" data-level="12.2" data-path="flujo.html"><a href="flujo.html#inter-atm-eem"><i class="fa fa-check"></i><b>12.2</b> Interacción EEM con la Atmósfera</a>
+<ul>
+<li class="chapter" data-level="12.2.1" data-path="flujo.html"><a href="flujo.html#atmos"><i class="fa fa-check"></i><b>12.2.1</b> La Atmósfera</a></li>
+<li class="chapter" data-level="12.2.2" data-path="flujo.html"><a href="flujo.html#at-abs"><i class="fa fa-check"></i><b>12.2.2</b> Absorción</a></li>
+<li class="chapter" data-level="12.2.3" data-path="flujo.html"><a href="flujo.html#disper"><i class="fa fa-check"></i><b>12.2.3</b> Dispersión</a></li>
+<li class="chapter" data-level="12.2.4" data-path="flujo.html"><a href="flujo.html#emision"><i class="fa fa-check"></i><b>12.2.4</b> Emisión</a></li>
+</ul></li>
+<li class="chapter" data-level="12.3" data-path="flujo.html"><a href="flujo.html#fin-ciclo"><i class="fa fa-check"></i><b>12.3</b> Últimos pasos</a>
+<ul>
+<li class="chapter" data-level="12.3.1" data-path="flujo.html"><a href="flujo.html#dn-toa"><i class="fa fa-check"></i><b>12.3.1</b> DN a TOA</a></li>
+<li class="chapter" data-level="12.3.2" data-path="flujo.html"><a href="flujo.html#dn-boa"><i class="fa fa-check"></i><b>12.3.2</b> TOA a BOA</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="13" data-path="prop-img.html"><a href="prop-img.html"><i class="fa fa-check"></i><b>13</b> Resoluciones de Imagen</a>
+<ul>
+<li class="chapter" data-level="13.1" data-path="prop-img.html"><a href="prop-img.html#res-spac"><i class="fa fa-check"></i><b>13.1</b> Resolución Espacial</a></li>
+<li class="chapter" data-level="13.2" data-path="prop-img.html"><a href="prop-img.html#res-espec"><i class="fa fa-check"></i><b>13.2</b> Resolución Espectral</a>
+<ul>
+<li class="chapter" data-level="13.2.1" data-path="prop-img.html"><a href="prop-img.html#res-profile"><i class="fa fa-check"></i><b>13.2.1</b> Firma Espectral</a></li>
+<li class="chapter" data-level="13.2.2" data-path="prop-img.html"><a href="prop-img.html#import-ds"><i class="fa fa-check"></i><b>13.2.2</b> Import Dataset</a></li>
+<li class="chapter" data-level="13.2.3" data-path="prop-img.html"><a href="prop-img.html#spec-r"><i class="fa fa-check"></i><b>13.2.3</b> Procesando en R</a></li>
+</ul></li>
+<li class="chapter" data-level="13.3" data-path="prop-img.html"><a href="prop-img.html#res-rad"><i class="fa fa-check"></i><b>13.3</b> Resolución Radiométrica</a></li>
+<li class="chapter" data-level="13.4" data-path="prop-img.html"><a href="prop-img.html#res-temp"><i class="fa fa-check"></i><b>13.4</b> Resolución Temporal</a></li>
+<li class="chapter" data-level="13.5" data-path="prop-img.html"><a href="prop-img.html#res-ang"><i class="fa fa-check"></i><b>13.5</b> Resolución angular</a></li>
+</ul></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Publicado con bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Ráster con R</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="prop-img" class="section level1" number="13">
+<h1><span class="header-section-number">Capítulo 13</span> Resoluciones de Imagen</h1>
+<p>Las especificaciones técnicas de la plataforma espacial y las del sensor mismo determina las <em>resoluciones</em>, espacial, espectral, radiométrica, angular y temporal (<span class="citation">Liang and Wang (2020)</span>) de los datos sensados.</p>
+<p>Los distintos tipos de resolución están estrechamente interconectados. La adquisición de imágenes de alta resolución espacial suele implicar reducir la resolución temporal y/o resolución espectral. Las limitaciones en la transmisión de datos o grabación a bordo, un sensor será capaz de optimizar solo uno o dos de los tipos de resolución. Incrementar cualquiera de los cinco tipos de resoluciones implica una considerable cantidad de transmisión y procesamiento de datos adicionales, tanto para el sensor como las instalaciones terrestres de recepción.</p>
+<p>La misión de un sistema de teledetección intenta enfatizar la resolución particular que mejor se adapta a sus requisitos. Si el sistema está diseñado para detectar <em>fenómenos dinámicos</em>, una buena cobertura temporal es fundamental, incluso sacrificando la resolución espacial (satélites meteorológicos). Si la misión está orientada a la exploración minera, los detalles espectrales y espaciales son más importantes, mientras que la cobertura temporal se vuelve menos significativa.</p>
+<p>Finalmente, identificar la calidad de un sensor basado en su resolución espacial es muy simplista. Se requiere una alta resolución espacial para ciertas aplicaciones (por ejemplo, cartografía urbana o agrícola), pero puede ser secundaria
+para otras aplicaciones, como detección de incendios o estudios geológicos, evaluación de riesgos naturales, por ejemplo, requieren una alta resolución temporal, al igual que el pronóstico del clima. Otras aplicaciones de teledetección deben optimizar la resolución espectral, como en la estimación de la productividad de los cultivos o la demanda de agua. En consecuencia, el tipo de resolución prioritaria es fundamental para seleccionar el sensor más adecuado para una aplicación particular.</p>
+<div id="res-spac" class="section level2" number="13.1">
+<h2><span class="header-section-number">13.1</span> Resolución Espacial</h2>
+<p>La resolución espacial es la medida más pequeña de un objeto que puede ser resuelto (capacidad de separar objetos cercanos y que aparezcan independientes y aislados) por el sensor, o el área del suelo en el campo instantáneo de vista o (<em>instantaneous field of view, IFOV</em>)<a href="#fn15" class="footnote-ref" id="fnref15"><sup>15</sup></a> del sensor, o la dimensión lineal en el suelo representado por cada píxel.</p>
+<p>La resolución espacial de los sensores electrónicos ópticos depende de la <em>altura orbital</em>, <em>número de detectores</em>, <em>longitud focal</em> y <em>configuración del sistema</em>. Los sensores de observación de la Tierra en funcionamiento cubren una amplia gama de resoluciones espaciales (ver cuadro ).</p>
+<ul>
+<li><strong><em>Alta</em></strong> con un tamaño de píxel de <span class="math inline">\(0.5 - 4.0 \;m\)</span>.</li>
+<li><strong><em>Media</em></strong> con un tamaño de píxel de <span class="math inline">\(10 - 60 \; m\)</span>.</li>
+<li><strong><em>Gruesa</em></strong> con un tamaño de píxel de <span class="math inline">\(100 - 1000 \; m\)</span>.</li>
+<li><strong><em>Muy Gruesa</em></strong> con un tamaño de píxel de <span class="math inline">\(10 - 50 \; km\)</span>.</li>
+</ul>
+<p>Sensores orientados a <em>aplicaciones globales</em> tienen un tamaño de píxel entre <span class="math inline">\(200 - 1000 \; m\)</span> y sensores orientado al <em>estudio atmosférico</em> suelen tener una resolución espacial muy gruesa <span class="math inline">\(10 - 50 \;km\)</span>.</p>
+<p>La <em>resolución espacial</em> juega un papel importante en la interpretación de imágenes porque afecta el nivel de detalle alcanzado. Solo puede identificar objetos varias veces más grande que el tamaño del píxel, aunque se pueden detectar características más pequeñas cuando existe suficiente contraste radiométrico entre el objeto y el fondo (por ejemplo, un incendio de alta temperatura puede detectarse incluso si su tamaño es sólo un pequeño
+proporción del área total de píxeles).</p>
+<p>La selección de la resolución espacial más conveniente está estrechamente relacionada con la escala adecuada para el problema particular en estudio. Además, resolución espacial
+afecta la <strong>pureza de señal de píxel</strong>. Cuanto menor sea el tamaño del píxel, menor será la
+probabilidad de que el píxel sea una <em>combinación de dos o más tipos de cobertura</em>. Un píxel mixto probablemente tendrá una señal promedio de las coberturas terrestres presentes dentro del IFOV. Como resultado, ese píxel puede no parecerse a ninguna de las categorías que componen la mezcla, lo que hará su identificación más difícil.</p>
+<table class="table" style="margin-left: auto; margin-right: auto;border-bottom: 0;">
+<caption>
+<span id="tab:tab-mod-0">Tabla 13.1: </span>Resoluciones de las misiones y sensores cuyos productos serán descritos y procesados con R en el texto.
+</caption>
+<thead>
+<tr>
+<th style="text-align:center;">
+Nivel
+</th>
+<th style="text-align:center;">
+Satélite
+</th>
+<th style="text-align:center;">
+Sensor
+</th>
+<th style="text-align:center;">
+Bits
+</th>
+<th style="text-align:center;">
+Días
+</th>
+<th style="text-align:center;">
+Período
+</th>
+<th style="text-align:center;">
+Espacial
+</th>
+<th style="text-align:center;">
+Bandas
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center;width: .4in; ">
+Gruesa
+</td>
+<td style="text-align:center;">
+Terra/Aqua
+</td>
+<td style="text-align:center;width: .4in; ">
+MODIS
+</td>
+<td style="text-align:center;width: .4in; ">
+12
+</td>
+<td style="text-align:center;width: .4in; ">
+1
+</td>
+<td style="text-align:center;width: .4in; ">
+1999-
+</td>
+<td style="text-align:center;">
+250
+</td>
+<td style="text-align:center;">
+B1-B2
+</td>
+</tr>
+<tr>
+<td style="text-align:center;width: .4in; ">
+Gruesa
+</td>
+<td style="text-align:center;">
+Terra/Aqua
+</td>
+<td style="text-align:center;width: .4in; ">
+MODIS
+</td>
+<td style="text-align:center;width: .4in; ">
+12
+</td>
+<td style="text-align:center;width: .4in; ">
+1
+</td>
+<td style="text-align:center;width: .4in; ">
+1999-
+</td>
+<td style="text-align:center;">
+500
+</td>
+<td style="text-align:center;">
+B3-B7
+</td>
+</tr>
+<tr>
+<td style="text-align:center;width: .4in; ">
+Gruesa
+</td>
+<td style="text-align:center;">
+Terra/Aqua
+</td>
+<td style="text-align:center;width: .4in; ">
+MODIS
+</td>
+<td style="text-align:center;width: .4in; ">
+12
+</td>
+<td style="text-align:center;width: .4in; ">
+1
+</td>
+<td style="text-align:center;width: .4in; ">
+1999-
+</td>
+<td style="text-align:center;">
+1000
+</td>
+<td style="text-align:center;">
+B8-B36
+</td>
+</tr>
+<tr>
+<td style="text-align:center;width: .4in; ">
+Gruesa
+</td>
+<td style="text-align:center;">
+Sentinel-3
+</td>
+<td style="text-align:center;width: .4in; ">
+SLSTR
+</td>
+<td style="text-align:center;width: .4in; ">
+16
+</td>
+<td style="text-align:center;width: .4in; ">
+1
+</td>
+<td style="text-align:center;width: .4in; ">
+2016-
+</td>
+<td style="text-align:center;">
+300
+</td>
+<td style="text-align:center;">
+LST
+</td>
+</tr>
+<tr>
+<td style="text-align:center;width: .4in; ">
+Gruesa
+</td>
+<td style="text-align:center;">
+Sentinel-5p
+</td>
+<td style="text-align:center;width: .4in; ">
+TROPOMI
+</td>
+<td style="text-align:center;width: .4in; ">
+16
+</td>
+<td style="text-align:center;width: .4in; ">
+1
+</td>
+<td style="text-align:center;width: .4in; ">
+2018-
+</td>
+<td style="text-align:center;">
+1100
+</td>
+<td style="text-align:center;">
+VARIOS
+</td>
+</tr>
+<tr>
+<td style="text-align:center;width: .4in; ">
+Media
+</td>
+<td style="text-align:center;">
+Landsat 9
+</td>
+<td style="text-align:center;width: .4in; ">
+OLI-2 TIR-2
+</td>
+<td style="text-align:center;width: .4in; ">
+14
+</td>
+<td style="text-align:center;width: .4in; ">
+16
+</td>
+<td style="text-align:center;width: .4in; ">
+2021-
+</td>
+<td style="text-align:center;">
+30
+</td>
+<td style="text-align:center;">
+B1-B9,B10-B11
+</td>
+</tr>
+<tr>
+<td style="text-align:center;width: .4in; ">
+Media
+</td>
+<td style="text-align:center;">
+Landsat 8
+</td>
+<td style="text-align:center;width: .4in; ">
+OLI TIRS
+</td>
+<td style="text-align:center;width: .4in; ">
+16
+</td>
+<td style="text-align:center;width: .4in; ">
+16
+</td>
+<td style="text-align:center;width: .4in; ">
+2013-
+</td>
+<td style="text-align:center;">
+30
+</td>
+<td style="text-align:center;">
+B1-B7,B10
+</td>
+</tr>
+<tr>
+<td style="text-align:center;width: .4in; ">
+Media
+</td>
+<td style="text-align:center;">
+Landsat 7
+</td>
+<td style="text-align:center;width: .4in; ">
+ETM+
+</td>
+<td style="text-align:center;width: .4in; ">
+16
+</td>
+<td style="text-align:center;width: .4in; ">
+16
+</td>
+<td style="text-align:center;width: .4in; ">
+1999-
+</td>
+<td style="text-align:center;">
+30
+</td>
+<td style="text-align:center;">
+B1-B6
+</td>
+</tr>
+<tr>
+<td style="text-align:center;width: .4in; ">
+Media
+</td>
+<td style="text-align:center;">
+Landsat 5
+</td>
+<td style="text-align:center;width: .4in; ">
+TM
+</td>
+<td style="text-align:center;width: .4in; ">
+16
+</td>
+<td style="text-align:center;width: .4in; ">
+16
+</td>
+<td style="text-align:center;width: .4in; ">
+1984-2012
+</td>
+<td style="text-align:center;">
+30
+</td>
+<td style="text-align:center;">
+B1-B6
+</td>
+</tr>
+<tr>
+<td style="text-align:center;width: .4in; ">
+Media
+</td>
+<td style="text-align:center;">
+Landsat 4
+</td>
+<td style="text-align:center;width: .4in; ">
+TM
+</td>
+<td style="text-align:center;width: .4in; ">
+16
+</td>
+<td style="text-align:center;width: .4in; ">
+16
+</td>
+<td style="text-align:center;width: .4in; ">
+1982-1993
+</td>
+<td style="text-align:center;">
+30
+</td>
+<td style="text-align:center;">
+B1-B6
+</td>
+</tr>
+<tr>
+<td style="text-align:center;width: .4in; ">
+Media
+</td>
+<td style="text-align:center;">
+Sentinel 2/2A
+</td>
+<td style="text-align:center;width: .4in; ">
+MSI
+</td>
+<td style="text-align:center;width: .4in; ">
+12
+</td>
+<td style="text-align:center;width: .4in; ">
+5
+</td>
+<td style="text-align:center;width: .4in; ">
+2015-
+</td>
+<td style="text-align:center;">
+60
+</td>
+<td style="text-align:center;">
+B1,B9,B10
+</td>
+</tr>
+<tr>
+<td style="text-align:center;width: .4in; ">
+Media
+</td>
+<td style="text-align:center;">
+Sentinel 2/2A
+</td>
+<td style="text-align:center;width: .4in; ">
+MSI
+</td>
+<td style="text-align:center;width: .4in; ">
+12
+</td>
+<td style="text-align:center;width: .4in; ">
+5
+</td>
+<td style="text-align:center;width: .4in; ">
+2015-
+</td>
+<td style="text-align:center;">
+10
+</td>
+<td style="text-align:center;">
+B2-B4,B8
+</td>
+</tr>
+<tr>
+<td style="text-align:center;width: .4in; ">
+Media
+</td>
+<td style="text-align:center;">
+Sentinel 2/2A
+</td>
+<td style="text-align:center;width: .4in; ">
+MSI
+</td>
+<td style="text-align:center;width: .4in; ">
+12
+</td>
+<td style="text-align:center;width: .4in; ">
+5
+</td>
+<td style="text-align:center;width: .4in; ">
+2015-
+</td>
+<td style="text-align:center;">
+20
+</td>
+<td style="text-align:center;">
+B5-B7,B8a,B11-B12
+</td>
+</tr>
+</tbody>
+<tfoot>
+<tr>
+<td style="padding: 0; " colspan="100%">
+<span style="font-style: italic;">Nota:</span>
+</td>
+</tr>
+<tr>
+<td style="padding: 0; " colspan="100%">
+<sup></sup> Los productos Landsat (1-8) hacen referencia al nuevo set distribuido ‘Level-2 Science Products.’
+</td>
+</tr>
+</tfoot>
+</table>
+</div>
+<div id="res-espec" class="section level2" number="13.2">
+<h2><span class="header-section-number">13.2</span> Resolución Espectral</h2>
+<p>La resolución espectral se refiere al número de bandas proporcionadas por el sensor y sus
+anchos de banda espectrales. En términos generales, un sensor proporcionará una mejor capacidad de discriminación a medida que se adquieren más bandas. Idealmente, esas bandas espectrales deberían ser lo suficiente estrechas como para identificar características de absorción específicas que de otra manera podrían verse borrosas.</p>
+<p>Entre los sistemas de satélites EO, la peor resolución espectral se encuentra en las imágenes denominadas <strong>pancromáticas</strong> (una sola banda, escala de grises) o imágenes en color RGB (tres bandas, Red, Green, Blue).</p>
+<p>Los sensores remotos espaciales son generalmente:</p>
+<ul>
+<li><strong>pancromáticas</strong> una banda (generalmente de mayor resolución espacial.</li>
+<li><strong>multiespectral</strong> capturan algunas pocas bandas, entre <span class="math inline">\(4 - 7\)</span>.<br />
+</li>
+<li><strong>hiperespectrales</strong> decenas o centenas de bandas.<br />
+</li>
+<li><strong>ultraespectrales</strong> con miles de bandas. En la actualidad se trabaja en el diseño y pruebas de sensores de este tipo.</li>
+</ul>
+<p>Entra las mayores resoluciones entre los sensores de satélites EO se encuentra el <em>Hyperion</em> a bordo del satélite EO-1 con 220 bandas que cubren de <span class="math inline">\(0.4\)</span> a <span class="math inline">\(2.5\;\mu m\)</span>. El espectrómetro de imágenes Visible/infrarrojo aerotransportado de la NASA <em>AVIRIS</em> tiene 224 bandas con una cobertura espectral similar.</p>
+<p>La selección del número de bandas, ancho y rango espectral medido por el sensor está relacionada con los objetivos que se espera alcanzar. Mientras aplicaciones para la minería requieren múltiples bandas en los rangos del infrarrojo visible, cercano y medio, sensor satelital meteorológico puede requerir solo una o dos bandas en el rango visible y varias docenas en los canales infrarrojos medios para estimar la composición del gas atmosférico.</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:sr-img-1"></span>
+<img src="img/spectral-res.png" alt="Firmas Espectrales en Imágen Pancromática, Multi e Hiperespectral para cuatro coberturas de suelo." width="100%" />
+<p class="caption">
+Figura 13.1: Firmas Espectrales en Imágen Pancromática, Multi e Hiperespectral para cuatro coberturas de suelo.
+</p>
+</div>
+<div id="res-profile" class="section level3" number="13.2.1">
+<h3><span class="header-section-number">13.2.1</span> Firma Espectral</h3>
+<p>En la figura <a href="prop-img.html#fig:sr-img-1">13.1</a> vemos la importancia de una alta resolución espectral <strong>Cada elemento sobre la superficie terrestre tiene una respuesta única a las distintas longitudes de onda</strong>, esa forma específica es una firma del material y física del componente, es lo que denominamos <strong>firma espectral</strong>. Entonces, para una imagen con una mayor cantidad y más finas bandas podemos revisar más fielmente esas formas y compararlas con extensas librerías e identificar los objetos de estudio.</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:sen2-spec-1"></span>
+<img src="img/spec-1.png" alt="Sitio Web del Proyecto Librería Espectral ECOSTRESS de la NASA." width="402" />
+<p class="caption">
+Figura 13.2: Sitio Web del Proyecto Librería Espectral ECOSTRESS de la NASA.
+</p>
+</div>
+<p>Los científicos han creado extensas librerías con datos espectrales para distintas coberturas o grupos de materiales para ser usados como referencias, entre ellas vamos a destacar la Biblioteca Espectral ASTER Versión 2, (<a href="http://speclib.jpl.nasa.gov/">speclib.jpl.nasa.gov</a>), proyecto desarrollado por <span class="citation">Meerdink et al. (2019)</span> y <span class="citation">Baldridge et al. (2009)</span> (Figura <a href="prop-img.html#fig:sen2-spec-1">13.2</a>).</p>
+<p>La biblioteca espectral ASTER proporciona una colección completa de miles de espectros compuesto por una amplia variedad de materiales naturales y artificiales que cubren la longitud de onda rango <span class="math inline">\(0,4\mu m - 15,4\mu m\)</span>.</p>
+<p>La versión 2.0 de la biblioteca espectral ASTER se lanzó el 3 de diciembre de 2008. La biblioteca espectral ASTER incluye datos de otras tres bibliotecas espectrales:</p>
+<ul>
+<li>Biblioteca espectral de la Universidad Johns Hopkins (JHU).</li>
+<li>Laboratorio de propulsión a chorro (JPL).</li>
+<li>Biblioteca espectral del Servicio Geológico de los Estados Unidos (USGS - Reston).</li>
+</ul>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:sen2-spec-2"></span>
+<img src="img/spec-2.png" alt="Ficha de descarga de archivos de librerías." width="506" />
+<p class="caption">
+Figura 13.3: Ficha de descarga de archivos de librerías.
+</p>
+</div>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:sen2-spec-3"></span>
+<img src="img/spec-3.png" alt="Formulario de contacto para informar los archivos solicitados." width="501" />
+<p class="caption">
+Figura 13.4: Formulario de contacto para informar los archivos solicitados.
+</p>
+</div>
+<p>La biblioteca de espectros se proporciona con más de seis mil espectros individuales.</p>
+<p>Para su descarga debemos seguir algunos pasos preliminares:</p>
+<ol style="list-style-type: decimal">
+<li><p>Visitar el sitio web de la librería <a href="http://speclib.jpl.nasa.gov/">speclib.jpl.nasa.gov</a>. (Figura <a href="prop-img.html#fig:sen2-spec-1">13.2</a>).</p></li>
+<li><p>Visitar la ficha <strong>Download</strong> para explorar las alternativas disponibles de descarga (Figura <a href="prop-img.html#fig:sen2-spec-2">13.3</a>).</p></li>
+<li><p>Previo a la descarga se debe llenar un formulario de contacto y solicitar los archivos a descargar, y en el correo electrónico entregado se recibirá el enlace correspondiente. (Figura <a href="prop-img.html#fig:sen2-spec-3">13.4</a>).</p></li>
+<li><p>En cuestión de minutos, se recibe el correo de acuso recibo con el resumen de la orden y aviso de que se trabaja en ello.</p></li>
+<li><p>Y finalmente se recibe el correo con el enlace de descarga (Figura <a href="prop-img.html#fig:sen2-spec-6">13.5</a>).</p></li>
+</ol>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:sen2-spec-6"></span>
+<img src="img/spec-6.png" alt="Correo con link de descarga." width="335" />
+<p class="caption">
+Figura 13.5: Correo con link de descarga.
+</p>
+</div>
+</div>
+<div id="import-ds" class="section level3" number="13.2.2">
+<h3><span class="header-section-number">13.2.2</span> Import Dataset</h3>
+<p>Es importante destacar que los archivos de las firmas espectrales se componen de información general respecto a los datos, o técnicos de la captura entre otros. A continuación, un número variable de registros en formato de dos columnas, en la primera <em>longitud de onda</em> (en <span class="math inline">\(\mu m\)</span>) y un valor de <em>reflectancia</em> (en %), separados por espacio usando símbolo decimal el punto (.).</p>
+<p>Es un formato complejo para una carga directa ya que debemos separar la cabecera de los datos y luego cada registro separar en dos valores numéricos con valores decimales.</p>
+<p>Para resolver estos casos, RStudio ofrece una forma interactiva para la carga de datos: <strong>Import Dataset</strong>, opción en la barra de herramientas de la ficha <em>Environment</em> (Figura <a href="prop-img.html#fig:rst-import-1">13.6</a>).</p>
+<blockquote>
+<p>De las alternativas disponibles utilizaremos una función más completa que la disponible en los paquetes <em>base</em> de R mediante el paquete <strong>readr</strong>.</p>
+</blockquote>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:rst-import-1"></span>
+<img src="img/rst-import-1.png" alt="Detalle de opción 'Importar Datos Externos'." width="108" />
+<p class="caption">
+Figura 13.6: Detalle de opción ‘Importar Datos Externos.’
+</p>
+</div>
+<p>Activando la opción se presenta un cuadro de dialogo con varios grupos de opciones para seleccionar, configurar, cargar directo a un objeto R a la sesión o generar el código R para pegar en un archivo script.</p>
+<p>El primer paso es seleccionar el archivo de texto buscando el archivo con el botón <strong>Browse…</strong> (Figura <a href="prop-img.html#fig:rst-import-2a">13.7</a>).</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:rst-import-2a"></span>
+<img src="img/rst-import-2a.png" alt="Detalle de opciones para buscar o escribir el nombre del archivo a leer." width="440" />
+<p class="caption">
+Figura 13.7: Detalle de opciones para buscar o escribir el nombre del archivo a leer.
+</p>
+</div>
+<p>Una vez seleccionado, el sistema puede tardar unos segundos en responder y nos entrega una vista preliminar del contenido en un panel dedicado (Figura <a href="prop-img.html#fig:rst-import-2b">13.8</a>), que responde dinámicamente a los cambios en los parámetros de lectura disponibles en la parte inferior del cuadro de dialogo.</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:rst-import-2b"></span>
+<img src="img/rst-import-2b.png" alt="Detalle de opción 'Importar Datos Externos'." width="200" />
+<p class="caption">
+Figura 13.8: Detalle de opción ‘Importar Datos Externos.’
+</p>
+</div>
+<p>Los parámetros más importantes para la lectura son:</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:rst-import-2c"></span>
+<img src="img/rst-import-2c.png" alt="Detalle de opción 'Importar Datos Externos' con los parámetros usados para cargar nuestro archivo de texto." width="346" />
+<p class="caption">
+Figura 13.9: Detalle de opción ‘Importar Datos Externos’ con los parámetros usados para cargar nuestro archivo de texto.
+</p>
+</div>
+<ul>
+<li><strong>Name</strong>: Modificar el nombre del objeto por uno compatible con los nombres R.</li>
+<li><strong>Skip</strong>: Número de líneas de texto al inicio que no son datos. Ellas son ignoradas.</li>
+<li><strong>Delimiter</strong>: Carácter o símbolo que se usa en el archivo para separar los datos en columnas.</li>
+</ul>
+<p>Los parámetros ideales para la lectura de los archivos de firmas espectrales descargados del sitio de la NASA se pueden revisar en la figura <a href="prop-img.html#fig:rst-import-2c">13.9</a>.</p>
+<p>Finalmente, existen dos formas de rescatar los datos (Figura <a href="prop-img.html#fig:rst-import-2d">13.10</a>):</p>
+<ul>
+<li><strong>Importar el Objeto</strong>: a la sesión actual como un dataframe mediante el botón <strong>Import</strong>.<br />
+</li>
+<li><strong>Copiar el código</strong>: Mediante el ícono <img src="img/rst-import-2f.png" width="25" /> se copia al <em>clipboard</em> y usando la combinación CNTRL+V para pegar en el script o consola.</li>
+</ul>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:rst-import-2d"></span>
+<img src="img/rst-import-2e.png" alt="Detalle de las opciones para importar los datos a nuestra sesión R." width="95" />
+<p class="caption">
+Figura 13.10: Detalle de las opciones para importar los datos a nuestra sesión R.
+</p>
+</div>
+</div>
+<div id="spec-r" class="section level3" number="13.2.3">
+<h3><span class="header-section-number">13.2.3</span> Procesando en R</h3>
+<p>El código generado con la ayuda del cuadro de dialogo se copia en nuestro script y se puede modificar ligeramente para refinar el objeto y mejorar la usabilidad posterior.</p>
+<p>Primero se debe cargar el paquete que contiene la función:</p>
+<div class="sourceCode" id="cb398"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb398-1"><a href="prop-img.html#cb398-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readr)</span></code></pre></div>
+<p>Pasamos el nombre del archivo a leer a una variable para facilidad de reusabilidad.</p>
+<div class="sourceCode" id="cb399"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb399-1"><a href="prop-img.html#cb399-1" aria-hidden="true" tabindex="-1"></a>nombre_file <span class="ot">&lt;-</span> <span class="st">&quot;vegetation.tree.acacia.caven.vswir.jpl139.jpl.asd.spectrum.txt&quot;</span></span></code></pre></div>
+<p>También asignamos los nombres de las columnas.
+</p>
+<div class="sourceCode" id="cb400"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb400-1"><a href="prop-img.html#cb400-1" aria-hidden="true" tabindex="-1"></a>aromo <span class="ot">&lt;-</span> <span class="fu">read_table</span>(<span class="fu">here</span>(<span class="st">&quot;speclib&quot;</span>,<span class="st">&quot;ecospeclib-all&quot;</span>, nombre_file),</span>
+<span id="cb400-2"><a href="prop-img.html#cb400-2" aria-hidden="true" tabindex="-1"></a>                     <span class="at">col_names =</span> <span class="fu">c</span>(<span class="st">&quot;wavelength&quot;</span>,<span class="st">&quot;reflectance&quot;</span>), </span>
+<span id="cb400-3"><a href="prop-img.html#cb400-3" aria-hidden="true" tabindex="-1"></a>                     <span class="at">col_types =</span> <span class="fu">cols</span>(<span class="at">wavelength =</span> <span class="fu">col_double</span>(), </span>
+<span id="cb400-4"><a href="prop-img.html#cb400-4" aria-hidden="true" tabindex="-1"></a>                                      <span class="at">reflectance =</span> <span class="fu">col_double</span>()),</span>
+<span id="cb400-5"><a href="prop-img.html#cb400-5" aria-hidden="true" tabindex="-1"></a>                     <span class="at">skip =</span> <span class="dv">20</span>)</span></code></pre></div>
+<p>Expresamos en formato gráfico para revisar la <em>firma espectral</em> propiamente tal (Figura <a href="prop-img.html#fig:rs-spec-per-1">13.11</a>).</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:rs-spec-per-1"></span>
+<img src="_main_files/figure-html/rs-spec-per-1-1.png" alt="Firma Espectral del Árbol Acacia Caven (Aromo), librería ASTER v2." width="672" />
+<p class="caption">
+Figura 13.11: Firma Espectral del Árbol Acacia Caven (Aromo), librería ASTER v2.
+</p>
+</div>
+<div class="sourceCode" id="cb401"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb401-1"><a href="prop-img.html#cb401-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">3</span>, <span class="dv">1</span>), <span class="at">mar=</span><span class="fu">c</span>(<span class="dv">5</span>,<span class="dv">5</span>,<span class="dv">5</span>,<span class="dv">5</span>), <span class="at">cex.axis=</span><span class="dv">1</span>, <span class="at">cex.lab=</span><span class="dv">1</span>)</span>
+<span id="cb401-2"><a href="prop-img.html#cb401-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(vegeta_sli[<span class="dv">1</span><span class="sc">:</span><span class="dv">335</span>,<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>], <span class="at">col =</span> <span class="st">&quot;forestgreen&quot;</span>, <span class="at">type =</span> <span class="st">&quot;l&quot;</span>, <span class="at">lwd=</span><span class="dv">2</span>,<span class="at">xlim=</span><span class="fu">c</span>(<span class="fl">0.25</span>,<span class="fl">2.5</span>), <span class="at">ylim=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">100</span>),<span class="at">xlab=</span><span class="fu">expression</span>(<span class="fu">paste</span>(<span class="st">&quot;Longitud de Onda (&quot;</span>,<span class="fu">paste</span>(mu,m),<span class="st">&quot;)&quot;</span>)),<span class="at">ylab=</span><span class="st">&quot;Reflectancia (%)&quot;</span>)</span>
+<span id="cb401-3"><a href="prop-img.html#cb401-3" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(vegeta_sli[<span class="dv">1</span><span class="sc">:</span><span class="dv">335</span>,<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">3</span>)], <span class="at">col =</span> <span class="st">&quot;chocolate1&quot;</span>,<span class="at">lwd=</span><span class="dv">2</span>)</span>
+<span id="cb401-4"><a href="prop-img.html#cb401-4" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(vegeta_sli[<span class="dv">1</span><span class="sc">:</span><span class="dv">335</span>,<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">4</span>)], <span class="at">col =</span> <span class="st">&quot;olivedrab1&quot;</span>, <span class="at">lwd=</span><span class="dv">2</span>)</span>
+<span id="cb401-5"><a href="prop-img.html#cb401-5" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(vegeta_sli1[<span class="dv">1</span><span class="sc">:</span><span class="dv">870</span>,<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>)], <span class="at">col =</span> <span class="st">&quot;wheat3&quot;</span>, <span class="at">lwd=</span><span class="dv">2</span>)</span>
+<span id="cb401-6"><a href="prop-img.html#cb401-6" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="at">x=</span><span class="st">&quot;topright&quot;</span>, <span class="at">legend=</span><span class="fu">c</span>(<span class="st">&quot;Conífera&quot;</span>,<span class="st">&quot;Caduco&quot;</span>,<span class="st">&quot;Pasto Verde&quot;</span>,<span class="st">&quot;Pasto Seco&quot;</span>), <span class="at">fill=</span><span class="fu">c</span>(<span class="st">&quot;forestgreen&quot;</span>,<span class="st">&quot;chocolate1&quot;</span>,<span class="st">&quot;olivedrab1&quot;</span>,<span class="st">&quot;wheat3&quot;</span>))</span>
+<span id="cb401-7"><a href="prop-img.html#cb401-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb401-8"><a href="prop-img.html#cb401-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb401-9"><a href="prop-img.html#cb401-9" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(agua_sli[<span class="dv">1</span><span class="sc">:</span><span class="dv">335</span>,<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>)], <span class="at">col =</span> <span class="st">&quot;skyblue1&quot;</span>, <span class="at">type =</span> <span class="st">&quot;l&quot;</span>, <span class="at">lwd=</span><span class="dv">2</span>,<span class="at">xlim=</span><span class="fu">c</span>(<span class="fl">0.25</span>,<span class="fl">2.5</span>), <span class="at">ylim=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">100</span>),<span class="at">xlab=</span><span class="fu">expression</span>(<span class="fu">paste</span>(<span class="st">&quot;Longitud de Onda (&quot;</span>,<span class="fu">paste</span>(mu,m),<span class="st">&quot;)&quot;</span>)),<span class="at">ylab=</span><span class="st">&quot;Reflectancia (%)&quot;</span>)</span>
+<span id="cb401-10"><a href="prop-img.html#cb401-10" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(agua_sli1[<span class="dv">1</span><span class="sc">:</span><span class="dv">1110</span>,<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>)], <span class="at">col =</span> <span class="st">&quot;blue&quot;</span>, <span class="at">lwd=</span><span class="dv">2</span>)</span>
+<span id="cb401-11"><a href="prop-img.html#cb401-11" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(agua_sli2[<span class="dv">1</span><span class="sc">:</span><span class="dv">395</span>,<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>)], <span class="at">col =</span> <span class="st">&quot;mediumslateblue&quot;</span>, <span class="at">lwd=</span><span class="dv">2</span>)</span>
+<span id="cb401-12"><a href="prop-img.html#cb401-12" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(agua_sli2[<span class="dv">1</span><span class="sc">:</span><span class="dv">430</span>,<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">3</span>)], <span class="at">col =</span> <span class="st">&quot;lightblue1&quot;</span>, <span class="at">lwd=</span><span class="dv">2</span>)</span>
+<span id="cb401-13"><a href="prop-img.html#cb401-13" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="at">x=</span><span class="st">&quot;topright&quot;</span>, <span class="at">legend=</span><span class="fu">c</span>(<span class="st">&quot;Hielo&quot;</span>,<span class="st">&quot;Agua Pura&quot;</span>, <span class="st">&quot;Nieve Gruesa&quot;</span>,<span class="st">&quot;Nieve Fina&quot;</span>), <span class="at">fill=</span><span class="fu">c</span>(<span class="st">&quot;skyblue1&quot;</span>,<span class="st">&quot;blue&quot;</span>,<span class="st">&quot;mediumslateblue&quot;</span>,<span class="st">&quot;lightblue1&quot;</span>))</span>
+<span id="cb401-14"><a href="prop-img.html#cb401-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb401-15"><a href="prop-img.html#cb401-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb401-16"><a href="prop-img.html#cb401-16" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(roca_sli[<span class="dv">1</span><span class="sc">:</span><span class="dv">535</span>,<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">20</span>)], <span class="at">col =</span> <span class="st">&quot;snow4&quot;</span>,<span class="at">type=</span><span class="st">&quot;l&quot;</span>, <span class="at">lwd=</span><span class="dv">2</span>,<span class="at">xlim=</span><span class="fu">c</span>(<span class="fl">0.25</span>,<span class="fl">2.5</span>), <span class="at">ylim=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">100</span>),<span class="at">xlab=</span><span class="fu">expression</span>(<span class="fu">paste</span>(<span class="st">&quot;Longitud de Onda (&quot;</span>,<span class="fu">paste</span>(mu,m),<span class="st">&quot;)&quot;</span>)),<span class="at">ylab=</span><span class="st">&quot;Reflectancia (%)&quot;</span>)</span>
+<span id="cb401-17"><a href="prop-img.html#cb401-17" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(roca_sli[<span class="dv">1</span><span class="sc">:</span><span class="dv">535</span>,<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">35</span>)], <span class="at">col =</span> <span class="st">&quot;darkslategray4&quot;</span>, <span class="at">lwd=</span><span class="dv">2</span>)</span>
+<span id="cb401-18"><a href="prop-img.html#cb401-18" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(suelo_sli[<span class="dv">1</span><span class="sc">:</span><span class="dv">1160</span>,<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">13</span>)], <span class="at">col =</span> <span class="st">&quot;chocolate4&quot;</span>, <span class="at">lwd=</span><span class="dv">2</span>)</span>
+<span id="cb401-19"><a href="prop-img.html#cb401-19" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(suelo_sli[<span class="dv">1</span><span class="sc">:</span><span class="dv">1160</span>,<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">19</span>)], <span class="at">col =</span> <span class="st">&quot;sienna3&quot;</span>, <span class="at">lwd=</span><span class="dv">2</span>)</span>
+<span id="cb401-20"><a href="prop-img.html#cb401-20" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="at">x=</span><span class="st">&quot;topright&quot;</span>, <span class="at">legend=</span><span class="fu">c</span>(<span class="st">&quot;Basalto&quot;</span>,<span class="st">&quot;Fosforita&quot;</span>,<span class="st">&quot;Lodo Obscuro&quot;</span>,<span class="st">&quot;Arcilla Gris&quot;</span>), <span class="at">fill=</span><span class="fu">c</span>(<span class="st">&quot;snow4&quot;</span>,<span class="st">&quot;darkslategray4&quot;</span>,<span class="st">&quot;chocolate4&quot;</span>,<span class="st">&quot;sienna3&quot;</span>))</span></code></pre></div>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:rs-sen26-03"></span>
+<img src="_main_files/figure-html/rs-sen26-03-1.png" alt="Ejemplos de firmas espectrales organizadas por grupos de tipos de cobertura." width="480" />
+<p class="caption">
+Figura 13.12: Ejemplos de firmas espectrales organizadas por grupos de tipos de cobertura.
+</p>
+</div>
+<div style="page-break-after: always;"></div>
+</div>
+</div>
+<div id="res-rad" class="section level2" number="13.3">
+<h2><span class="header-section-number">13.3</span> Resolución Radiométrica</h2>
+<p>La resolución radiométrica denota la <em>sensibilidad del sensor</em>, es decir, su capacidad para discriminar pequeñas variaciones en la radiación espectral registrada. En los sensores electrónicos ópticos, la imagen es adquirida digitalmente y su resolución radiométrica se expresa comúnmente como el rango de valores utilizados para codificar la radiancia de entrada o, más precisamente, como el <strong>número de bits</strong> utilizados para almacenar la señal de entrada. Un sistema de sensor de 8 bits puede discriminar 256 radiancias de entrada diferentes por píxel (<span class="math inline">\(2^8 = 256\)</span>), por lo tanto, un rango de <strong>números digitales (DN)</strong> que va de 0 a 255 (Figura <a href="prop-img.html#fig:sr-img-2">13.13</a>).</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:sr-img-2"></span>
+<img src="img/rad-res.png" alt="Comparación resoluciones radiométricas." width="554" />
+<p class="caption">
+Figura 13.13: Comparación resoluciones radiométricas.
+</p>
+</div>
+<p>debido a la mayor velocidad de la transmisión de datos y su almacenamiento, la resolución radiométrica de los sensores está aumentando. Anteriormente, la mayoría de los sensores proporcionaban Codificación de 8 bits, mientras que hoy en día varios tienen entre 11 y 16 bits por píxel (¡uno de 65536 valores!), por ejemplo, GeoEye, WorldView, MODIS o Landsat 8 OLI.</p>
+<p>La resolución radiométrica es más crítica en el análisis digital que en el visual. El número de niveles de gris que el ojo humano es capaz de discernir no supera los 64, y no puede distinguir más de 200.000 colores. Parece redundante tener incluso 256 valores digitales por banda (<span class="math inline">\(16.8\)</span> millones de valores en una imagen en color de tres bandas). Sin embargo, cuando la interpretación es digital, las computadoras aprovechan todo el rango, en cuyo caso una alta resolución radiométrica es importante para discriminar objetos con firmas espectrales similares, lo que no sería posible con sensores menos sensibles.</p>
+</div>
+<div id="res-temp" class="section level2" number="13.4">
+<h2><span class="header-section-number">13.4</span> Resolución Temporal</h2>
+<p>La resolución temporal se refiere a la <em>frecuencia de observación</em> (período de revisión) proporcionada por el sensor. Este ciclo es función de las características orbitales del satélite (altura, velocidad y declinación), así como del FOV<a href="#fn16" class="footnote-ref" id="fnref16"><sup>16</sup></a> del sensor.</p>
+<p>Sensores con <em>alta resolución temporal</em> tienen una <em>resolución espacial gruesa</em>, ya que podrán observar una mayor área en cada adquisición de imágenes. En consecuencia, también tienen un campo de visión amplio, que implica problemas geométricos, ya que la misma área se puede observar desde muy diferentes ángulos en un breve tiempo diario, ver <a href="prop-img.html#res-ang">13.5</a>.</p>
+<p>Si el sensor observa un área más pequeña (campo de visión más estrecho), necesitará más órbitas para repetir la misma área observada y así, las capturas tendrán mayores períodos de tiempo. Para aliviar este problema, algunos sensores pueden hacer observaciones fuera del nadir, detectando áreas adyacentes a la órbita (las capacidades de apuntar generalmente van de <span class="math inline">\(0°\)</span> a <span class="math inline">\(20°\)</span>). Este es el caso de las cámaras a bordo de los satélites SPOT o WorldView. Una alternativa a los sensores que miran el nadir es tener varios satélites con las mismas características. Este es el caso de la constelación RapidEye (propiedad de una empresa privada), que proporciona una frecuencia de adquisición global diaria con una resolución espacial de <span class="math inline">\(6.5 \; m\)</span> utilizando cinco satélites.</p>
+<p>La resolución temporal de los sistemas de sensores EO varía según los objetivos de la misión. Los satélites meteorológicos observan fenómenos muy dinámicos y, por lo tanto, proporcionan la resolución temporal más alta: los satélites geoestacionarios pueden adquirir imágenes cada 15 o 30 minutos, y los satélites en órbita polar, como la NOAA (Estados Unidos), METOP (Europa) o Fengyun (China), proporcionan al mundo cobertura cada <span class="math inline">\(12\;h\)</span>. Normalmente, los sensores de mayor resolución espacial ofrecen menor tiempo resoluciones, de 16 días (como el caso de la serie Landsat) a 28 días (para Radares ERS). Sin embargo, existe una tendencia creciente a tener una mayor resolución incluso para satélites de resolución espacial media o alta. Por ejemplo, el satélite Sentinel-2 de la Agencia Espacial Europea (ESA) proporcionará entre <span class="math inline">\(10\)</span> y <span class="math inline">\(60\;m\)</span> imágenes de resolución para 13 canales espectrales cada 2 a 5 días cuando los dos satélites de la constelación están activos.</p>
+</div>
+<div id="res-ang" class="section level2" number="13.5">
+<h2><span class="header-section-number">13.5</span> Resolución angular</h2>
+<p>El concepto de resolución angular es muy reciente y se refiere a la capacidad del sensor para hacer observaciones de la misma área, desde diferentes ángulos de visión (<span class="citation">Diner et al. (1999)</span>). Las variaciones en reflectancia con ángulos de visión e iluminación variables se denominan <em>función de distribución de reflectancia bidireccional</em> (BRDF). Y para modelar estos efectos es necesario observar la superficie desde diferentes direcciones. También, las observaciones multiangulares son de gran interés en estimar algunas propiedades atmosféricas como el espesor de la capa de aerosoles o la altura de las nubes.</p>
+
+<div id="refs" class="references csl-bib-body hanging-indent">
+<div class="csl-entry">
+Baldridge, Alice M, SJ Hook, CI Grove, and GJRSoE Rivera. 2009. <span>“The ASTER Spectral Library Version 2.0.”</span> <em>Remote Sensing of Environment</em> 113 (4): 711–15.
+</div>
+<div class="csl-entry">
+Black, Newton Henry. 1913. <em>Practical Physics</em>. Macmillan. <a href="https://books.google.cl/books?id=BT8AAAAAYAAJ">https://books.google.cl/books?id=BT8AAAAAYAAJ</a>.
+</div>
+<div class="csl-entry">
+Diner, David J, Gregory P Asner, Roger Davies, Yuri Knyazikhin, Jan-Peter Muller, Anne W Nolin, Bernard Pinty, Crystal B Schaaf, and Julienne Stroeve. 1999. <span>“New Directions in Earth Observing: Scientific Applications of Multiangle Remote Sensing.”</span> <em>Bulletin of the American Meteorological Society</em> 80 (11): 2209–28.
+</div>
+<div class="csl-entry">
+Hanson, Bryan A. 2017. <em>SpecHelpers: Spectroscopy Related Utilities</em>. <a href="https://github.com/bryanhanson/SpecHelpers">github.com/bryanhanson/SpecHelpers</a>.
+</div>
+<div class="csl-entry">
+Ihaka, Ross, and Robert Gentleman. 1996. <span>“R: A Language for Data Analysis and Graphics.”</span> <em>Journal of Computational and Graphical Statistics</em> 5 (3): 299–314. <a href="https://doi.org/10.1080/10618600.1996.10474713">https://doi.org/10.1080/10618600.1996.10474713</a>.
+</div>
+<div class="csl-entry">
+Liang, Shunlin, and Jindi Wang, eds. 2020. <span>“Chapter 1 - a Systematic View of Remote Sensing.”</span> In <em>Advanced Remote Sensing (Second Edition)</em>, Second Edition, 1–57. Academic Press. https://doi.org/<a href="https://doi.org/10.1016/B978-0-12-815826-5.00001-5">https://doi.org/10.1016/B978-0-12-815826-5.00001-5</a>.
+</div>
+<div class="csl-entry">
+Liou, Kuo-Nan. 2002. <em>An Introduction to Atmospheric Radiation</em>. Elsevier.
+</div>
+<div class="csl-entry">
+Loo, M. P. J. van der, and E. De Jonge. 2012. <em>Learning RStudio for r Statistical Computing</em>. Community Experience Distilled. Lightning Source. <a href="https://books.google.cl/books?id=vOTHmAEACAAJ">https://books.google.cl/books?id=vOTHmAEACAAJ</a>.
+</div>
+<div class="csl-entry">
+Meerdink, Susan K., Simon J. Hook, Dar A. Roberts, and Elsa A. Abbott. 2019. <span>“The ECOSTRESS Spectral Library Version 1.0.”</span> <em>Remote Sensing of Environment</em> 230: 111196. https://doi.org/<a href="https://doi.org/10.1016/j.rse.2019.05.015">https://doi.org/10.1016/j.rse.2019.05.015</a>.
+</div>
+<div class="csl-entry">
+Olaya, Victor. 2020. <em>Sistemas de Información Geográfica</em>. Edited by autoeditado. lulu.com.
+</div>
+<div class="csl-entry">
+Richards, John Alan. 2013. <em>Remote Sensing Digital Image Analysis</em>. Fifth. Springer.
+</div>
+<div class="csl-entry">
+Slater, Philip N. 1980. <span>“Remote Sensing. Optics and Optical Systems.”</span> <em>Remote Sensing. Optics and Optical Systems</em>.
+</div>
+</div>
+</div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="footnotes">
+<hr />
+<ol start="15">
+<li id="fn15"><p>El <strong>IFOV</strong> Se mide en metros en el suelo, y depende de la distancia focal de la cámara y la altura de la cámara sobre el suelo. Se define como la sección angular observada por el sensor en un momento dado en el tiempo.<a href="prop-img.html#fnref15" class="footnote-back">↩︎</a></p></li>
+<li id="fn16"><p>El <strong>campo de visión total</strong> (<em>field of view</em>, FOV) es el área observada por el satélite en una sola imagen.<a href="prop-img.html#fnref16" class="footnote-back">↩︎</a></p></li>
+</ol>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="flujo.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": true,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "sepia",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/USERNAME/REPO/edit/BRANCH/11-img-RS.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["_main.pdf"],
+"search": {
+"engine": "lunr",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+},
+"info": true
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>
