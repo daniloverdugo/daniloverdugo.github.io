@@ -4,14 +4,14 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Capítulo 8 Array | Ráster con R</title>
+  <title>Capítulo 14 MISIONES ESPACIALES | Ráster con R</title>
   <meta name="description" content="<p>Los fenómenos geográficos se desarrollan de manera continúa sobre una extensión de la superficie terrestre (en, sobre o bajo ella), y ha sido un desafío constante crear un modelo de representación tan simple para ser almacenado, procesado y visualizado con facilidad y tan complejo que permita perder el mínimo de información crítica y versátil que permita mantener el nivel de detalle proporcional a la riqueza del mundo real.
 Ese modelo se ha denominado <strong>modelo ráster</strong> y es el tema principal del presente libro, su origen, fundamentos, propiedades y algunos usos serán descritos en detalle.
 Para ello, se basará en la <strong>Plataforma R</strong> y <strong>RStudio</strong>, unas de las herramientas informáticas más poderosas en la actualidad.
 Desde la instalación de las aplicaciones, pasando por una guía básica de su utilización, hasta una detallada descripción del trabajo con dicho modelo.</p>" />
   <meta name="generator" content="bookdown 0.24 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Capítulo 8 Array | Ráster con R" />
+  <meta property="og:title" content="Capítulo 14 MISIONES ESPACIALES | Ráster con R" />
   <meta property="og:type" content="book" />
   
   
@@ -22,7 +22,7 @@ Desde la instalación de las aplicaciones, pasando por una guía básica de su u
   <meta name="github-repo" content="rstudio/bookdown-demo" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Capítulo 8 Array | Ráster con R" />
+  <meta name="twitter:title" content="Capítulo 14 MISIONES ESPACIALES | Ráster con R" />
   
   <meta name="twitter:description" content="<p>Los fenómenos geográficos se desarrollan de manera continúa sobre una extensión de la superficie terrestre (en, sobre o bajo ella), y ha sido un desafío constante crear un modelo de representación tan simple para ser almacenado, procesado y visualizado con facilidad y tan complejo que permita perder el mínimo de información crítica y versátil que permita mantener el nivel de detalle proporcional a la riqueza del mundo real.
 Ese modelo se ha denominado <strong>modelo ráster</strong> y es el tema principal del presente libro, su origen, fundamentos, propiedades y algunos usos serán descritos en detalle.
@@ -40,8 +40,8 @@ Desde la instalación de las aplicaciones, pasando por una guía básica de su u
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="dataframe.html"/>
-<link rel="next" href="r-fechas.html"/>
+<link rel="prev" href="prop-img.html"/>
+<link rel="next" href="modis.html"/>
 <script src="libs/header-attrs-2.11/header-attrs.js"></script>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
@@ -385,165 +385,129 @@ div.csl-indent {
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="array" class="section level1" number="8">
-<h1><span class="header-section-number">Capítulo 8</span> Array</h1>
-<p>Un vector posee un índice por lo tanto es <em>unidimensional</em>, una matriz posee dos dimensiones y es <em>bidimensional</em> y para objetos de una dimensión superior R provee la función <code>array()</code>. Siempre todos los datos deben ser del mismo tipo.<br />
-Esta nueva dimensión la llamaremos <em>capas</em>, <em>niveles</em> o <em>layers</em> indistintamente en este libro.</p>
-<div class="sourceCode" id="cb281"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb281-1"><a href="array.html#cb281-1" aria-hidden="true" tabindex="-1"></a>(y <span class="ot">&lt;-</span> <span class="fu">array</span>(<span class="at">data =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">3</span><span class="sc">**</span><span class="dv">3</span>, <span class="at">dim =</span> <span class="fu">c</span>(<span class="dv">3</span>, <span class="dv">3</span>, <span class="dv">3</span>)))</span></code></pre></div>
-<pre><code>## , , 1
-## 
-##      [,1] [,2] [,3]
-## [1,]    1    4    7
-## [2,]    2    5    8
-## [3,]    3    6    9
-## 
-## , , 2
-## 
-##      [,1] [,2] [,3]
-## [1,]   10   13   16
-## [2,]   11   14   17
-## [3,]   12   15   18
-## 
-## , , 3
-## 
-##      [,1] [,2] [,3]
-## [1,]   19   22   25
-## [2,]   20   23   26
-## [3,]   21   24   27</code></pre>
-<div id="op-num-arr" class="section level2" number="8.1">
-<h2><span class="header-section-number">8.1</span> Operaciones Numéricas</h2>
-<p>Un array responde a las mismas reglas de operación que los <em>vectores</em> o <em>matrices</em> realizando las operaciones elemento a elemento:</p>
-<div class="sourceCode" id="cb283"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb283-1"><a href="array.html#cb283-1" aria-hidden="true" tabindex="-1"></a>y<span class="sc">/</span><span class="dv">3</span> <span class="sc">+</span> y<span class="sc">**</span><span class="dv">3</span></span></code></pre></div>
-<pre><code>## , , 1
-## 
-##           [,1]      [,2]     [,3]
-## [1,]  1.333333  65.33333 345.3333
-## [2,]  8.666667 126.66667 514.6667
-## [3,] 28.000000 218.00000 732.0000
-## 
-## , , 2
-## 
-##          [,1]     [,2]     [,3]
-## [1,] 1003.333 2201.333 4101.333
-## [2,] 1334.667 2748.667 4918.667
-## [3,] 1732.000 3380.000 5838.000
-## 
-## , , 3
-## 
-##          [,1]     [,2]     [,3]
-## [1,] 6865.333 10655.33 15633.33
-## [2,] 8006.667 12174.67 17584.67
-## [3,] 9268.000 13832.00 19692.00</code></pre>
-<p>Y así podemos aplicar las funciones detalladas en :</p>
-<div class="sourceCode" id="cb285"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb285-1"><a href="array.html#cb285-1" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(y); <span class="fu">min</span>(y); <span class="fu">max</span>(y); <span class="fu">range</span>(y)</span></code></pre></div>
-<pre><code>## [1] 27</code></pre>
-<pre><code>## [1] 1</code></pre>
-<pre><code>## [1] 27</code></pre>
-<pre><code>## [1]  1 27</code></pre>
-<div class="sourceCode" id="cb290"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb290-1"><a href="array.html#cb290-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(y); <span class="fu">median</span>(y); <span class="fu">sum</span>(y); <span class="fu">prod</span>(y)</span></code></pre></div>
-<pre><code>## [1] 14</code></pre>
-<pre><code>## [1] 14</code></pre>
-<pre><code>## [1] 378</code></pre>
-<pre><code>## [1] 1.088887e+28</code></pre>
-<div class="sourceCode" id="cb295"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb295-1"><a href="array.html#cb295-1" aria-hidden="true" tabindex="-1"></a><span class="fu">var</span>(y); <span class="fu">sd</span>(y)</span></code></pre></div>
-<pre><code>## [1] 63</code></pre>
-<pre><code>## [1] 7.937254</code></pre>
+<div id="mis-spa" class="section level1" number="14">
+<h1><span class="header-section-number">Capítulo 14</span> MISIONES ESPACIALES</h1>
+<div id="down-mod09" class="section level2" number="14.1">
+<h2><span class="header-section-number">14.1</span> Plataforma Búsqueda y Descarga</h2>
+<p>El sitio web que centraliza el acceso a datos de la NASA y otros productos espaciales es: <a href="https://earthexplorer.usgs.gov/">earthexplorer.usgs.gov</a>.</p>
+<p>Pasos principales para la descarga de imágenes:</p>
+<ol style="list-style-type: decimal">
+<li>El sitio se compone de dos unidades principales, la zona de configuración de la búsqueda (panel izquierdo) y el mapa interactivo para definir el área geográfica de estudio (Figura <a href="mis-spa.html#fig:rs-modis-1">14.1</a>).</li>
+</ol>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:rs-modis-1"></span>
+<img src="img/0.png" alt="Vista principal earthexplorer.usgs.gov" width="100%" />
+<p class="caption">
+Figura 14.1: Vista principal earthexplorer.usgs.gov
+</p>
 </div>
-<div id="index-arr" class="section level2" number="8.2">
-<h2><span class="header-section-number">8.2</span> Indexado y Subconjunto</h2>
-<p>Si en las matrices, el índice <strong><em>i</em></strong> en <strong><em>x[i,,]</em></strong> será la i-ésima <strong><em>fila</em></strong>, el índice <strong><em>j</em></strong> en <strong><em>x[,j,]</em></strong> será la j-ésima <strong><em>columna</em></strong> el índice <strong><em>k</em></strong> en <strong><em>x[,,k]</em></strong> corresponde al k-ésimo nivel, así <strong><em>x[i,j,k]</em></strong> refiere al <strong><em>ijk-ésimo</em></strong> elemento de <strong><em>x</em></strong>.</p>
-<p>Los índices <strong><em>i</em></strong>, <strong><em>j</em></strong>, <strong><em>k</em></strong> deben ser vectores numéricos.</p>
-<div class="sourceCode" id="cb298"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb298-1"><a href="array.html#cb298-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(y[, , <span class="dv">1</span>]) <span class="co">#Promedio de nivel 1</span></span></code></pre></div>
-<pre><code>## [1] 5</code></pre>
-<div class="sourceCode" id="cb300"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb300-1"><a href="array.html#cb300-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(y[, , <span class="dv">2</span><span class="sc">:</span><span class="dv">3</span>]) <span class="co">#Promedio de niveles 2 y 3</span></span></code></pre></div>
-<pre><code>## [1] 18.5</code></pre>
-<div class="sourceCode" id="cb302"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb302-1"><a href="array.html#cb302-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(y[, , <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">3</span>)]) <span class="co">#Promedio de nivel 1 y 3</span></span></code></pre></div>
-<pre><code>## [1] 14</code></pre>
-<div class="sourceCode" id="cb304"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb304-1"><a href="array.html#cb304-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(y[<span class="dv">1</span>, ,]) <span class="co">#Promedio de la primera fila (todos los niveles)</span></span></code></pre></div>
-<pre><code>## [1] 13</code></pre>
+<ol start="2" style="list-style-type: decimal">
+<li>Si no se ha realizado el registro previo, debe realizar el proceso paso a paso (con la ayuda del mismo sitio) o <em>logearse</em> mediante el botón apropiado ubicado en la esquina superior derecha (Figura <a href="mis-spa.html#fig:rs-modis-2">14.2</a>).</li>
+</ol>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:rs-modis-2"></span>
+<img src="img/1.png" alt="Ventana de Login o de Registro, paso obligatorio." width="100%" />
+<p class="caption">
+Figura 14.2: Ventana de Login o de Registro, paso obligatorio.
+</p>
 </div>
-<div id="ed-con-arr" class="section level2" number="8.3">
-<h2><span class="header-section-number">8.3</span> Edición de Contenido</h2>
-<p>Modificar valores se hace aplicando las mismas técnicas del punto anterior, se selecciona un subconjunto y se asignan los valores:</p>
-<div class="sourceCode" id="cb306"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb306-1"><a href="array.html#cb306-1" aria-hidden="true" tabindex="-1"></a>y[<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">2</span>] <span class="ot">&lt;-</span> <span class="fl">45.66</span> <span class="co">#modificar un valor</span></span>
-<span id="cb306-2"><a href="array.html#cb306-2" aria-hidden="true" tabindex="-1"></a>y[,,<span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="dv">0</span> <span class="co">#modificar todo el nivel</span></span></code></pre></div>
-<div class="sourceCode" id="cb307"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb307-1"><a href="array.html#cb307-1" aria-hidden="true" tabindex="-1"></a>y</span></code></pre></div>
-<pre><code>## , , 1
-## 
-##      [,1] [,2] [,3]
-## [1,]    0    0    0
-## [2,]    0    0    0
-## [3,]    0    0    0
-## 
-## , , 2
-## 
-##      [,1]  [,2] [,3]
-## [1,]   10 45.66   16
-## [2,]   11 14.00   17
-## [3,]   12 15.00   18
-## 
-## , , 3
-## 
-##      [,1] [,2] [,3]
-## [1,]   19   22   25
-## [2,]   20   23   26
-## [3,]   21   24   27</code></pre>
+<ol start="3" style="list-style-type: decimal">
+<li>Configurar la búsqueda espacial (Figura <a href="mis-spa.html#fig:rs-modis-3">14.3</a> zona A y B):</li>
+</ol>
+<ul>
+<li><ol style="list-style-type: upper-alpha">
+<li>Usar servicios de geocodificación (para EE.UU.) convirtiendo una dirección postal en coordenadas geográficas o para el resto del mundo buscar por nombres propios o tipo de elemento geográfico. También se puede utilizar archivos <em>kml</em> generado en la aplicación Google Earth Pro o archivos <em>shapefile</em> estándar en las aplicaciones genéricamente denominadas SIG.</li>
+</ol></li>
+</ul>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:rs-modis-3"></span>
+<img src="img/2.png" alt="Parámetros para crear y refinar una búsqueda, detalles en texto." width="50%" />
+<p class="caption">
+Figura 14.3: Parámetros para crear y refinar una búsqueda, detalles en texto.
+</p>
 </div>
-<div id="op-av-arr" class="section level2" number="8.4">
-<h2><span class="header-section-number">8.4</span> Opciones Avanzadas</h2>
-<div id="nom-fil-arr" class="section level3" number="8.4.1">
-<h3><span class="header-section-number">8.4.1</span> Nombres de Filas y Columnas</h3>
-<p>Para facilidad de uso también contamos el método <code>dimnames()</code> para asignar nombres por dimensión:</p>
-<div class="sourceCode" id="cb309"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb309-1"><a href="array.html#cb309-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dimnames</span>(y)[[<span class="dv">1</span>]] <span class="ot">&lt;-</span> LETTERS[<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>] <span class="co">#Nombre de Filas</span></span>
-<span id="cb309-2"><a href="array.html#cb309-2" aria-hidden="true" tabindex="-1"></a><span class="fu">dimnames</span>(y)[[<span class="dv">2</span>]] <span class="ot">&lt;-</span> LETTERS[<span class="dv">12</span><span class="sc">:</span><span class="dv">14</span>] <span class="co">#Nombre de Columnas</span></span>
-<span id="cb309-3"><a href="array.html#cb309-3" aria-hidden="true" tabindex="-1"></a><span class="fu">dimnames</span>(y)[[<span class="dv">3</span>]] <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;UNO&quot;</span>, <span class="st">&quot;DOS&quot;</span>, <span class="st">&quot;TRES&quot;</span>) <span class="co">#Nombre de Niveles</span></span></code></pre></div>
-<div class="sourceCode" id="cb310"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb310-1"><a href="array.html#cb310-1" aria-hidden="true" tabindex="-1"></a>y</span></code></pre></div>
-<pre><code>## , , UNO
-## 
-##   L M N
-## A 0 0 0
-## B 0 0 0
-## C 0 0 0
-## 
-## , , DOS
-## 
-##    L     M  N
-## A 10 45.66 16
-## B 11 14.00 17
-## C 12 15.00 18
-## 
-## , , TRES
-## 
-##    L  M  N
-## A 19 22 25
-## B 20 23 26
-## C 21 24 27</code></pre>
-<div class="sourceCode" id="cb312"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb312-1"><a href="array.html#cb312-1" aria-hidden="true" tabindex="-1"></a>y[,<span class="st">&#39;M&#39;</span>,<span class="st">&#39;DOS&#39;</span>]</span></code></pre></div>
-<pre><code>##     A     B     C 
-## 45.66 14.00 15.00</code></pre>
+<ul>
+<li><ol start="2" style="list-style-type: upper-alpha">
+<li>Definir la zona geográfica por coordenadas y configurar el método de obtención de coordenadas o el formato de ingreso de los textos. En la ficha <strong>Polygon</strong> usar la opción <strong>Use Map</strong> y automáticamente la vista actual del mapa (sector derecho) se convierte en la zona geográfica de búsqueda. El listado de vértices puede ser editado, corregido, agregar o eliminar puntos mediante la interfaz o modificando directamente las marcas en el mapa arrastrándolas a su nueva ubicación. El siguiente método disponible es agregar el centro y radio de un círculo que delimita el espacio geográfico.</li>
+</ol></li>
+</ul>
+<p>Además, se pueden agregar parámetros no espaciales (Figura <a href="mis-spa.html#fig:rs-modis-3">14.3</a> zona C):</p>
+<ul>
+<li><ol start="3" style="list-style-type: upper-alpha">
+<li><strong>Rango Temporal</strong> mediante el uso de calendario de inicio y fin (Figura <a href="mis-spa.html#fig:rs-modis-5">14.4</a>).</li>
+</ol></li>
+</ul>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:rs-modis-5"></span>
+<img src="img/4.png" alt="Opciones para refinar la búsqueda, fecha inicial y final." width="50%" />
+<p class="caption">
+Figura 14.4: Opciones para refinar la búsqueda, fecha inicial y final.
+</p>
 </div>
-<div id="info-ad-arr" class="section level3" number="8.4.2">
-<h3><span class="header-section-number">8.4.2</span> Información Adicional</h3>
-<p>Por último, también contamos con la función <code>comment()</code> para asociar información adicional al objeto.</p>
-<div class="sourceCode" id="cb314"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb314-1"><a href="array.html#cb314-1" aria-hidden="true" tabindex="-1"></a><span class="fu">comment</span>(y) <span class="ot">&lt;-</span> <span class="st">&quot;Información Adicional&quot;</span></span>
-<span id="cb314-2"><a href="array.html#cb314-2" aria-hidden="true" tabindex="-1"></a><span class="fu">attributes</span>(y)</span></code></pre></div>
-<pre><code>## $dim
-## [1] 3 3 3
-## 
-## $dimnames
-## $dimnames[[1]]
-## [1] &quot;A&quot; &quot;B&quot; &quot;C&quot;
-## 
-## $dimnames[[2]]
-## [1] &quot;L&quot; &quot;M&quot; &quot;N&quot;
-## 
-## $dimnames[[3]]
-## [1] &quot;UNO&quot;  &quot;DOS&quot;  &quot;TRES&quot;
-## 
-## 
-## $comment
-## [1] &quot;Información Adicional&quot;</code></pre>
-
+<p>También puede filtrar los meses específicos para realizar la búsqueda (Figura <a href="mis-spa.html#fig:rs-modis-5a">14.5</a>).</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:rs-modis-5a"></span>
+<img src="img/5.png" alt="Lista para seleccionar meses particulares." width="50%" />
+<p class="caption">
+Figura 14.5: Lista para seleccionar meses particulares.
+</p>
+</div>
+<p>Otro parámetro muy importante es fijar el porcentaje de <em>cobertura nubosa</em> que se define como el porcentaje del área que cubre la imagen se encuentra obstruida por nubes (Figura <a href="mis-spa.html#fig:rs-modis-5b">14.6</a>).</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:rs-modis-5b"></span>
+<img src="img/6.png" alt="Porcentaje de cobertura nubosa aceptable para las imágenes seleccionadas." width="50%" />
+<p class="caption">
+Figura 14.6: Porcentaje de cobertura nubosa aceptable para las imágenes seleccionadas.
+</p>
+</div>
+<p>El siguiente paso es la definición del tipo de datos. En la plataforma existe un gran número de misiones, sensores y tipos de datos, figura <a href="mis-spa.html#fig:rs-modis-8">14.7</a> MODIS (izquierda), Landsat (derecha). La plataforma permite selección múltiple.</p>
+<p>En el listado vamos a ubicar el grupo <strong>NASA LPDAAC Collections</strong> y dentro de las opciones, <strong>MODIS Land Surface Reflectance- V6</strong>.</p>
+<p>En las alternativas disponibles para este grupo de productos encontramos el grupo que corresponde al producto descrito en , MOD09A1 v6 del sensor MODIS.</p>
+<p>También encontramos los productos de la misión Landsat 4-5, 7-9 (Figura <a href="mis-spa.html#fig:rs-modis-8">14.7</a>, derecha) que revisaremos en detalle en el punto .</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:rs-modis-8"></span>
+<img src="img/9.png" alt="Lista de tipos de datos disponibles para descarga de la misión MODIS (izquierda) y Landsat (derecha)." width="60%" />
+<p class="caption">
+Figura 14.7: Lista de tipos de datos disponibles para descarga de la misión MODIS (izquierda) y Landsat (derecha).
+</p>
+</div>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:rs-modis-10"></span>
+<img src="img/11.png" alt="Mensaje que alerta de la realización de la consulta y botón para cancelar." width="30%" />
+<p class="caption">
+Figura 14.8: Mensaje que alerta de la realización de la consulta y botón para cancelar.
+</p>
+</div>
+<p>Finalmente, para realizar la búsqueda se debe presionar el botón <strong>Results &gt;&gt;</strong>, y mientras se despliega el mensaje de búsqueda se podrá cancelar para redefinir o corregir algún parámetro (Figura ).</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:rs-modis-11"></span>
+<img src="img/12.png" alt="Resultado de la búsqueda. Detalle de imágenes que cumplen los criterios definidos." width="674" />
+<p class="caption">
+Figura 14.9: Resultado de la búsqueda. Detalle de imágenes que cumplen los criterios definidos.
+</p>
+</div>
+<div id="mod-des-file" class="section level3" number="14.1.1">
+<h3><span class="header-section-number">14.1.1</span> Descarga de Datos</h3>
+<p>El resultado final es una lista interactiva con todos los productos que cumplen los parámetros de búsqueda. Para cada uno de ellos se disponen de varias opciones (Figura <a href="mis-spa.html#fig:rs-modis-11">14.9</a>).</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:rs-modis-13"></span>
+<img src="img/14.png" alt="Opciones Disponibles en archivo seleccionados." width="20%" />
+<p class="caption">
+Figura 14.10: Opciones Disponibles en archivo seleccionados.
+</p>
+</div>
+<p>De izquierda a derecha, las opciones son (Figura <a href="mis-spa.html#fig:rs-modis-13">14.10</a>):</p>
+<ul>
+<li><strong>Silueta Gráfica</strong> de la extensión espacial.</li>
+<li><strong>Visualización Baja Resolución</strong> en su ubicación exacta.</li>
+<li><strong>Imagen para comparación</strong> entre productos seleccionados en nueva ventana.</li>
+<li><strong>Visualizar Metadatos</strong> y detalles técnicos de la imagen.</li>
+<li><strong>Descarga Directa</strong> (Figura <a href="mis-spa.html#fig:rs-modis-12">14.11</a>) del archivo a disco local.</li>
+<li><strong>Excluir de Descarga</strong></li>
+</ul>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:rs-modis-12"></span>
+<img src="img/13.png" alt="Opciones de descarga (depende del producto o tipo de datos a descargar, en el ejemplo MODIS)." width="30%" />
+<p class="caption">
+Figura 14.11: Opciones de descarga (depende del producto o tipo de datos a descargar, en el ejemplo MODIS).
+</p>
+</div>
+<p>El primer sensor que vamos a estudiar es el sensor MODIS y las imágenes del set MOD09A1. Descargamos de la lista de opciones las cuatro imágenes más actualizadas que cubran el país de Niger con una baja cobertura nubosa (Figura <a href="modis.html#fig:rs-modis-22">15.6</a>):</p>
+<blockquote>
+<p>MOD09A1.A2021185.h18v07.061.2021194052227.hdf<br />
+MOD09A1.A2021193.h18v06.061.2021202214452.hdf<br />
+MOD09A1.A2021193.h19v06.061.2021202214223.hdf<br />
+MOD09A1.A2021193.h19v07.061.2021202220423.hdf</p>
+</blockquote>
 </div>
 </div>
 </div>
@@ -552,8 +516,8 @@ Esta nueva dimensión la llamaremos <em>capas</em>, <em>niveles</em> o <em>layer
           </div>
         </div>
       </div>
-<a href="dataframe.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="r-fechas.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="prop-img.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="modis.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
@@ -585,7 +549,7 @@ gitbook.start({
 "size": 2
 },
 "edit": {
-"link": "https://github.com/USERNAME/REPO/edit/BRANCH/07-Array.Rmd",
+"link": "https://github.com/USERNAME/REPO/edit/BRANCH/12-img-modis.Rmd",
 "text": "Edit"
 },
 "history": {

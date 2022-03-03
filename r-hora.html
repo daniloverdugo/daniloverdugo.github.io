@@ -33,7 +33,7 @@ Desde la instalación de las aplicaciones, pasando por una guía básica de su u
 <meta name="author" content="Danilo A. Verdugo Chaura" />
 
 
-<meta name="date" content="2022-02-22" />
+<meta name="date" content="2022-03-03" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -348,6 +348,23 @@ div.csl-indent {
 <li class="chapter" data-level="13.4" data-path="prop-img.html"><a href="prop-img.html#res-temp"><i class="fa fa-check"></i><b>13.4</b> Resolución Temporal</a></li>
 <li class="chapter" data-level="13.5" data-path="prop-img.html"><a href="prop-img.html#res-ang"><i class="fa fa-check"></i><b>13.5</b> Resolución angular</a></li>
 </ul></li>
+<li class="part"><span><b>III PARTE III</b></span></li>
+<li class="chapter" data-level="14" data-path="mis-spa.html"><a href="mis-spa.html"><i class="fa fa-check"></i><b>14</b> MISIONES ESPACIALES</a>
+<ul>
+<li class="chapter" data-level="14.1" data-path="mis-spa.html"><a href="mis-spa.html#down-mod09"><i class="fa fa-check"></i><b>14.1</b> Plataforma Búsqueda y Descarga</a>
+<ul>
+<li class="chapter" data-level="14.1.1" data-path="mis-spa.html"><a href="mis-spa.html#mod-des-file"><i class="fa fa-check"></i><b>14.1.1</b> Descarga de Datos</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="15" data-path="modis.html"><a href="modis.html"><i class="fa fa-check"></i><b>15</b> Misiones MODIS</a>
+<ul>
+<li class="chapter" data-level="15.1" data-path="modis.html"><a href="modis.html#terra-aqua"><i class="fa fa-check"></i><b>15.1</b> Terra y Aqua</a></li>
+<li class="chapter" data-level="15.2" data-path="modis.html"><a href="modis.html#mod09"><i class="fa fa-check"></i><b>15.2</b> MOD09A1</a></li>
+<li class="chapter" data-level="15.3" data-path="modis.html"><a href="modis.html#r-mod"><i class="fa fa-check"></i><b>15.3</b> MODIS en R</a>
+<ul>
+<li class="chapter" data-level="15.3.1" data-path="modis.html"><a href="modis.html#plot_rgb"><i class="fa fa-check"></i><b>15.3.1</b> Mapeo RGB</a></li>
+</ul></li>
+</ul></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Publicado con bookdown</a></li>
 
@@ -382,7 +399,7 @@ div.csl-indent {
 <p>La hora actual se obtiene con la función:
 </p>
 <div class="sourceCode" id="cb353"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb353-1"><a href="r-hora.html#cb353-1" aria-hidden="true" tabindex="-1"></a><span class="fu">Sys.time</span>()</span></code></pre></div>
-<pre><code>## [1] &quot;2022-02-22 20:25:26 -03&quot;</code></pre>
+<pre><code>## [1] &quot;2022-03-03 17:05:20 -03&quot;</code></pre>
 <p>Que retorna un objeto POSIXct que se compone de una fecha y una hora en una zona horaria determinada.</p>
 <div class="sourceCode" id="cb355"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb355-1"><a href="r-hora.html#cb355-1" aria-hidden="true" tabindex="-1"></a>ahora <span class="ot">&lt;-</span> <span class="fu">Sys.time</span>()</span>
 <span id="cb355-2"><a href="r-hora.html#cb355-2" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(ahora)</span></code></pre></div>
@@ -395,33 +412,64 @@ div.csl-indent {
 <div id="posix" class="section level2" number="10.1">
 <h2><span class="header-section-number">10.1</span> Formato POSIX</h2>
 <p>El acrónimo POSIX significa “Interfaz de sistema operativo portátil” y define estándares para mantener la compatibilidad entre diferentes sistemas operativos de computadora (con la “X” implicando Unix, debido a su independencia de un fabricante en particular). Define un estándar para expresar y acordar especificaciones de conversión.</p>
-<p>En el código, se usa dentro de una cadena de caracteres y se introduce con el símbolo %, generalmente seguido de una sola letra (cuadro ).</p>
-<p>\begin{table}</p>
-\caption{(#tab:tabla_hora_1) caracteres para Formatear el tiempo}
-
-<p>\end{table}</p>
+<p>En el código, se usa dentro de una cadena de caracteres y se introduce con el símbolo %, generalmente seguido de una sola letra (Tabla <a href="r-hora.html#tab:tabla-hora-1">10.1</a>).</p>
+<table>
+<caption><span id="tab:tabla-hora-1">Tabla 10.1: </span>Caracteres para Formatear el tiempo</caption>
+<thead>
+<tr class="header">
+<th align="left">Símbolo</th>
+<th align="left">Definición</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">%H</td>
+<td align="left">Hora dos dígitos (0-23)</td>
+</tr>
+<tr class="even">
+<td align="left">%I</td>
+<td align="left">Hora dos dígitos (0-12)</td>
+</tr>
+<tr class="odd">
+<td align="left">%M</td>
+<td align="left">Minutos dos dígitos (0-59)</td>
+</tr>
+<tr class="even">
+<td align="left">%p</td>
+<td align="left">Indicador AM/PM</td>
+</tr>
+<tr class="odd">
+<td align="left">%S</td>
+<td align="left">Segundos dos dígitos (0-59)</td>
+</tr>
+<tr class="even">
+<td align="left">%Z</td>
+<td align="left">Zona horaria o desplazamiento UTC</td>
+</tr>
+</tbody>
+</table>
 <p>Estos símbolos existen y comparten con los símbolos de fechas<a href="#fn14" class="footnote-ref" id="fnref14"><sup>14</sup></a>:</p>
 <div class="sourceCode" id="cb359"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb359-1"><a href="r-hora.html#cb359-1" aria-hidden="true" tabindex="-1"></a><span class="fu">format</span>(ahora, <span class="st">&quot;%A %I:%M&quot;</span>)</span></code></pre></div>
-<pre><code>## [1] &quot;martes 08:25&quot;</code></pre>
+<pre><code>## [1] &quot;jueves 05:05&quot;</code></pre>
 <div class="sourceCode" id="cb361"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb361-1"><a href="r-hora.html#cb361-1" aria-hidden="true" tabindex="-1"></a><span class="fu">format</span>(ahora, <span class="st">&quot;%H:%M:%S (%Z)&quot;</span>)</span></code></pre></div>
-<pre><code>## [1] &quot;20:25:26 (-03)&quot;</code></pre>
+<pre><code>## [1] &quot;17:05:20 (-03)&quot;</code></pre>
 <div class="sourceCode" id="cb363"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb363-1"><a href="r-hora.html#cb363-1" aria-hidden="true" tabindex="-1"></a><span class="fu">format</span>(ahora, <span class="st">&quot;%H:%M:%S&quot;</span>)  </span></code></pre></div>
-<pre><code>## [1] &quot;20:25:26&quot;</code></pre>
+<pre><code>## [1] &quot;17:05:20&quot;</code></pre>
 </div>
 <div id="ope-time" class="section level2" number="10.2">
 <h2><span class="header-section-number">10.2</span> Operando con el tiempo</h2>
 <p>El objeto tiempo también es capaz de realizar operaciones algebraicas.</p>
 <div class="sourceCode" id="cb365"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb365-1"><a href="r-hora.html#cb365-1" aria-hidden="true" tabindex="-1"></a>ahora</span></code></pre></div>
-<pre><code>## [1] &quot;2022-02-22 20:25:26 -03&quot;</code></pre>
+<pre><code>## [1] &quot;2022-03-03 17:05:20 -03&quot;</code></pre>
 <p>Sumar 30 segundos:</p>
 <div class="sourceCode" id="cb367"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb367-1"><a href="r-hora.html#cb367-1" aria-hidden="true" tabindex="-1"></a>(despues_s <span class="ot">&lt;-</span> ahora <span class="sc">+</span> <span class="dv">30</span>)</span></code></pre></div>
-<pre><code>## [1] &quot;2022-02-22 20:25:56 -03&quot;</code></pre>
+<pre><code>## [1] &quot;2022-03-03 17:05:50 -03&quot;</code></pre>
 <p>Sumar 30 minutos:</p>
 <div class="sourceCode" id="cb369"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb369-1"><a href="r-hora.html#cb369-1" aria-hidden="true" tabindex="-1"></a>(despues_m <span class="ot">&lt;-</span> ahora <span class="sc">+</span> (<span class="dv">30</span> <span class="sc">*</span> <span class="dv">60</span>))</span></code></pre></div>
-<pre><code>## [1] &quot;2022-02-22 20:55:26 -03&quot;</code></pre>
+<pre><code>## [1] &quot;2022-03-03 17:35:20 -03&quot;</code></pre>
 <p>Sumar 30 horas (notese el ajuste de la fecha):</p>
 <div class="sourceCode" id="cb371"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb371-1"><a href="r-hora.html#cb371-1" aria-hidden="true" tabindex="-1"></a>(despues_h <span class="ot">&lt;-</span> ahora <span class="sc">+</span> (<span class="dv">30</span> <span class="sc">*</span> <span class="dv">60</span> <span class="sc">*</span> <span class="dv">60</span>))</span></code></pre></div>
-<pre><code>## [1] &quot;2022-02-24 02:25:26 -03&quot;</code></pre>
+<pre><code>## [1] &quot;2022-03-04 23:05:20 -03&quot;</code></pre>
 <div class="sourceCode" id="cb373"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb373-1"><a href="r-hora.html#cb373-1" aria-hidden="true" tabindex="-1"></a>despues_h <span class="sc">-</span> ahora</span></code></pre></div>
 <pre><code>## Time difference of 1.25 days</code></pre>
 <p>La función <em>difftime()</em> soporta las siguientes unidades “auto,” “secs,” “mins,” “hours,” “days” y “weeks.”</p>
@@ -429,9 +477,9 @@ div.csl-indent {
 <pre><code>## Time difference of 0.1785714 weeks</code></pre>
 <p>Una función útil que también trabaja con tiempos es <code>trunc()</code>. Toma un argumento <code>x</code>, permite especificar el tiempo <code>units</code> de interés y trunca los enteros de cualquier unidad más pequeña a cero:</p>
 <div class="sourceCode" id="cb377"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb377-1"><a href="r-hora.html#cb377-1" aria-hidden="true" tabindex="-1"></a><span class="fu">trunc</span>(ahora, <span class="at">units=</span> <span class="st">&quot;mins&quot;</span>)</span></code></pre></div>
-<pre><code>## [1] &quot;2022-02-22 20:25:00 -03&quot;</code></pre>
+<pre><code>## [1] &quot;2022-03-03 17:05:00 -03&quot;</code></pre>
 <div class="sourceCode" id="cb379"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb379-1"><a href="r-hora.html#cb379-1" aria-hidden="true" tabindex="-1"></a><span class="fu">trunc</span>(ahora, <span class="at">units=</span> <span class="st">&quot;months&quot;</span>)</span></code></pre></div>
-<pre><code>## [1] &quot;2022-02-01 -03&quot;</code></pre>
+<pre><code>## [1] &quot;2022-03-01 -03&quot;</code></pre>
 <div class="sourceCode" id="cb381"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb381-1"><a href="r-hora.html#cb381-1" aria-hidden="true" tabindex="-1"></a><span class="fu">trunc</span>(ahora, <span class="at">units=</span> <span class="st">&quot;years&quot;</span>)</span></code></pre></div>
 <pre><code>## [1] &quot;2022-01-01 -03&quot;</code></pre>
 </div>
@@ -440,7 +488,7 @@ div.csl-indent {
 <p>En general, hemos visto que la base R proporciona un amplio soporte para crear y computar con fechas y horas. Al mismo tiempo, tratar con tres clases diferentes y sus relaciones con otros tipos de datos (específicamente: números) es un desafío. Aunque la mayoría de las complicaciones provienen de las complejidades inherentes de fechas y horas, las clases y los comandos R básicos para fechas y horas se han ido desarrollando con el tiempo y se vuelven cada vez más poderosos.</p>
 <p>Convertir entre zonas horarias, una operación muy compleja se realiza de manera muy práctica. Por ejemplo, deseo conocer la hora de término de un viaje de 15 horas en una zona horaria diametralmente opuesta (note que usamos la versión de hora local <em>lt</em>), entonces, ¿qué hora sería en 15 horas más en Shangái?</p>
 <div class="sourceCode" id="cb383"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb383-1"><a href="r-hora.html#cb383-1" aria-hidden="true" tabindex="-1"></a><span class="fu">as.POSIXlt</span>(<span class="fu">Sys.time</span>() <span class="sc">+</span> (<span class="dv">15</span> <span class="sc">*</span> <span class="dv">60</span> <span class="sc">*</span> <span class="dv">60</span>), <span class="at">tz =</span> <span class="st">&quot;Asia/Shanghai&quot;</span>)</span></code></pre></div>
-<pre><code>## [1] &quot;2022-02-23 22:25:26 CST&quot;</code></pre>
+<pre><code>## [1] &quot;2022-03-04 19:05:20 CST&quot;</code></pre>
 
 </div>
 </div>

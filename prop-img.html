@@ -33,7 +33,7 @@ Desde la instalación de las aplicaciones, pasando por una guía básica de su u
 <meta name="author" content="Danilo A. Verdugo Chaura" />
 
 
-<meta name="date" content="2022-02-22" />
+<meta name="date" content="2022-03-03" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -41,7 +41,7 @@ Desde la instalación de las aplicaciones, pasando por una guía básica de su u
   
   
 <link rel="prev" href="flujo.html"/>
-
+<link rel="next" href="mis-spa.html"/>
 <script src="libs/header-attrs-2.11/header-attrs.js"></script>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
@@ -348,6 +348,23 @@ div.csl-indent {
 <li class="chapter" data-level="13.4" data-path="prop-img.html"><a href="prop-img.html#res-temp"><i class="fa fa-check"></i><b>13.4</b> Resolución Temporal</a></li>
 <li class="chapter" data-level="13.5" data-path="prop-img.html"><a href="prop-img.html#res-ang"><i class="fa fa-check"></i><b>13.5</b> Resolución angular</a></li>
 </ul></li>
+<li class="part"><span><b>III PARTE III</b></span></li>
+<li class="chapter" data-level="14" data-path="mis-spa.html"><a href="mis-spa.html"><i class="fa fa-check"></i><b>14</b> MISIONES ESPACIALES</a>
+<ul>
+<li class="chapter" data-level="14.1" data-path="mis-spa.html"><a href="mis-spa.html#down-mod09"><i class="fa fa-check"></i><b>14.1</b> Plataforma Búsqueda y Descarga</a>
+<ul>
+<li class="chapter" data-level="14.1.1" data-path="mis-spa.html"><a href="mis-spa.html#mod-des-file"><i class="fa fa-check"></i><b>14.1.1</b> Descarga de Datos</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="15" data-path="modis.html"><a href="modis.html"><i class="fa fa-check"></i><b>15</b> Misiones MODIS</a>
+<ul>
+<li class="chapter" data-level="15.1" data-path="modis.html"><a href="modis.html#terra-aqua"><i class="fa fa-check"></i><b>15.1</b> Terra y Aqua</a></li>
+<li class="chapter" data-level="15.2" data-path="modis.html"><a href="modis.html#mod09"><i class="fa fa-check"></i><b>15.2</b> MOD09A1</a></li>
+<li class="chapter" data-level="15.3" data-path="modis.html"><a href="modis.html#r-mod"><i class="fa fa-check"></i><b>15.3</b> MODIS en R</a>
+<ul>
+<li class="chapter" data-level="15.3.1" data-path="modis.html"><a href="modis.html#plot_rgb"><i class="fa fa-check"></i><b>15.3.1</b> Mapeo RGB</a></li>
+</ul></li>
+</ul></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Publicado con bookdown</a></li>
 
@@ -393,7 +410,7 @@ afecta la <strong>pureza de señal de píxel</strong>. Cuanto menor sea el tama�
 probabilidad de que el píxel sea una <em>combinación de dos o más tipos de cobertura</em>. Un píxel mixto probablemente tendrá una señal promedio de las coberturas terrestres presentes dentro del IFOV. Como resultado, ese píxel puede no parecerse a ninguna de las categorías que componen la mezcla, lo que hará su identificación más difícil.</p>
 <table class="table" style="margin-left: auto; margin-right: auto;border-bottom: 0;">
 <caption>
-<span id="tab:tab-mod-0">Tabla 13.1: </span>Resoluciones de las misiones y sensores cuyos productos serán descritos y procesados con R en el texto.
+<span id="tab:tab-mod-0">Tabla 13.1: </span>Resoluciones de las misiones y sensores cuyos productos serán descritos y procesados con R en el texto y en éste sitio web.
 </caption>
 <thead>
 <tr>
@@ -771,7 +788,7 @@ B5-B7,B8a,B11-B12
 </tr>
 <tr>
 <td style="padding: 0; " colspan="100%">
-<sup></sup> Los productos Landsat (1-8) hacen referencia al nuevo set distribuido ‘Level-2 Science Products.’
+<sup></sup> Los productos Landsat (1-9) hacen referencia al nuevo set distribuido ‘Level-2 Science Products.’
 </td>
 </tr>
 </tfoot>
@@ -941,7 +958,7 @@ Figura 13.11: Firma Espectral del Árbol Acacia Caven (Aromo), librería ASTER v
 <span id="cb401-19"><a href="prop-img.html#cb401-19" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(suelo_sli[<span class="dv">1</span><span class="sc">:</span><span class="dv">1160</span>,<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">19</span>)], <span class="at">col =</span> <span class="st">&quot;sienna3&quot;</span>, <span class="at">lwd=</span><span class="dv">2</span>)</span>
 <span id="cb401-20"><a href="prop-img.html#cb401-20" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="at">x=</span><span class="st">&quot;topright&quot;</span>, <span class="at">legend=</span><span class="fu">c</span>(<span class="st">&quot;Basalto&quot;</span>,<span class="st">&quot;Fosforita&quot;</span>,<span class="st">&quot;Lodo Obscuro&quot;</span>,<span class="st">&quot;Arcilla Gris&quot;</span>), <span class="at">fill=</span><span class="fu">c</span>(<span class="st">&quot;snow4&quot;</span>,<span class="st">&quot;darkslategray4&quot;</span>,<span class="st">&quot;chocolate4&quot;</span>,<span class="st">&quot;sienna3&quot;</span>))</span></code></pre></div>
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:rs-sen26-03"></span>
-<img src="_main_files/figure-html/rs-sen26-03-1.png" alt="Ejemplos de firmas espectrales organizadas por grupos de tipos de cobertura." width="480" />
+<img src="_main_files/figure-html/rs-sen26-03-1.png" alt="Ejemplos de firmas espectrales organizadas por grupos de tipos de cobertura." width="960" />
 <p class="caption">
 Figura 13.12: Ejemplos de firmas espectrales organizadas por grupos de tipos de cobertura.
 </p>
@@ -972,71 +989,8 @@ Figura 13.13: Comparación resoluciones radiométricas.
 <h2><span class="header-section-number">13.5</span> Resolución angular</h2>
 <p>El concepto de resolución angular es muy reciente y se refiere a la capacidad del sensor para hacer observaciones de la misma área, desde diferentes ángulos de visión (<span class="citation">Diner et al. (1999)</span>). Las variaciones en reflectancia con ángulos de visión e iluminación variables se denominan <em>función de distribución de reflectancia bidireccional</em> (BRDF). Y para modelar estos efectos es necesario observar la superficie desde diferentes direcciones. También, las observaciones multiangulares son de gran interés en estimar algunas propiedades atmosféricas como el espesor de la capa de aerosoles o la altura de las nubes.</p>
 
-<div id="refs" class="references csl-bib-body hanging-indent">
-<div class="csl-entry">
-Baldridge, Alice M, SJ Hook, CI Grove, and GJRSoE Rivera. 2009. <span>“The ASTER Spectral Library Version 2.0.”</span> <em>Remote Sensing of Environment</em> 113 (4): 711–15.
-</div>
-<div class="csl-entry">
-Black, Newton Henry. 1913. <em>Practical Physics</em>. Macmillan. <a href="https://books.google.cl/books?id=BT8AAAAAYAAJ">https://books.google.cl/books?id=BT8AAAAAYAAJ</a>.
-</div>
-<div class="csl-entry">
-Diner, David J, Gregory P Asner, Roger Davies, Yuri Knyazikhin, Jan-Peter Muller, Anne W Nolin, Bernard Pinty, Crystal B Schaaf, and Julienne Stroeve. 1999. <span>“New Directions in Earth Observing: Scientific Applications of Multiangle Remote Sensing.”</span> <em>Bulletin of the American Meteorological Society</em> 80 (11): 2209–28.
-</div>
-<div class="csl-entry">
-Hanson, Bryan A. 2017. <em>SpecHelpers: Spectroscopy Related Utilities</em>. <a href="https://github.com/bryanhanson/SpecHelpers">github.com/bryanhanson/SpecHelpers</a>.
-</div>
-<div class="csl-entry">
-Ihaka, Ross, and Robert Gentleman. 1996. <span>“R: A Language for Data Analysis and Graphics.”</span> <em>Journal of Computational and Graphical Statistics</em> 5 (3): 299–314. <a href="https://doi.org/10.1080/10618600.1996.10474713">https://doi.org/10.1080/10618600.1996.10474713</a>.
-</div>
-<div class="csl-entry">
-Liang, Shunlin, and Jindi Wang, eds. 2020. <span>“Chapter 1 - a Systematic View of Remote Sensing.”</span> In <em>Advanced Remote Sensing (Second Edition)</em>, Second Edition, 1–57. Academic Press. https://doi.org/<a href="https://doi.org/10.1016/B978-0-12-815826-5.00001-5">https://doi.org/10.1016/B978-0-12-815826-5.00001-5</a>.
-</div>
-<div class="csl-entry">
-Liou, Kuo-Nan. 2002. <em>An Introduction to Atmospheric Radiation</em>. Elsevier.
-</div>
-<div class="csl-entry">
-Loo, M. P. J. van der, and E. De Jonge. 2012. <em>Learning RStudio for r Statistical Computing</em>. Community Experience Distilled. Lightning Source. <a href="https://books.google.cl/books?id=vOTHmAEACAAJ">https://books.google.cl/books?id=vOTHmAEACAAJ</a>.
-</div>
-<div class="csl-entry">
-Meerdink, Susan K., Simon J. Hook, Dar A. Roberts, and Elsa A. Abbott. 2019. <span>“The ECOSTRESS Spectral Library Version 1.0.”</span> <em>Remote Sensing of Environment</em> 230: 111196. https://doi.org/<a href="https://doi.org/10.1016/j.rse.2019.05.015">https://doi.org/10.1016/j.rse.2019.05.015</a>.
-</div>
-<div class="csl-entry">
-Olaya, Victor. 2020. <em>Sistemas de Información Geográfica</em>. Edited by autoeditado. lulu.com.
-</div>
-<div class="csl-entry">
-Richards, John Alan. 2013. <em>Remote Sensing Digital Image Analysis</em>. Fifth. Springer.
-</div>
-<div class="csl-entry">
-Slater, Philip N. 1980. <span>“Remote Sensing. Optics and Optical Systems.”</span> <em>Remote Sensing. Optics and Optical Systems</em>.
 </div>
 </div>
-</div>
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -1052,8 +1006,8 @@ Slater, Philip N. 1980. <span>“Remote Sensing. Optics and Optical Systems.”<
           </div>
         </div>
       </div>
-<a href="flujo.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-
+<a href="flujo.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="mis-spa.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>

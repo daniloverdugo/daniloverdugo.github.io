@@ -33,7 +33,7 @@ Desde la instalación de las aplicaciones, pasando por una guía básica de su u
 <meta name="author" content="Danilo A. Verdugo Chaura" />
 
 
-<meta name="date" content="2022-02-22" />
+<meta name="date" content="2022-03-03" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -348,6 +348,23 @@ div.csl-indent {
 <li class="chapter" data-level="13.4" data-path="prop-img.html"><a href="prop-img.html#res-temp"><i class="fa fa-check"></i><b>13.4</b> Resolución Temporal</a></li>
 <li class="chapter" data-level="13.5" data-path="prop-img.html"><a href="prop-img.html#res-ang"><i class="fa fa-check"></i><b>13.5</b> Resolución angular</a></li>
 </ul></li>
+<li class="part"><span><b>III PARTE III</b></span></li>
+<li class="chapter" data-level="14" data-path="mis-spa.html"><a href="mis-spa.html"><i class="fa fa-check"></i><b>14</b> MISIONES ESPACIALES</a>
+<ul>
+<li class="chapter" data-level="14.1" data-path="mis-spa.html"><a href="mis-spa.html#down-mod09"><i class="fa fa-check"></i><b>14.1</b> Plataforma Búsqueda y Descarga</a>
+<ul>
+<li class="chapter" data-level="14.1.1" data-path="mis-spa.html"><a href="mis-spa.html#mod-des-file"><i class="fa fa-check"></i><b>14.1.1</b> Descarga de Datos</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="15" data-path="modis.html"><a href="modis.html"><i class="fa fa-check"></i><b>15</b> Misiones MODIS</a>
+<ul>
+<li class="chapter" data-level="15.1" data-path="modis.html"><a href="modis.html#terra-aqua"><i class="fa fa-check"></i><b>15.1</b> Terra y Aqua</a></li>
+<li class="chapter" data-level="15.2" data-path="modis.html"><a href="modis.html#mod09"><i class="fa fa-check"></i><b>15.2</b> MOD09A1</a></li>
+<li class="chapter" data-level="15.3" data-path="modis.html"><a href="modis.html#r-mod"><i class="fa fa-check"></i><b>15.3</b> MODIS en R</a>
+<ul>
+<li class="chapter" data-level="15.3.1" data-path="modis.html"><a href="modis.html#plot_rgb"><i class="fa fa-check"></i><b>15.3.1</b> Mapeo RGB</a></li>
+</ul></li>
+</ul></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Publicado con bookdown</a></li>
 
@@ -375,11 +392,42 @@ div.csl-indent {
 <div id="op-fe" class="section level2" number="9.1">
 <h2><span class="header-section-number">9.1</span> Operaciones con Fecha</h2>
 <p>Las fechas son almacenadas internamente como el número de días transcurridos a partir del 1 de enero de 1970. Un objeto tipo <em>date</em> es convertido a número con <code>as.numeric()</code>.</p>
-<p>Para reconocer un texto como objeto fecha debe ser <em>entendido por el sistema</em> y debido a la diversidad de formatos utilizados existe una manera de ‘explicar’ al sistema cual es el que se utiliza o deseamos utilizar (Cuadro ).</p>
-<p>\begin{table}</p>
-\caption{(#tab:tabla_2) caracteres para Formatear Fechas}
-
-<p>\end{table}</p>
+<p>Para reconocer un texto como objeto fecha debe ser <em>entendido por el sistema</em> y debido a la diversidad de formatos utilizados existe una manera de ‘explicar’ al sistema cual es el que se utiliza o deseamos utilizar (Tabla <a href="r-fechas.html#tab:tabla-2">9.1</a>).</p>
+<table>
+<caption><span id="tab:tabla-2">Tabla 9.1: </span>Caracteres para Formatear Fechas</caption>
+<thead>
+<tr class="header">
+<th align="left">Símbolo</th>
+<th align="left">Definición</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">%d</td>
+<td align="left">Día</td>
+</tr>
+<tr class="even">
+<td align="left">%m</td>
+<td align="left">Mes Numérico</td>
+</tr>
+<tr class="odd">
+<td align="left">%b</td>
+<td align="left">Mes 3 letras</td>
+</tr>
+<tr class="even">
+<td align="left">%B</td>
+<td align="left">Mes Nombre</td>
+</tr>
+<tr class="odd">
+<td align="left">%y</td>
+<td align="left">Año Dos Dígitos</td>
+</tr>
+<tr class="even">
+<td align="left">%Y</td>
+<td align="left">Año 4 Dígitos</td>
+</tr>
+</tbody>
+</table>
 <div id="format-date" class="section level3" number="9.1.1">
 <h3><span class="header-section-number">9.1.1</span> Formato de Fechas</h3>
 <p>En el siguiente ejemplo vamos a convertir varios textos a objeto fecha.
@@ -438,10 +486,10 @@ div.csl-indent {
 <p>La fecha actual como se encuentra definida por el sistema:
 </p>
 <div class="sourceCode" id="cb349"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb349-1"><a href="r-fechas.html#cb349-1" aria-hidden="true" tabindex="-1"></a>(fecha <span class="ot">&lt;-</span> <span class="fu">Sys.Date</span>())</span></code></pre></div>
-<pre><code>## [1] &quot;2022-02-09&quot;</code></pre>
+<pre><code>## [1] &quot;2022-03-03&quot;</code></pre>
 <p>La puedo expresar utilizando los caracteres de formato definidos en el cuadro :</p>
 <div class="sourceCode" id="cb351"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb351-1"><a href="r-fechas.html#cb351-1" aria-hidden="true" tabindex="-1"></a><span class="fu">format</span>(fecha, <span class="st">&quot;%d %B %Y&quot;</span>)</span></code></pre></div>
-<pre><code>## [1] &quot;09 febrero 2022&quot;</code></pre>
+<pre><code>## [1] &quot;03 marzo 2022&quot;</code></pre>
 </div>
 </div>
 </div>

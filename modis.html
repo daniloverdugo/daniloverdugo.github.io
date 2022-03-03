@@ -1,0 +1,917 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Capítulo 15 Misiones MODIS | Ráster con R</title>
+  <meta name="description" content="<p>Los fenómenos geográficos se desarrollan de manera continúa sobre una extensión de la superficie terrestre (en, sobre o bajo ella), y ha sido un desafío constante crear un modelo de representación tan simple para ser almacenado, procesado y visualizado con facilidad y tan complejo que permita perder el mínimo de información crítica y versátil que permita mantener el nivel de detalle proporcional a la riqueza del mundo real.
+Ese modelo se ha denominado <strong>modelo ráster</strong> y es el tema principal del presente libro, su origen, fundamentos, propiedades y algunos usos serán descritos en detalle.
+Para ello, se basará en la <strong>Plataforma R</strong> y <strong>RStudio</strong>, unas de las herramientas informáticas más poderosas en la actualidad.
+Desde la instalación de las aplicaciones, pasando por una guía básica de su utilización, hasta una detallada descripción del trabajo con dicho modelo.</p>" />
+  <meta name="generator" content="bookdown 0.24 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Capítulo 15 Misiones MODIS | Ráster con R" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="<p>Los fenómenos geográficos se desarrollan de manera continúa sobre una extensión de la superficie terrestre (en, sobre o bajo ella), y ha sido un desafío constante crear un modelo de representación tan simple para ser almacenado, procesado y visualizado con facilidad y tan complejo que permita perder el mínimo de información crítica y versátil que permita mantener el nivel de detalle proporcional a la riqueza del mundo real.
+Ese modelo se ha denominado <strong>modelo ráster</strong> y es el tema principal del presente libro, su origen, fundamentos, propiedades y algunos usos serán descritos en detalle.
+Para ello, se basará en la <strong>Plataforma R</strong> y <strong>RStudio</strong>, unas de las herramientas informáticas más poderosas en la actualidad.
+Desde la instalación de las aplicaciones, pasando por una guía básica de su utilización, hasta una detallada descripción del trabajo con dicho modelo.</p>" />
+  <meta name="github-repo" content="rstudio/bookdown-demo" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Capítulo 15 Misiones MODIS | Ráster con R" />
+  
+  <meta name="twitter:description" content="<p>Los fenómenos geográficos se desarrollan de manera continúa sobre una extensión de la superficie terrestre (en, sobre o bajo ella), y ha sido un desafío constante crear un modelo de representación tan simple para ser almacenado, procesado y visualizado con facilidad y tan complejo que permita perder el mínimo de información crítica y versátil que permita mantener el nivel de detalle proporcional a la riqueza del mundo real.
+Ese modelo se ha denominado <strong>modelo ráster</strong> y es el tema principal del presente libro, su origen, fundamentos, propiedades y algunos usos serán descritos en detalle.
+Para ello, se basará en la <strong>Plataforma R</strong> y <strong>RStudio</strong>, unas de las herramientas informáticas más poderosas en la actualidad.
+Desde la instalación de las aplicaciones, pasando por una guía básica de su utilización, hasta una detallada descripción del trabajo con dicho modelo.</p>" />
+  
+
+<meta name="author" content="Danilo A. Verdugo Chaura" />
+
+
+<meta name="date" content="2022-03-03" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="mis-spa.html"/>
+
+<script src="libs/header-attrs-2.11/header-attrs.js"></script>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.0.1/anchor-sections.js"></script>
+<script src="libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Ráster con R</a></li>
+
+<li class="divider"></li>
+<li class="part"><span><b>I Part I</b></span></li>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Plataforma R</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="index.html"><a href="index.html#hist-orig"><i class="fa fa-check"></i><b>1.1</b> Historia y Origen</a></li>
+<li class="chapter" data-level="1.2" data-path="index.html"><a href="index.html#dis-plat"><i class="fa fa-check"></i><b>1.2</b> Diseño de la Plataforma R</a></li>
+<li class="chapter" data-level="1.3" data-path="index.html"><a href="index.html#rstudio"><i class="fa fa-check"></i><b>1.3</b> RStudio</a></li>
+<li class="chapter" data-level="1.4" data-path="index.html"><a href="index.html#car-prin"><i class="fa fa-check"></i><b>1.4</b> Características Principales</a></li>
+<li class="chapter" data-level="1.5" data-path="index.html"><a href="index.html#inst-pla"><i class="fa fa-check"></i><b>1.5</b> Instalación de Plataforma R y RStudio</a></li>
+<li class="chapter" data-level="1.6" data-path="index.html"><a href="index.html#con-pre"><i class="fa fa-check"></i><b>1.6</b> Consideraciones Preliminares</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="intro-package.html"><a href="intro-package.html"><i class="fa fa-check"></i><b>2</b> Paquetes</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="intro-package.html"><a href="intro-package.html#pack-search"><i class="fa fa-check"></i><b>2.1</b> Búsqueda</a></li>
+<li class="chapter" data-level="2.2" data-path="intro-package.html"><a href="intro-package.html#pack-install"><i class="fa fa-check"></i><b>2.2</b> Instalación</a>
+<ul>
+<li class="chapter" data-level="2.2.1" data-path="intro-package.html"><a href="intro-package.html#pack-cuadro"><i class="fa fa-check"></i><b>2.2.1</b> Cuadro Diálogo</a></li>
+<li class="chapter" data-level="2.2.2" data-path="intro-package.html"><a href="intro-package.html#pack-install-code"><i class="fa fa-check"></i><b>2.2.2</b> Función <em>install.packages()</em></a></li>
+</ul></li>
+<li class="chapter" data-level="2.3" data-path="intro-package.html"><a href="intro-package.html#pack-update"><i class="fa fa-check"></i><b>2.3</b> Actualización</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="sin-bas.html"><a href="sin-bas.html"><i class="fa fa-check"></i><b>3</b> Sintaxis Básica de R</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="sin-bas.html"><a href="sin-bas.html#op-num"><i class="fa fa-check"></i><b>3.1</b> Operaciones Numéricas</a></li>
+<li class="chapter" data-level="3.2" data-path="sin-bas.html"><a href="sin-bas.html#asig"><i class="fa fa-check"></i><b>3.2</b> Asignación</a></li>
+<li class="chapter" data-level="3.3" data-path="sin-bas.html"><a href="sin-bas.html#nat-vec"><i class="fa fa-check"></i><b>3.3</b> Naturaleza Vectorial</a>
+<ul>
+<li class="chapter" data-level="3.3.1" data-path="sin-bas.html"><a href="sin-bas.html#fun-c"><i class="fa fa-check"></i><b>3.3.1</b> Función <strong><code>c()</code></strong> para crear vectores</a></li>
+<li class="chapter" data-level="3.3.2" data-path="sin-bas.html"><a href="sin-bas.html#uso-sec"><i class="fa fa-check"></i><b>3.3.2</b> Uso de <strong>Secuencias</strong> para crear vectores</a></li>
+<li class="chapter" data-level="3.3.3" data-path="sin-bas.html"><a href="sin-bas.html#usar-rep"><i class="fa fa-check"></i><b>3.3.3</b> Usar <strong>Repetición</strong> para la creación de vectores</a></li>
+<li class="chapter" data-level="3.3.4" data-path="sin-bas.html"><a href="sin-bas.html#uso-pat"><i class="fa fa-check"></i><b>3.3.4</b> Uso de <strong>Patrones</strong> para crear vectores</a></li>
+<li class="chapter" data-level="3.3.5" data-path="sin-bas.html"><a href="sin-bas.html#vec-log"><i class="fa fa-check"></i><b>3.3.5</b> Vectores Lógicos y Caracteres</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="op-vec.html"><a href="op-vec.html"><i class="fa fa-check"></i><b>4</b> Operación Vectorial</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="op-vec.html"><a href="op-vec.html#op-num-vec"><i class="fa fa-check"></i><b>4.1</b> Operaciones Numéricas</a></li>
+<li class="chapter" data-level="4.2" data-path="op-vec.html"><a href="op-vec.html#val-fal"><i class="fa fa-check"></i><b>4.2</b> Valores Faltantes</a></li>
+<li class="chapter" data-level="4.3" data-path="op-vec.html"><a href="op-vec.html#index-sub"><i class="fa fa-check"></i><b>4.3</b> Indexado y Subconjunto</a>
+<ul>
+<li class="chapter" data-level="4.3.1" data-path="op-vec.html"><a href="op-vec.html#ind-num-pos"><i class="fa fa-check"></i><b>4.3.1</b> Índice Numérico Positivo</a></li>
+<li class="chapter" data-level="4.3.2" data-path="op-vec.html"><a href="op-vec.html#ind-num-neg"><i class="fa fa-check"></i><b>4.3.2</b> Índice Numérico Negativo</a></li>
+<li class="chapter" data-level="4.3.3" data-path="op-vec.html"><a href="op-vec.html#vec-log-1"><i class="fa fa-check"></i><b>4.3.3</b> Vector Lógico</a></li>
+</ul></li>
+<li class="chapter" data-level="4.4" data-path="op-vec.html"><a href="op-vec.html#edic-con"><i class="fa fa-check"></i><b>4.4</b> Edición de Contenido</a></li>
+<li class="chapter" data-level="4.5" data-path="op-vec.html"><a href="op-vec.html#op-avan"><i class="fa fa-check"></i><b>4.5</b> Opciones Avanzadas</a>
+<ul>
+<li class="chapter" data-level="4.5.1" data-path="op-vec.html"><a href="op-vec.html#nom-col"><i class="fa fa-check"></i><b>4.5.1</b> Nombrar los Componentes de un Vector</a></li>
+<li class="chapter" data-level="4.5.2" data-path="op-vec.html"><a href="op-vec.html#info-ad"><i class="fa fa-check"></i><b>4.5.2</b> Información Adicional</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="fac.html"><a href="fac.html"><i class="fa fa-check"></i><b>5</b> Factores</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="fac.html"><a href="fac.html#fac-nom"><i class="fa fa-check"></i><b>5.1</b> Factores Nominales</a></li>
+<li class="chapter" data-level="5.2" data-path="fac.html"><a href="fac.html#fac-or"><i class="fa fa-check"></i><b>5.2</b> Factores Ordinales</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="mat.html"><a href="mat.html"><i class="fa fa-check"></i><b>6</b> Matrices</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="mat.html"><a href="mat.html#op-num-mat"><i class="fa fa-check"></i><b>6.1</b> Operaciones Numéricas</a></li>
+<li class="chapter" data-level="6.2" data-path="mat.html"><a href="mat.html#matriz-index"><i class="fa fa-check"></i><b>6.2</b> Indexado y Subconjunto</a></li>
+<li class="chapter" data-level="6.3" data-path="mat.html"><a href="mat.html#ed-con"><i class="fa fa-check"></i><b>6.3</b> Edición de Contenido</a></li>
+<li class="chapter" data-level="6.4" data-path="mat.html"><a href="mat.html#op-avan-mat"><i class="fa fa-check"></i><b>6.4</b> Opciones Avanzadas</a>
+<ul>
+<li class="chapter" data-level="6.4.1" data-path="mat.html"><a href="mat.html#nom-fil"><i class="fa fa-check"></i><b>6.4.1</b> Nombres de Filas y Columnas</a></li>
+<li class="chapter" data-level="6.4.2" data-path="mat.html"><a href="mat.html#mod-mat"><i class="fa fa-check"></i><b>6.4.2</b> Modificar Tamaño de Matrices</a></li>
+<li class="chapter" data-level="6.4.3" data-path="mat.html"><a href="mat.html#info-adic"><i class="fa fa-check"></i><b>6.4.3</b> Información Adicional</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="dataframe.html"><a href="dataframe.html"><i class="fa fa-check"></i><b>7</b> Dataframes</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="dataframe.html"><a href="dataframe.html#df-detalle"><i class="fa fa-check"></i><b>7.1</b> Creación</a></li>
+<li class="chapter" data-level="7.2" data-path="dataframe.html"><a href="dataframe.html#df-op-num"><i class="fa fa-check"></i><b>7.2</b> Operaciones Numéricas</a></li>
+<li class="chapter" data-level="7.3" data-path="dataframe.html"><a href="dataframe.html#df-index"><i class="fa fa-check"></i><b>7.3</b> Indexado y Subconjunto</a>
+<ul>
+<li class="chapter" data-level="7.3.1" data-path="dataframe.html"><a href="dataframe.html#df-op-avan"><i class="fa fa-check"></i><b>7.3.1</b> Opciones Avanzadas</a></li>
+<li class="chapter" data-level="7.3.2" data-path="dataframe.html"><a href="dataframe.html#df-mod-size"><i class="fa fa-check"></i><b>7.3.2</b> Modificar Tamaño o Estructura</a></li>
+<li class="chapter" data-level="7.3.3" data-path="dataframe.html"><a href="dataframe.html#df-nom-fil-col"><i class="fa fa-check"></i><b>7.3.3</b> Nombres de Filas y Columnas</a></li>
+<li class="chapter" data-level="7.3.4" data-path="dataframe.html"><a href="dataframe.html#df-info"><i class="fa fa-check"></i><b>7.3.4</b> Información Adicional</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="array.html"><a href="array.html"><i class="fa fa-check"></i><b>8</b> Array</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="array.html"><a href="array.html#op-num-arr"><i class="fa fa-check"></i><b>8.1</b> Operaciones Numéricas</a></li>
+<li class="chapter" data-level="8.2" data-path="array.html"><a href="array.html#index-arr"><i class="fa fa-check"></i><b>8.2</b> Indexado y Subconjunto</a></li>
+<li class="chapter" data-level="8.3" data-path="array.html"><a href="array.html#ed-con-arr"><i class="fa fa-check"></i><b>8.3</b> Edición de Contenido</a></li>
+<li class="chapter" data-level="8.4" data-path="array.html"><a href="array.html#op-av-arr"><i class="fa fa-check"></i><b>8.4</b> Opciones Avanzadas</a>
+<ul>
+<li class="chapter" data-level="8.4.1" data-path="array.html"><a href="array.html#nom-fil-arr"><i class="fa fa-check"></i><b>8.4.1</b> Nombres de Filas y Columnas</a></li>
+<li class="chapter" data-level="8.4.2" data-path="array.html"><a href="array.html#info-ad-arr"><i class="fa fa-check"></i><b>8.4.2</b> Información Adicional</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="r-fechas.html"><a href="r-fechas.html"><i class="fa fa-check"></i><b>9</b> Fechas</a>
+<ul>
+<li class="chapter" data-level="9.1" data-path="r-fechas.html"><a href="r-fechas.html#op-fe"><i class="fa fa-check"></i><b>9.1</b> Operaciones con Fecha</a>
+<ul>
+<li class="chapter" data-level="9.1.1" data-path="r-fechas.html"><a href="r-fechas.html#format-date"><i class="fa fa-check"></i><b>9.1.1</b> Formato de Fechas</a></li>
+<li class="chapter" data-level="9.1.2" data-path="r-fechas.html"><a href="r-fechas.html#cambio-formato-date"><i class="fa fa-check"></i><b>9.1.2</b> Cambio de Formato</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="r-hora.html"><a href="r-hora.html"><i class="fa fa-check"></i><b>10</b> Hora</a>
+<ul>
+<li class="chapter" data-level="10.1" data-path="r-hora.html"><a href="r-hora.html#posix"><i class="fa fa-check"></i><b>10.1</b> Formato POSIX</a></li>
+<li class="chapter" data-level="10.2" data-path="r-hora.html"><a href="r-hora.html#ope-time"><i class="fa fa-check"></i><b>10.2</b> Operando con el tiempo</a></li>
+<li class="chapter" data-level="10.3" data-path="r-hora.html"><a href="r-hora.html#zona-hora"><i class="fa fa-check"></i><b>10.3</b> Conversión entre zonas horarias</a></li>
+</ul></li>
+<li class="part"><span><b>II Part II</b></span></li>
+<li class="chapter" data-level="11" data-path="EO-intro.html"><a href="EO-intro.html"><i class="fa fa-check"></i><b>11</b> Observación de la Tierra</a>
+<ul>
+<li class="chapter" data-level="11.1" data-path="EO-intro.html"><a href="EO-intro.html#intro-rs"><i class="fa fa-check"></i><b>11.1</b> Introducción</a></li>
+<li class="chapter" data-level="11.2" data-path="EO-intro.html"><a href="EO-intro.html#rs-eletro"><i class="fa fa-check"></i><b>11.2</b> Energía Electromagnética</a>
+<ul>
+<li class="chapter" data-level="11.2.1" data-path="EO-intro.html"><a href="EO-intro.html#rs-intro-amable"><i class="fa fa-check"></i><b>11.2.1</b> Fundamentos Históricos y Físicos</a></li>
+<li class="chapter" data-level="11.2.2" data-path="EO-intro.html"><a href="EO-intro.html#rs-intro-electro"><i class="fa fa-check"></i><b>11.2.2</b> Fenómeno Eléctrico</a></li>
+<li class="chapter" data-level="11.2.3" data-path="EO-intro.html"><a href="EO-intro.html#rs-intro-magneto"><i class="fa fa-check"></i><b>11.2.3</b> Fenómeno Magnético</a></li>
+</ul></li>
+<li class="chapter" data-level="11.3" data-path="EO-intro.html"><a href="EO-intro.html#rs-relation"><i class="fa fa-check"></i><b>11.3</b> La Relación Electricidad Magnetismo</a>
+<ul>
+<li class="chapter" data-level="11.3.1" data-path="EO-intro.html"><a href="EO-intro.html#rs-campo"><i class="fa fa-check"></i><b>11.3.1</b> El Concepto de Campo</a></li>
+<li class="chapter" data-level="11.3.2" data-path="EO-intro.html"><a href="EO-intro.html#rs-electro-magne"><i class="fa fa-check"></i><b>11.3.2</b> El Electromagnetismo</a></li>
+</ul></li>
+<li class="chapter" data-level="11.4" data-path="EO-intro.html"><a href="EO-intro.html#rs-eem"><i class="fa fa-check"></i><b>11.4</b> Cómo se Produce y Transporta la Energía</a>
+<ul>
+<li class="chapter" data-level="11.4.1" data-path="EO-intro.html"><a href="EO-intro.html#rs-onda"><i class="fa fa-check"></i><b>11.4.1</b> Las Ondas</a></li>
+<li class="chapter" data-level="11.4.2" data-path="EO-intro.html"><a href="EO-intro.html#cuantiluz"><i class="fa fa-check"></i><b>11.4.2</b> Cuantos y Dualidad de la Luz</a></li>
+<li class="chapter" data-level="11.4.3" data-path="EO-intro.html"><a href="EO-intro.html#foton"><i class="fa fa-check"></i><b>11.4.3</b> El Fotón</a></li>
+<li class="chapter" data-level="11.4.4" data-path="EO-intro.html"><a href="EO-intro.html#teo-cuan-ond"><i class="fa fa-check"></i><b>11.4.4</b> Relación entre Teoría Ondulatoria y Cuántica</a></li>
+</ul></li>
+<li class="chapter" data-level="11.5" data-path="EO-intro.html"><a href="EO-intro.html#rs-el-espectro-electro"><i class="fa fa-check"></i><b>11.5</b> El Espectro Electromagnético</a>
+<ul>
+<li class="chapter" data-level="11.5.1" data-path="EO-intro.html"><a href="EO-intro.html#vis"><i class="fa fa-check"></i><b>11.5.1</b> Espectro Visible (VIS)</a></li>
+<li class="chapter" data-level="11.5.2" data-path="EO-intro.html"><a href="EO-intro.html#infra-cer"><i class="fa fa-check"></i><b>11.5.2</b> Infrarrojo Cercano (NIR), Próximo o Reflejado</a></li>
+<li class="chapter" data-level="11.5.3" data-path="EO-intro.html"><a href="EO-intro.html#infra-mir"><i class="fa fa-check"></i><b>11.5.3</b> Infrarrojo Medio (MIR)</a></li>
+<li class="chapter" data-level="11.5.4" data-path="EO-intro.html"><a href="EO-intro.html#infra-ter"><i class="fa fa-check"></i><b>11.5.4</b> Infrarrojo Térmico (TIR)</a></li>
+<li class="chapter" data-level="11.5.5" data-path="EO-intro.html"><a href="EO-intro.html#microwave"><i class="fa fa-check"></i><b>11.5.5</b> Microondas (MW)</a></li>
+</ul></li>
+<li class="chapter" data-level="11.6" data-path="EO-intro.html"><a href="EO-intro.html#concep-unidad"><i class="fa fa-check"></i><b>11.6</b> Conceptos Básicos y sus Unidades</a>
+<ul>
+<li class="chapter" data-level="11.6.1" data-path="EO-intro.html"><a href="EO-intro.html#angsol"><i class="fa fa-check"></i><b>11.6.1</b> Ángulo Sólido</a></li>
+<li class="chapter" data-level="11.6.2" data-path="EO-intro.html"><a href="EO-intro.html#mag-radio"><i class="fa fa-check"></i><b>11.6.2</b> Magnitudes Radiométricas</a></li>
+<li class="chapter" data-level="11.6.3" data-path="EO-intro.html"><a href="EO-intro.html#temp-intro"><i class="fa fa-check"></i><b>11.6.3</b> Importancia de la Temperatura</a></li>
+</ul></li>
+<li class="chapter" data-level="11.7" data-path="EO-intro.html"><a href="EO-intro.html#cuerpo-negro"><i class="fa fa-check"></i><b>11.7</b> Radiación de Cuerpo Negro</a>
+<ul>
+<li class="chapter" data-level="11.7.1" data-path="EO-intro.html"><a href="EO-intro.html#ley-planck"><i class="fa fa-check"></i><b>11.7.1</b> Ley de Planck</a></li>
+<li class="chapter" data-level="11.7.2" data-path="EO-intro.html"><a href="EO-intro.html#wien"><i class="fa fa-check"></i><b>11.7.2</b> Ley de Desplazamiento de Wien</a></li>
+<li class="chapter" data-level="11.7.3" data-path="EO-intro.html"><a href="EO-intro.html#stef"><i class="fa fa-check"></i><b>11.7.3</b> Ley de Stefan-Boltzmann</a></li>
+<li class="chapter" data-level="11.7.4" data-path="EO-intro.html"><a href="EO-intro.html#kirchhoff"><i class="fa fa-check"></i><b>11.7.4</b> Ley de Kirchhoff</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="12" data-path="flujo.html"><a href="flujo.html"><i class="fa fa-check"></i><b>12</b> EEM</a>
+<ul>
+<li class="chapter" data-level="12.1" data-path="flujo.html"><a href="flujo.html#flujo-eem"><i class="fa fa-check"></i><b>12.1</b> Flujo de la EEM</a></li>
+<li class="chapter" data-level="12.2" data-path="flujo.html"><a href="flujo.html#inter-atm-eem"><i class="fa fa-check"></i><b>12.2</b> Interacción EEM con la Atmósfera</a>
+<ul>
+<li class="chapter" data-level="12.2.1" data-path="flujo.html"><a href="flujo.html#atmos"><i class="fa fa-check"></i><b>12.2.1</b> La Atmósfera</a></li>
+<li class="chapter" data-level="12.2.2" data-path="flujo.html"><a href="flujo.html#at-abs"><i class="fa fa-check"></i><b>12.2.2</b> Absorción</a></li>
+<li class="chapter" data-level="12.2.3" data-path="flujo.html"><a href="flujo.html#disper"><i class="fa fa-check"></i><b>12.2.3</b> Dispersión</a></li>
+<li class="chapter" data-level="12.2.4" data-path="flujo.html"><a href="flujo.html#emision"><i class="fa fa-check"></i><b>12.2.4</b> Emisión</a></li>
+</ul></li>
+<li class="chapter" data-level="12.3" data-path="flujo.html"><a href="flujo.html#fin-ciclo"><i class="fa fa-check"></i><b>12.3</b> Últimos pasos</a>
+<ul>
+<li class="chapter" data-level="12.3.1" data-path="flujo.html"><a href="flujo.html#dn-toa"><i class="fa fa-check"></i><b>12.3.1</b> DN a TOA</a></li>
+<li class="chapter" data-level="12.3.2" data-path="flujo.html"><a href="flujo.html#dn-boa"><i class="fa fa-check"></i><b>12.3.2</b> TOA a BOA</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="13" data-path="prop-img.html"><a href="prop-img.html"><i class="fa fa-check"></i><b>13</b> Resoluciones de Imagen</a>
+<ul>
+<li class="chapter" data-level="13.1" data-path="prop-img.html"><a href="prop-img.html#res-spac"><i class="fa fa-check"></i><b>13.1</b> Resolución Espacial</a></li>
+<li class="chapter" data-level="13.2" data-path="prop-img.html"><a href="prop-img.html#res-espec"><i class="fa fa-check"></i><b>13.2</b> Resolución Espectral</a>
+<ul>
+<li class="chapter" data-level="13.2.1" data-path="prop-img.html"><a href="prop-img.html#res-profile"><i class="fa fa-check"></i><b>13.2.1</b> Firma Espectral</a></li>
+<li class="chapter" data-level="13.2.2" data-path="prop-img.html"><a href="prop-img.html#import-ds"><i class="fa fa-check"></i><b>13.2.2</b> Import Dataset</a></li>
+<li class="chapter" data-level="13.2.3" data-path="prop-img.html"><a href="prop-img.html#spec-r"><i class="fa fa-check"></i><b>13.2.3</b> Procesando en R</a></li>
+</ul></li>
+<li class="chapter" data-level="13.3" data-path="prop-img.html"><a href="prop-img.html#res-rad"><i class="fa fa-check"></i><b>13.3</b> Resolución Radiométrica</a></li>
+<li class="chapter" data-level="13.4" data-path="prop-img.html"><a href="prop-img.html#res-temp"><i class="fa fa-check"></i><b>13.4</b> Resolución Temporal</a></li>
+<li class="chapter" data-level="13.5" data-path="prop-img.html"><a href="prop-img.html#res-ang"><i class="fa fa-check"></i><b>13.5</b> Resolución angular</a></li>
+</ul></li>
+<li class="part"><span><b>III PARTE III</b></span></li>
+<li class="chapter" data-level="14" data-path="mis-spa.html"><a href="mis-spa.html"><i class="fa fa-check"></i><b>14</b> MISIONES ESPACIALES</a>
+<ul>
+<li class="chapter" data-level="14.1" data-path="mis-spa.html"><a href="mis-spa.html#down-mod09"><i class="fa fa-check"></i><b>14.1</b> Plataforma Búsqueda y Descarga</a>
+<ul>
+<li class="chapter" data-level="14.1.1" data-path="mis-spa.html"><a href="mis-spa.html#mod-des-file"><i class="fa fa-check"></i><b>14.1.1</b> Descarga de Datos</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="15" data-path="modis.html"><a href="modis.html"><i class="fa fa-check"></i><b>15</b> Misiones MODIS</a>
+<ul>
+<li class="chapter" data-level="15.1" data-path="modis.html"><a href="modis.html#terra-aqua"><i class="fa fa-check"></i><b>15.1</b> Terra y Aqua</a></li>
+<li class="chapter" data-level="15.2" data-path="modis.html"><a href="modis.html#mod09"><i class="fa fa-check"></i><b>15.2</b> MOD09A1</a></li>
+<li class="chapter" data-level="15.3" data-path="modis.html"><a href="modis.html#r-mod"><i class="fa fa-check"></i><b>15.3</b> MODIS en R</a>
+<ul>
+<li class="chapter" data-level="15.3.1" data-path="modis.html"><a href="modis.html#plot_rgb"><i class="fa fa-check"></i><b>15.3.1</b> Mapeo RGB</a></li>
+</ul></li>
+</ul></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Publicado con bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Ráster con R</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="modis" class="section level1" number="15">
+<h1><span class="header-section-number">Capítulo 15</span> Misiones MODIS</h1>
+<div id="terra-aqua" class="section level2" number="15.1">
+<h2><span class="header-section-number">15.1</span> Terra y Aqua</h2>
+<p>MODIS o espectrorradiómetro de imágenes de resolución moderada es un instrumento clave a bordo de los satélites <strong>Terra</strong> (originalmente conocido como EOS AM-1) y <strong>Aqua</strong> (originalmente conocido como EOS PM-1). La órbita de Terra alrededor de la Tierra está programada para que pase de norte a sur a través del ecuador por la mañana, mientras que Aqua pasa de sur a norte sobre el ecuador por la tarde. Terra MODIS y Aqua MODIS están viendo toda la superficie de la Tierra cada 1 o 2 días, adquiriendo datos en 36 bandas espectrales o grupos de longitudes de onda (consulte las Especificaciones técnicas de MODIS). Estos datos mejorarán nuestra comprensión de la dinámica y los procesos globales que ocurren en la tierra, en los océanos y en la atmósfera inferior.</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:rs-modis-a"></span>
+<img src="img/terra.png" alt="Satélite Terra. NASA." width="20%" />
+<p class="caption">
+Figura 15.1: Satélite Terra. NASA.
+</p>
+</div>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:rs-modis-b"></span>
+<img src="img/aqua.png" alt="Satélite Aqua. NASA." width="20%" />
+<p class="caption">
+Figura 15.2: Satélite Aqua. NASA.
+</p>
+</div>
+<p>Las plataformas <em>Terra</em> y <em>Aqua</em> son parte del Sistema de Observación de la Tierra (EOS) de la NASA, <strong>Terra</strong> se lanzó con éxito en diciembre de 1999 y se encuentra en una órbita casi polar, sincrónica con el Sol, cruzando el ecuador alrededor de las 10:30 a.m. y p.m. La altura orbital es de 705 km, con un período de 98,88 min y un ciclo de repetición de 16 días.</p>
+<p>Lleva cinco sensores (MODIS, CERES, MISR, MOPITT y ASTER) diseñado para observaciones globales de tierras, océanos y variables atmosféricas.</p>
+<p><strong>Aqua</strong> se lanzó en mayo de 2002 y tiene características orbitales similares a Terra, pero con un retraso de 3 horas, por tanto, cruza el ecuador a la 1:30 y a las 13:30. Este satélite lleva seis sensores (AIRS, AMSR-E, CERES, HSB y MODIS), con una configuración de instrumentos orientado a estudios oceanográficos.</p>
+<p>El sensor principal a bordo de las dos plataformas es MODIS. Adquiere datos diarios de todo el mundo en 36 bandas espectrales, a diferentes resoluciones, 250 a 1000 m. Las primeras dos bandas tienen una resolución espacial más fina (250 m) e incluyen el rojo y el espectro NIR. Longitudes de onda para monitorear la actividad de la vegetación.</p>
+<p>Se adquieren otras cinco bandas a 500 m de resolución que cubren el visible y SWIR y están destinados principalmente a la captura de propiedades de vegetación, nieve y suelo.</p>
+<p>El resto de las bandas tienen 1000 m de resolución y cubren longitudes de onda adicionales en el visible, MIR y TIR. La franja cubierta por MODIS es de 2300 km, y la frecuencia de observación es diaria (dos veces cuando se contabilizan los dos satélites). El programa MODIS se construyó para obtener radiancias (<span class="math inline">\(\rho\)</span>) calibradas y otros productos finales.</p>
+<p>Estos productos se agrupan en tres dominios:</p>
+<ul>
+<li><strong>Productos Atmosféricos</strong>, incluyendo aerosoles, agua total precipitable, nubes y perfiles atmosféricos.</li>
+<li><strong>Productos de Tierra</strong>, incluida la reflectancia de la superficie, temperatura de la superficie, la cobertura del suelo, índices de vegetación, incendios activos, radiación incidente, evapotranspiración, productividad de la planta, albedo, áreas quemadas, manto de nieve y hielo marino.</li>
+<li><strong>Productos Oceánicos</strong>, que incluyen temperatura del mar, concentración de clorofila-a, partículas de carbono, fluorescencia y radiación fotosintética incidente.</li>
+</ul>
+<p>Existe una amplia serie de productos disponibles, todos ellos se encuentran detallados en el sitio de la NASA dedicado al sensor MODIS:</p>
+<p><a href="https://modis.gsfc.nasa.gov/data/dataprod/index.php#atmosphere">modis.gsfc.nasa.gov/data/dataprod/index.php#atmosphere</a>.
+</p>
+<p>A continuación, vamos a trabajar con el producto <strong>MOD09</strong>, productos <strong>MODIS Surface Reflectance</strong> proporcionan una <em>estimación de la reflectancia espectral de la superficie</em> tal como se mediría a nivel del suelo en <strong>ausencia de dispersión o absorción atmosférica</strong>.</p>
+<p>En el producto de 8 días, cada píxel de reflectancia de la superficie contiene la mejor observación posible durante un período de 8 días, según se selecciona en función de la alta cobertura de observación, el ángulo de visión bajo, la ausencia de nubes o sombras de nubes y la carga de aerosoles.</p>
+</div>
+<div id="mod09" class="section level2" number="15.2">
+<h2><span class="header-section-number">15.2</span> MOD09A1</h2>
+<p>Los productos <strong>MOD09A1</strong>, <em>versión 6</em> (<span class="citation">Vermote (2015)</span>) que proporciona una estimación de la reflectancia espectral superficial de las bandas Terra de 1 a 7 corregidas para condiciones atmosféricas como gases, aerosoles y dispersión de Rayleigh (Figura <a href="modis.html#fig:rs-img-2">15.3</a> y el cuadro <a href="modis.html#tab:tabla-mod-1">15.1</a>).</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:rs-img-2"></span>
+<img src="_main_files/figure-html/rs-img-2-1.png" alt="Distribución y espesor de bandas en sensor MODIS." width="100%" />
+<p class="caption">
+Figura 15.3: Distribución y espesor de bandas en sensor MODIS.
+</p>
+</div>
+<table style="NAborder-bottom: 0;">
+<caption>
+<span id="tab:tabla-mod-1">Tabla 15.1: </span>Resumen de Bandas MODIS.
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+Nombre Archivo
+</th>
+<th style="text-align:left;">
+Bandas(<span class="math inline">\(rho\)</span>nm)
+</th>
+<th style="text-align:left;">
+Nombre
+</th>
+<th style="text-align:center;">
+Escala
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+sur_refl_b01
+</td>
+<td style="text-align:left;">
+B1(<span class="math inline">\(620-670\)</span>)
+</td>
+<td style="text-align:left;">
+Red
+</td>
+<td style="text-align:center;">
+0.0001
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+sur_refl_b02
+</td>
+<td style="text-align:left;">
+B2(<span class="math inline">\(841-876\)</span>)
+</td>
+<td style="text-align:left;">
+NIR
+</td>
+<td style="text-align:center;">
+0.0001
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+sur_refl_b03
+</td>
+<td style="text-align:left;">
+B3(<span class="math inline">\(459-479\)</span>)
+</td>
+<td style="text-align:left;">
+Blue
+</td>
+<td style="text-align:center;">
+0.0001
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+sur_refl_b04
+</td>
+<td style="text-align:left;">
+B4(<span class="math inline">\(545-565\)</span>)
+</td>
+<td style="text-align:left;">
+Green
+</td>
+<td style="text-align:center;">
+0.0001
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+sur_refl_b05
+</td>
+<td style="text-align:left;">
+B5(<span class="math inline">\(1230-1250\)</span>)
+</td>
+<td style="text-align:left;">
+SWIR1
+</td>
+<td style="text-align:center;">
+0.0001
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+sur_refl_b06
+</td>
+<td style="text-align:left;">
+B6(<span class="math inline">\(1628-1652\)</span>)
+</td>
+<td style="text-align:left;">
+SWIR2
+</td>
+<td style="text-align:center;">
+0.0001
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+sur_refl_b07
+</td>
+<td style="text-align:left;">
+B7(<span class="math inline">\(2105-2155\)</span>)
+</td>
+<td style="text-align:left;">
+SWIR3
+</td>
+<td style="text-align:center;">
+0.0001
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+sur_refl_qc_500m
+</td>
+<td style="text-align:left;">
+QA
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:center;">
+N/A
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+sur_refl_szen
+</td>
+<td style="text-align:left;">
+<span class="math inline">\(\zeta \; Solar\)</span>
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:center;">
+0.01
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+sur_refl_vzen
+</td>
+<td style="text-align:left;">
+<span class="math inline">\(\zeta \; Vista\)</span>
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:center;">
+0.01
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+sur_refl_raz
+</td>
+<td style="text-align:left;">
+Az. relativo
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:center;">
+0.01
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+sur_refl_state_500m
+</td>
+<td style="text-align:left;">
+Estados
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:center;">
+N/A
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+sur_refl_day_of_year
+</td>
+<td style="text-align:left;">
+DOY píxel
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:center;">
+N/A
+</td>
+</tr>
+</tbody>
+<tfoot>
+<tr>
+<td style="padding: 0; " colspan="100%">
+<span style="font-style: italic;">Nota:</span>
+</td>
+</tr>
+<tr>
+<td style="padding: 0; " colspan="100%">
+<sup></sup> <span class="math inline">\(rho\)</span>: Reflectancia Superficial.
+</td>
+</tr>
+<tr>
+<td style="padding: 0; " colspan="100%">
+<sup></sup> <span class="math inline">\(zeta\)</span>: ángulo Cenital.
+</td>
+</tr>
+<tr>
+<td style="padding: 0; " colspan="100%">
+<sup></sup> <span class="math inline">\(DOY\)</span>: Día del Año. (Day Of Year)
+</td>
+</tr>
+</tfoot>
+</table>
+<p>Junto a las siete bandas de reflectancia de <span class="math inline">\(500\;m\)</span> hay dos capas de calidad y cuatro bandas que describen el momento de la observación. Para cada píxel se selecciona un valor de todas las capturas dentro del período compuesto de <strong>8 días</strong>.</p>
+<p>Los criterios para la elección de píxeles incluyen la nube y el cenit solar. Cuando varias adquisiciones cumplen los criterios, se utiliza el píxel con el valor mínimo del canal 3 (azul).</p>
+<p>La colección de imágenes se extiende desde el 2000-02-24 hasta el presente con cobertura global y una frecuencia de 8 días.</p>
+<p>El píxel tiene un tamaño de <span class="math inline">\(500\;m\)</span> en imágenes de <span class="math inline">\(2400\times2400\)</span> filas y columnas en el sistema de coordenadas <strong>Sinusoidal</strong>, (EPSG: 6974).</p>
+<blockquote>
+<p>Código proyección:
+Proj4js.defs[“SR-ORG:6974”] = “+proj=sinu +lon_0=0 +x_0=0 +y_0=0 +ellps=WGS84 +datum=WGS84 +units=m +no_defs”</p>
+</blockquote>
+</div>
+<div id="r-mod" class="section level2" number="15.3">
+<h2><span class="header-section-number">15.3</span> MODIS en R</h2>
+<p>Una vez descargadas las imágenes vamos a utilizar los paquetes <em>rgdal</em> (<span class="citation">Bivand, Keitt, and Rowlingson (2021)</span>) que agrega la capacidad de leer un archivo en formato _*.hdf_,<a href="#fn17" class="footnote-ref" id="fnref17"><sup>17</sup></a> y el paquete <em>MODIS</em> (<span class="citation">Mattiuzzi and Detsch (2021)</span>) que nos da acceso a la metadata, maneja los formatos de nombre de imágenes entre otros detalles prácticos.</p>
+<p>Luego de instalar ambos paquetes desde la consola, debe cargarlo en memoria (no olvidar agregar al inicio de su script):</p>
+<div class="sourceCode" id="cb402"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb402-1"><a href="modis.html#cb402-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rgdal)</span>
+<span id="cb402-2"><a href="modis.html#cb402-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(MODIS)</span></code></pre></div>
+<p>Construimos un vector con los archivos que cumplan con el formato <em>‘hdf’</em> de nuestra carpeta de datos:</p>
+<div class="sourceCode" id="cb403"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb403-1"><a href="modis.html#cb403-1" aria-hidden="true" tabindex="-1"></a>archivos <span class="ot">&lt;-</span> <span class="fu">list.files</span>(<span class="at">path =</span> <span class="fu">here</span>(<span class="st">&quot;raw&quot;</span>,<span class="st">&quot;modis&quot;</span>),</span>
+<span id="cb403-2"><a href="modis.html#cb403-2" aria-hidden="true" tabindex="-1"></a>                       <span class="at">pattern =</span> <span class="st">&quot;*.hdf&quot;</span>,</span>
+<span id="cb403-3"><a href="modis.html#cb403-3" aria-hidden="true" tabindex="-1"></a>                       <span class="at">full.names =</span> T)</span></code></pre></div>
+<p>Usando la función <code>extractDate()</code> del paquete MODIS podemos extraer la fecha de captura de los datos a partir del nombre de archivo.</p>
+<div class="sourceCode" id="cb404"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb404-1"><a href="modis.html#cb404-1" aria-hidden="true" tabindex="-1"></a>(datos <span class="ot">&lt;-</span> MODIS<span class="sc">::</span><span class="fu">extractDate</span>(<span class="at">files =</span> archivos[<span class="dv">1</span>], <span class="at">asDate =</span> T))</span></code></pre></div>
+<p>Cada archivo <em>hdf</em> contiene al menos 13 capas de información (ver cuadro ) y usando la función <code>getSds()</code> obtenemos una lista con los <em>nombres propios</em> de cada capa y la <em>ruta completa</em> para llegar al archivo hdf. Por definición la función procesa un hdf en cada llamado, así que debemos envolver con el comando <em>lapply</em> (ver detalles en ) nuestra lista de archivos y la función a aplicar:</p>
+<div class="sourceCode" id="cb405"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb405-1"><a href="modis.html#cb405-1" aria-hidden="true" tabindex="-1"></a>imgs <span class="ot">&lt;-</span> <span class="fu">lapply</span>(archivos, getSds)</span></code></pre></div>
+<p>Ahora tenemos estructurado por cada archivo las capas que contiene siguiendo el formato:</p>
+<div class="sourceCode" id="cb406"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb406-1"><a href="modis.html#cb406-1" aria-hidden="true" tabindex="-1"></a>imgs[[<span class="dv">1</span>]]<span class="sc">$</span>SDS4gdal[<span class="dv">1</span>]</span></code></pre></div>
+<blockquote>
+<p>[1] “HDF4_EOS:EOS_GRID:"C:/Users/danilo.verdugo/Documents/
+rasterEdu/raw/modis/MOD09A1.A2021185.h18v07.061.2021194052227.hdf
+":MOD_Grid_500m_Surface_Reflectance:sur_refl_b01”</p>
+</blockquote>
+<p>Los archivos son leídos directamente con la función <code>readGDAL()</code> y convertidos a formato ráster directamente:</p>
+<div class="sourceCode" id="cb407"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb407-1"><a href="modis.html#cb407-1" aria-hidden="true" tabindex="-1"></a>r <span class="ot">&lt;-</span> <span class="fu">readGDAL</span>(imgs[[<span class="dv">1</span>]]<span class="sc">$</span>SDS4gdal[<span class="dv">1</span>])</span>
+<span id="cb407-2"><a href="modis.html#cb407-2" aria-hidden="true" tabindex="-1"></a><span class="fu">raster</span>(r)</span></code></pre></div>
+<p>Ahora podemos reescribir este comando R para cada imagen por cada cada capa (<span class="math inline">\(4 \times 8\)</span>) veces o escribir una función que facilite la tarea.</p>
+<p>Detalle de los componentes principales para definir nuestra función:</p>
+<ul>
+<li><p><strong><code>leer &lt;-</code></strong>: Es el nombre de la función y nombre que se utiliza para llamarla.</p></li>
+<li><p><strong><code>function(img)</code></strong>: Es una función que recibe un identificador de la imagen <code>id</code> de la lista <strong>imgs</strong>.</p></li>
+<li><p><strong><code>f &lt;- 0.0001</code></strong>: Para convertir los DN a <span class="math inline">\(\rho\)</span> utilizamos el factor de escala presentado en el cuadro . Así el valor almacenado en cada ráster es la representación fiel de la energía recibida en cada píxel (ver ).</p></li>
+<li><p><strong><code>variable &lt;- raster(readGDAL(imgs[[img]]$SDS4gdal[ID], silent = T))</code></strong>: Siguiendo el orden de capas del cuadro  cargamos en una variable. Se agrega el parámetro <strong>silent = T</strong> que nos ahorra ver un mensaje en pantalla por cada lectura realizada.</p></li>
+<li><p><strong><code>s &lt;- stack(r,g,b,nir,swir1,swir2,swir3,qa)</code></strong>: Convertimos todas las capas en un modelo <em>rasterStack</em>.</p></li>
+<li><p><strong><code>names(s) &lt;- c('r','g','b','nir','swir1','swir2','swir3','qa')</code></strong>: Asignamos nombres propios a cada capa para fácil referencia.</p></li>
+<li><p><strong><code>s</code></strong>: Al ser la última línea, es el objeto que regresa la función.</p></li>
+</ul>
+<p>Y todo integrado:</p>
+<div class="sourceCode" id="cb408"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb408-1"><a href="modis.html#cb408-1" aria-hidden="true" tabindex="-1"></a>leer <span class="ot">&lt;-</span> <span class="cf">function</span>(img){</span>
+<span id="cb408-2"><a href="modis.html#cb408-2" aria-hidden="true" tabindex="-1"></a>  f <span class="ot">&lt;-</span> <span class="fl">0.0001</span></span>
+<span id="cb408-3"><a href="modis.html#cb408-3" aria-hidden="true" tabindex="-1"></a>  r <span class="ot">&lt;-</span> <span class="fu">raster</span>(<span class="fu">readGDAL</span>(imgs[[img]]<span class="sc">$</span>SDS4gdal[<span class="dv">1</span>], <span class="at">silent =</span> T)) <span class="sc">*</span> f</span>
+<span id="cb408-4"><a href="modis.html#cb408-4" aria-hidden="true" tabindex="-1"></a>  g <span class="ot">&lt;-</span> <span class="fu">raster</span>(<span class="fu">readGDAL</span>(imgs[[img]]<span class="sc">$</span>SDS4gdal[<span class="dv">4</span>], <span class="at">silent =</span> T)) <span class="sc">*</span> f</span>
+<span id="cb408-5"><a href="modis.html#cb408-5" aria-hidden="true" tabindex="-1"></a>  b <span class="ot">&lt;-</span> <span class="fu">raster</span>(<span class="fu">readGDAL</span>(imgs[[img]]<span class="sc">$</span>SDS4gdal[<span class="dv">3</span>], <span class="at">silent =</span> T)) <span class="sc">*</span> f</span>
+<span id="cb408-6"><a href="modis.html#cb408-6" aria-hidden="true" tabindex="-1"></a>  nir <span class="ot">&lt;-</span> <span class="fu">raster</span>(<span class="fu">readGDAL</span>(imgs[[img]]<span class="sc">$</span>SDS4gdal[<span class="dv">2</span>], <span class="at">silent =</span> T)) <span class="sc">*</span> f</span>
+<span id="cb408-7"><a href="modis.html#cb408-7" aria-hidden="true" tabindex="-1"></a>  swir1 <span class="ot">&lt;-</span> <span class="fu">raster</span>(<span class="fu">readGDAL</span>(imgs[[img]]<span class="sc">$</span>SDS4gdal[<span class="dv">5</span>], <span class="at">silent =</span> T)) <span class="sc">*</span> f</span>
+<span id="cb408-8"><a href="modis.html#cb408-8" aria-hidden="true" tabindex="-1"></a>  swir2 <span class="ot">&lt;-</span> <span class="fu">raster</span>(<span class="fu">readGDAL</span>(imgs[[img]]<span class="sc">$</span>SDS4gdal[<span class="dv">6</span>], <span class="at">silent =</span> T)) <span class="sc">*</span> f</span>
+<span id="cb408-9"><a href="modis.html#cb408-9" aria-hidden="true" tabindex="-1"></a>  swir3 <span class="ot">&lt;-</span> <span class="fu">raster</span>(<span class="fu">readGDAL</span>(imgs[[img]]<span class="sc">$</span>SDS4gdal[<span class="dv">7</span>], <span class="at">silent =</span> T)) <span class="sc">*</span> f</span>
+<span id="cb408-10"><a href="modis.html#cb408-10" aria-hidden="true" tabindex="-1"></a>  qa <span class="ot">&lt;-</span> <span class="fu">raster</span>(<span class="fu">readGDAL</span>(imgs[[img]]<span class="sc">$</span>SDS4gdal[<span class="dv">12</span>], <span class="at">silent =</span> T))</span>
+<span id="cb408-11"><a href="modis.html#cb408-11" aria-hidden="true" tabindex="-1"></a>  s <span class="ot">&lt;-</span> <span class="fu">stack</span>(r, g, b, nir, swir1, swir2, swir3, qa)</span>
+<span id="cb408-12"><a href="modis.html#cb408-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">names</span>(s) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;r&quot;</span>,<span class="st">&quot;g&quot;</span>,<span class="st">&quot;b&quot;</span>,<span class="st">&quot;nir&quot;</span>,<span class="st">&quot;swir1&quot;</span>,<span class="st">&quot;swir2&quot;</span>,<span class="st">&quot;swir3&quot;</span>,<span class="st">&quot;qa&quot;</span>)</span>
+<span id="cb408-13"><a href="modis.html#cb408-13" aria-hidden="true" tabindex="-1"></a>  s</span>
+<span id="cb408-14"><a href="modis.html#cb408-14" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<p>Y aplicamos nuestra función para leer los datos:</p>
+<div class="sourceCode" id="cb409"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb409-1"><a href="modis.html#cb409-1" aria-hidden="true" tabindex="-1"></a>imagen1 <span class="ot">&lt;-</span> <span class="fu">leer</span>(<span class="at">img =</span> <span class="dv">1</span>)</span>
+<span id="cb409-2"><a href="modis.html#cb409-2" aria-hidden="true" tabindex="-1"></a>imagen2 <span class="ot">&lt;-</span> <span class="fu">leer</span>(<span class="at">img =</span> <span class="dv">2</span>)</span>
+<span id="cb409-3"><a href="modis.html#cb409-3" aria-hidden="true" tabindex="-1"></a>imagen3 <span class="ot">&lt;-</span> <span class="fu">leer</span>(<span class="at">img =</span> <span class="dv">3</span>)</span>
+<span id="cb409-4"><a href="modis.html#cb409-4" aria-hidden="true" tabindex="-1"></a>imagen4 <span class="ot">&lt;-</span> <span class="fu">leer</span>(<span class="at">img =</span> <span class="dv">4</span>)</span></code></pre></div>
+<div id="plot_rgb" class="section level3" number="15.3.1">
+<h3><span class="header-section-number">15.3.1</span> Mapeo RGB</h3>
+<p>Hasta ahora hemos trabajado principalmente con objetos rasterLayer y para generar un mapa usamos el comando <em>plot()</em>, se define la paleta de colores, algunos otros parámetros y se genera la gráfica.</p>
+<p>Para los objetos <em>rasterStack</em> o <em>rasterBrick</em> existe la versión especializada <code>plotRGB()</code> que permite realizar un gráfico <em>RGB</em> basado en tres capas. Esas tres capas (que también podemos denominar <em>bandas</em> porque pueden representar diferentes anchos de banda en el espectro electromagnético) se combinan de manera que representan el canal rojo, verde y azul para formar imágenes en color.</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:rs-modis-23"></span>
+<img src="_main_files/figure-html/rs-modis-23-1.png" alt="Descripción Gráfica del método stretch Lineal." width="288" />
+<p class="caption">
+Figura 15.4: Descripción Gráfica del método stretch Lineal.
+</p>
+</div>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:rs-modis-24"></span>
+<img src="_main_files/figure-html/rs-modis-24-1.png" alt="Descripción Gráfica del método stretch Histograma" width="288" />
+<p class="caption">
+Figura 15.5: Descripción Gráfica del método stretch Histograma
+</p>
+</div>
+<p><code>r</code>: Índice o nombre de la capa que se usará para definir el canal <em>rojo</em> de la imagen.</p>
+<p><code>g</code>: Índice o nombre de la capa que se usará para definir el canal <em>verde</em> de la imagen.</p>
+<p><code>b</code>: Índice o nombre de la capa que se usará para definir el canal <em>azul</em> de la imagen.</p>
+<p><code>stretch</code>: Se encarga de realizar ajustes de <strong>visualización</strong> (no modifica los valores internos del objeto) para aprovechar toda la escala de tonos de color en la imagen. Los valores permitidos son <strong>lin</strong>: <em>método lineal</em>, donde el rango de ND (niveles digitales) se ajusta para ocupar todo el rango disponible (Figura <a href="modis.html#fig:rs-modis-23">15.4</a>). Por ejemplo, el rango <span class="math inline">\(50 - 240\)</span> se extiende al rango <span class="math inline">\(0 - 255\)</span> (ejemplo con 8 bit). El segundo, <strong>hist</strong>: <em>método histograma</em>, donde los valores además de extenderlos al rango completo de valores (<span class="math inline">\(0 - 255\)</span> a 8 bit) <strong>proporcionalmente</strong> a su frecuencia, a mayor cantidad del valor digital, mayor rango de ND asignados (ver figura <a href="modis.html#fig:rs-modis-24">15.5</a>).</p>
+<p>La sintaxis básica para crear una imagen en color verdadero es asignar por cada canal el color correspondiente:</p>
+<div class="sourceCode" id="cb410"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb410-1"><a href="modis.html#cb410-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plotRGB</span>(imagen1, <span class="at">r=</span><span class="dv">1</span>, <span class="at">g=</span><span class="dv">2</span>, <span class="at">b=</span><span class="dv">3</span>, <span class="at">stretch=</span><span class="st">&quot;lin&quot;</span>)</span></code></pre></div>
+<p>O usar los nombres de capas para no tener que recordar el valor numérico de índice dentro del objeto Stack, por ejemplo:</p>
+<div class="sourceCode" id="cb411"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb411-1"><a href="modis.html#cb411-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plotRGB</span>(imagen1, <span class="at">r=</span><span class="st">&quot;r&quot;</span>, <span class="at">g=</span><span class="st">&quot;g&quot;</span>, <span class="at">b=</span><span class="st">&quot;b&quot;</span>, <span class="at">stretch=</span><span class="st">&quot;lin&quot;</span>)</span></code></pre></div>
+<p>La figura <a href="modis.html#fig:rs-modis-22">15.6</a> muestra el resultado de la gráfica en <em>color verdadero</em>, en el cañon <strong>r</strong> la banda <em>1</em> o <em>‘r’</em>, en el cañon <strong>g</strong> la banda <em>2</em> o <em>‘g’</em> y en el cañon <strong>b</strong> la banda <em>3</em> o <em>‘b’</em>.</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:rs-modis-22"></span>
+<img src="img/modis-1.png" alt="Ploteo de las imágenes utilizadas en el ejercicio usando las bandas RGB." width="624" />
+<p class="caption">
+Figura 15.6: Ploteo de las imágenes utilizadas en el ejercicio usando las bandas RGB.
+</p>
+</div>
+<p>Guardamos en disco las imágenes descargadas y procesadas para el posterior uso en el tema de la combinación de bandas (ver <a href="#combi-band"><strong>??</strong></a>).</p>
+<div class="sourceCode" id="cb412"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb412-1"><a href="modis.html#cb412-1" aria-hidden="true" tabindex="-1"></a><span class="fu">writeRaster</span>(imagen1,<span class="fu">here</span>(<span class="st">&quot;raw&quot;</span>,<span class="st">&quot;mosaico-test11.grd&quot;</span>),<span class="at">overwrite=</span>T)</span>
+<span id="cb412-2"><a href="modis.html#cb412-2" aria-hidden="true" tabindex="-1"></a><span class="fu">writeRaster</span>(imagen2,<span class="fu">here</span>(<span class="st">&quot;raw&quot;</span>,<span class="st">&quot;mosaico-test22.grd&quot;</span>),<span class="at">overwrite=</span>T)</span>
+<span id="cb412-3"><a href="modis.html#cb412-3" aria-hidden="true" tabindex="-1"></a><span class="fu">writeRaster</span>(imagen3,<span class="fu">here</span>(<span class="st">&quot;raw&quot;</span>,<span class="st">&quot;mosaico-test33.grd&quot;</span>),<span class="at">overwrite=</span>T)</span>
+<span id="cb412-4"><a href="modis.html#cb412-4" aria-hidden="true" tabindex="-1"></a><span class="fu">writeRaster</span>(imagen4,<span class="fu">here</span>(<span class="st">&quot;raw&quot;</span>,<span class="st">&quot;mosaico-test44.grd&quot;</span>),<span class="at">overwrite=</span>T)</span></code></pre></div>
+
+<div id="refs" class="references csl-bib-body hanging-indent">
+<div class="csl-entry">
+Baldridge, Alice M, SJ Hook, CI Grove, and GJRSoE Rivera. 2009. <span>“The ASTER Spectral Library Version 2.0.”</span> <em>Remote Sensing of Environment</em> 113 (4): 711–15.
+</div>
+<div class="csl-entry">
+Bivand, Roger, Tim Keitt, and Barry Rowlingson. 2021. <em>Rgdal: Bindings for the ’Geospatial’ Data Abstraction Library</em>. <a href="https://CRAN.R-project.org/package=rgdal">https://CRAN.R-project.org/package=rgdal</a>.
+</div>
+<div class="csl-entry">
+Black, Newton Henry. 1913. <em>Practical Physics</em>. Macmillan. <a href="https://books.google.cl/books?id=BT8AAAAAYAAJ">https://books.google.cl/books?id=BT8AAAAAYAAJ</a>.
+</div>
+<div class="csl-entry">
+Diner, David J, Gregory P Asner, Roger Davies, Yuri Knyazikhin, Jan-Peter Muller, Anne W Nolin, Bernard Pinty, Crystal B Schaaf, and Julienne Stroeve. 1999. <span>“New Directions in Earth Observing: Scientific Applications of Multiangle Remote Sensing.”</span> <em>Bulletin of the American Meteorological Society</em> 80 (11): 2209–28.
+</div>
+<div class="csl-entry">
+Hanson, Bryan A. 2017. <em>SpecHelpers: Spectroscopy Related Utilities</em>. <a href="https://github.com/bryanhanson/SpecHelpers">github.com/bryanhanson/SpecHelpers</a>.
+</div>
+<div class="csl-entry">
+Ihaka, Ross, and Robert Gentleman. 1996. <span>“R: A Language for Data Analysis and Graphics.”</span> <em>Journal of Computational and Graphical Statistics</em> 5 (3): 299–314. <a href="https://doi.org/10.1080/10618600.1996.10474713">https://doi.org/10.1080/10618600.1996.10474713</a>.
+</div>
+<div class="csl-entry">
+Liang, Shunlin, and Jindi Wang, eds. 2020. <span>“Chapter 1 - a Systematic View of Remote Sensing.”</span> In <em>Advanced Remote Sensing (Second Edition)</em>, Second Edition, 1–57. Academic Press. https://doi.org/<a href="https://doi.org/10.1016/B978-0-12-815826-5.00001-5">https://doi.org/10.1016/B978-0-12-815826-5.00001-5</a>.
+</div>
+<div class="csl-entry">
+Liou, Kuo-Nan. 2002. <em>An Introduction to Atmospheric Radiation</em>. Elsevier.
+</div>
+<div class="csl-entry">
+Loo, M. P. J. van der, and E. De Jonge. 2012. <em>Learning RStudio for r Statistical Computing</em>. Community Experience Distilled. Lightning Source. <a href="https://books.google.cl/books?id=vOTHmAEACAAJ">https://books.google.cl/books?id=vOTHmAEACAAJ</a>.
+</div>
+<div class="csl-entry">
+Mattiuzzi, Matteo, and Florian Detsch. 2021. <em>MODIS: Acquisition and Processing of MODIS Products</em>. <a href="https://github.com/MatMatt/MODIS">https://github.com/MatMatt/MODIS</a>.
+</div>
+<div class="csl-entry">
+Meerdink, Susan K., Simon J. Hook, Dar A. Roberts, and Elsa A. Abbott. 2019. <span>“The ECOSTRESS Spectral Library Version 1.0.”</span> <em>Remote Sensing of Environment</em> 230: 111196. https://doi.org/<a href="https://doi.org/10.1016/j.rse.2019.05.015">https://doi.org/10.1016/j.rse.2019.05.015</a>.
+</div>
+<div class="csl-entry">
+Olaya, Victor. 2020. <em>Sistemas de Información Geográfica</em>. Edited by autoeditado. lulu.com.
+</div>
+<div class="csl-entry">
+Richards, John Alan. 2013. <em>Remote Sensing Digital Image Analysis</em>. Fifth. Springer.
+</div>
+<div class="csl-entry">
+Slater, Philip N. 1980. <span>“Remote Sensing. Optics and Optical Systems.”</span> <em>Remote Sensing. Optics and Optical Systems</em>.
+</div>
+<div class="csl-entry">
+Vermote, E. 2015. <span>“Mod09a1 MODIS / Terra Surface Reflectance 8-Day L3 Global 500m SIN Grid V006.”</span> <a href="https://doi.org/10.5067 / MODIS / MOD09A1.006">https://doi.org/10.5067 / MODIS / MOD09A1.006</a>.
+</div>
+</div>
+</div>
+</div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="footnotes">
+<hr />
+<ol start="17">
+<li id="fn17"><p>El formato de datos jerárquico (<em>Hierarchical Data Format</em>, HDF) es un conjunto de formatos de archivo (HDF4, HDF5) diseñado para almacenar y organizar grandes cantidades de datos. Desarrollado originalmente en el <strong>Centro Nacional de Aplicaciones de Supercomputación</strong> y cuenta con el apoyo de <em>The HDF Group</em>, una corporación sin fines de lucro cuya misión es garantizar el desarrollo continuo de las tecnologías HDF5 y la accesibilidad continua de los datos almacenados en HDF (Wikipedia).<a href="modis.html#fnref17" class="footnote-back">↩︎</a></p></li>
+</ol>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="mis-spa.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": true,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "sepia",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/USERNAME/REPO/edit/BRANCH/12-img-modis.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["_main.pdf"],
+"search": {
+"engine": "lunr",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+},
+"info": true
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

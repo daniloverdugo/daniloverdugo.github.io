@@ -33,7 +33,7 @@ Desde la instalación de las aplicaciones, pasando por una guía básica de su u
 <meta name="author" content="Danilo A. Verdugo Chaura" />
 
 
-<meta name="date" content="2022-02-22" />
+<meta name="date" content="2022-03-03" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -348,6 +348,23 @@ div.csl-indent {
 <li class="chapter" data-level="13.4" data-path="prop-img.html"><a href="prop-img.html#res-temp"><i class="fa fa-check"></i><b>13.4</b> Resolución Temporal</a></li>
 <li class="chapter" data-level="13.5" data-path="prop-img.html"><a href="prop-img.html#res-ang"><i class="fa fa-check"></i><b>13.5</b> Resolución angular</a></li>
 </ul></li>
+<li class="part"><span><b>III PARTE III</b></span></li>
+<li class="chapter" data-level="14" data-path="mis-spa.html"><a href="mis-spa.html"><i class="fa fa-check"></i><b>14</b> MISIONES ESPACIALES</a>
+<ul>
+<li class="chapter" data-level="14.1" data-path="mis-spa.html"><a href="mis-spa.html#down-mod09"><i class="fa fa-check"></i><b>14.1</b> Plataforma Búsqueda y Descarga</a>
+<ul>
+<li class="chapter" data-level="14.1.1" data-path="mis-spa.html"><a href="mis-spa.html#mod-des-file"><i class="fa fa-check"></i><b>14.1.1</b> Descarga de Datos</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="15" data-path="modis.html"><a href="modis.html"><i class="fa fa-check"></i><b>15</b> Misiones MODIS</a>
+<ul>
+<li class="chapter" data-level="15.1" data-path="modis.html"><a href="modis.html#terra-aqua"><i class="fa fa-check"></i><b>15.1</b> Terra y Aqua</a></li>
+<li class="chapter" data-level="15.2" data-path="modis.html"><a href="modis.html#mod09"><i class="fa fa-check"></i><b>15.2</b> MOD09A1</a></li>
+<li class="chapter" data-level="15.3" data-path="modis.html"><a href="modis.html#r-mod"><i class="fa fa-check"></i><b>15.3</b> MODIS en R</a>
+<ul>
+<li class="chapter" data-level="15.3.1" data-path="modis.html"><a href="modis.html#plot_rgb"><i class="fa fa-check"></i><b>15.3.1</b> Mapeo RGB</a></li>
+</ul></li>
+</ul></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Publicado con bookdown</a></li>
 
@@ -574,7 +591,7 @@ E= h \frac{c}{\lambda}
 <p>En el paquete <em>SpecHelpers</em> <span class="citation">Hanson (2017)</span> encontramos la función <code>emSpectrum()</code> que dibuja un espectro electromagnético:</p>
 <div class="sourceCode" id="cb386"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb386-1"><a href="EO-intro.html#cb386-1" aria-hidden="true" tabindex="-1"></a>SpecHelpers<span class="sc">::</span><span class="fu">emSpectrum</span>(<span class="at">molecular =</span> F, <span class="at">applications =</span> T)</span></code></pre></div>
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:rs-intro-11"></span>
-<img src="_main_files/figure-html/rs-intro-11-1.png" alt="Espectro Electromagnético. Gráfico generado por el paquete SpecHelpers." width="672" />
+<img src="_main_files/figure-html/rs-intro-11-1.png" alt="Espectro Electromagnético. Gráfico generado por el paquete SpecHelpers." width="1056" />
 <p class="caption">
 Figura 11.12: Espectro Electromagnético. Gráfico generado por el paquete SpecHelpers.
 </p>
@@ -905,11 +922,11 @@ temperatura como una curva suave con un único máximo (Figura <a href="EO-intro
 <span id="cb387-7"><a href="EO-intro.html#cb387-7" aria-hidden="true" tabindex="-1"></a>x<span class="ot">=</span><span class="fu">seq</span>(<span class="fl">0.1</span>,<span class="dv">100</span>,<span class="at">by=</span><span class="fl">0.01</span>)</span>
 <span id="cb387-8"><a href="EO-intro.html#cb387-8" aria-hidden="true" tabindex="-1"></a>f<span class="ot">=</span><span class="cf">function</span>(x,T){<span class="fl">3.741e8</span><span class="sc">/</span>(x<span class="sc">^</span><span class="dv">5</span><span class="sc">*</span>(<span class="fu">exp</span>(<span class="fl">1.438e4</span><span class="sc">/</span>(x<span class="sc">*</span>T))<span class="sc">-</span><span class="dv">1</span>))}</span>
 <span id="cb387-9"><a href="EO-intro.html#cb387-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb387-10"><a href="EO-intro.html#cb387-10" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mar=</span><span class="fu">c</span>(<span class="dv">5</span>,<span class="fl">7.5</span>,<span class="dv">3</span>,<span class="dv">3</span>))</span>
+<span id="cb387-10"><a href="EO-intro.html#cb387-10" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mar=</span><span class="fu">c</span>(<span class="dv">5</span>,<span class="dv">8</span>,<span class="dv">3</span>,<span class="dv">3</span>))</span>
 <span id="cb387-11"><a href="EO-intro.html#cb387-11" aria-hidden="true" tabindex="-1"></a>y<span class="ot">=</span> <span class="fu">f</span>(x,<span class="dv">288</span>)</span>
 <span id="cb387-12"><a href="EO-intro.html#cb387-12" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(x,y, <span class="at">type =</span> <span class="st">&quot;l&quot;</span>, <span class="at">xlim=</span><span class="fu">c</span>(<span class="fl">0.1</span>,<span class="dv">100</span>), <span class="at">ylim=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="fl">1e9</span>), <span class="at">log=</span><span class="st">&quot;xy&quot;</span>, <span class="at">col=</span>col[<span class="dv">2</span>], <span class="at">axes=</span>F, <span class="at">xlab=</span><span class="fu">expression</span>(<span class="fu">paste</span>(lambda, <span class="st">&quot;(&quot;</span>,mu, <span class="st">&quot;m)&quot;</span>)), <span class="at">ylab=</span><span class="st">&quot;&quot;</span>)</span>
 <span id="cb387-13"><a href="EO-intro.html#cb387-13" aria-hidden="true" tabindex="-1"></a><span class="fu">axis</span>(<span class="dv">2</span>,<span class="at">at=</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">10</span>, <span class="dv">100</span>, <span class="dv">1000</span>, <span class="dv">10000</span>, <span class="dv">100000</span>, <span class="dv">1000000</span>, <span class="dv">10000000</span>, <span class="dv">100000000</span>), <span class="at">labels=</span> <span class="fu">c</span>(<span class="st">&quot;1&quot;</span>, <span class="st">&quot;10&quot;</span>, <span class="st">&quot;100&quot;</span>, <span class="st">&quot;1.000&quot;</span>, <span class="st">&quot;10.000&quot;</span>, <span class="st">&quot;100.000&quot;</span>, <span class="st">&quot;1.000.000&quot;</span>, <span class="st">&quot;10.000.000&quot;</span>, <span class="st">&quot;100.000.000&quot;</span>), <span class="at">las=</span><span class="dv">2</span>)</span>
-<span id="cb387-14"><a href="EO-intro.html#cb387-14" aria-hidden="true" tabindex="-1"></a><span class="fu">mtext</span>(<span class="at">text =</span> <span class="fu">expression</span>(<span class="fu">paste</span>(<span class="st">&quot;Emitancia Espectral (W&quot;</span>,m<span class="sc">^-</span><span class="dv">2</span>,mu,m<span class="sc">^-</span><span class="dv">1</span>,<span class="st">&quot;)&quot;</span>)), <span class="at">side =</span> <span class="dv">2</span>, <span class="at">line =</span> <span class="dv">5</span>)</span>
+<span id="cb387-14"><a href="EO-intro.html#cb387-14" aria-hidden="true" tabindex="-1"></a><span class="fu">mtext</span>(<span class="at">text =</span> <span class="fu">expression</span>(<span class="fu">paste</span>(<span class="st">&quot;Emitancia Espectral (W&quot;</span>,m<span class="sc">^-</span><span class="dv">2</span>,mu,m<span class="sc">^-</span><span class="dv">1</span>,<span class="st">&quot;)&quot;</span>)), <span class="at">side =</span> <span class="dv">2</span>, <span class="at">line =</span> <span class="dv">6</span>)</span>
 <span id="cb387-15"><a href="EO-intro.html#cb387-15" aria-hidden="true" tabindex="-1"></a><span class="fu">axis</span>(<span class="dv">1</span>,<span class="at">at=</span> <span class="fu">c</span>(.<span class="dv">1</span>,<span class="fl">0.4</span>, <span class="fl">0.7</span>, <span class="fl">1.2</span>, <span class="dv">8</span>, <span class="dv">14</span>, <span class="dv">100</span>), <span class="at">labels=</span> <span class="fu">c</span>(<span class="st">&quot;0.1&quot;</span>,<span class="st">&quot;0.4&quot;</span>,<span class="st">&quot;0.7&quot;</span>, <span class="st">&quot;1.2&quot;</span>,<span class="st">&quot;8.0&quot;</span>, <span class="st">&quot;14.0&quot;</span>, <span class="st">&quot;100.0&quot;</span>), <span class="at">las=</span><span class="dv">1</span>)</span>
 <span id="cb387-16"><a href="EO-intro.html#cb387-16" aria-hidden="true" tabindex="-1"></a>y<span class="ot">=</span> <span class="fu">f</span>(x,<span class="dv">500</span>)</span>
 <span id="cb387-17"><a href="EO-intro.html#cb387-17" aria-hidden="true" tabindex="-1"></a><span class="fu">points</span>(x,y, <span class="at">type=</span><span class="st">&quot;l&quot;</span>, <span class="at">col=</span>col[<span class="dv">3</span>])</span>
@@ -928,7 +945,7 @@ temperatura como una curva suave con un único máximo (Figura <a href="EO-intro
 <span id="cb387-30"><a href="EO-intro.html#cb387-30" aria-hidden="true" tabindex="-1"></a><span class="fu">text</span>(<span class="fl">0.5</span>,<span class="dv">20000000</span>,<span class="st">&quot;4.000 K&quot;</span>, <span class="at">col=</span>col[<span class="dv">6</span>])</span>
 <span id="cb387-31"><a href="EO-intro.html#cb387-31" aria-hidden="true" tabindex="-1"></a><span class="fu">text</span>(<span class="fl">0.3</span>,<span class="dv">140000000</span>,<span class="st">&quot;SOL (5.778 K)&quot;</span>, <span class="at">col=</span>col[<span class="dv">7</span>])</span></code></pre></div>
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:rs-intro-18"></span>
-<img src="_main_files/figure-html/rs-intro-18-1.png" alt="Curvas de Emitancia Espectral de Cuerpo Negro a varias temperaturas." width="672" />
+<img src="_main_files/figure-html/rs-intro-18-1.png" alt="Curvas de Emitancia Espectral de Cuerpo Negro a varias temperaturas." width="864" />
 <p class="caption">
 Figura 11.16: Curvas de Emitancia Espectral de Cuerpo Negro a varias temperaturas.
 </p>
@@ -964,7 +981,7 @@ Figura 11.17: Wilhelm Wien, físico esloveno, fuente: nobelprize.org.
 <p>La superficie terrestre tal como se ve en la figura <a href="EO-intro.html#fig:rs-intro-18">11.16</a> tiene sus máximos alrededor de las longitudes de onda en el rango 8 – 14 <span class="math inline">\(\mu m\)</span> identificado anteriormente como TIR (ver <a href="EO-intro.html#infra-ter">11.5.4</a>).</p>
 <p>Como se aprecia en estos ejemplos, la temperatura es clave al momento de definir el máximo de emitancia de un objeto (por lo tanto, el mejor rango de longitud de onda para diseñar nuestro sensor) ya que todo objeto con temperatura superior a los <span class="math inline">\(0 \; K\)</span> emite energía, requisito básico para ser percibido por dicho sensor.</p>
 <p>La ley de desplazamiento de Wien (Figura <a href="EO-intro.html#fig:rs-intro-25">11.17</a>) establece que la longitud de onda de la intensidad máxima de la radiación del cuerpo negro <span class="math inline">\(\lambda_{max}\)</span> es inversamente proporcional a la temperatura:</p>
-<div class="sourceCode" id="cb392"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb392-1"><a href="EO-intro.html#cb392-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mar=</span><span class="fu">c</span>(<span class="dv">4</span>,<span class="fl">4.5</span>,<span class="dv">2</span>,<span class="dv">3</span>),<span class="at">cex=</span><span class="dv">1</span>)</span>
+<div class="sourceCode" id="cb392"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb392-1"><a href="EO-intro.html#cb392-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mar=</span><span class="fu">c</span>(<span class="dv">4</span>,<span class="fl">4.5</span>,<span class="dv">2</span>,<span class="dv">0</span>),<span class="at">cex=</span><span class="dv">1</span>)</span>
 <span id="cb392-2"><a href="EO-intro.html#cb392-2" aria-hidden="true" tabindex="-1"></a>f<span class="ot">=</span><span class="cf">function</span>(x,T){<span class="fl">3.741e8</span><span class="sc">/</span>(x<span class="sc">^</span><span class="dv">5</span><span class="sc">*</span>(<span class="fu">exp</span>(<span class="fl">1.438e4</span><span class="sc">/</span>(x<span class="sc">*</span>T))<span class="sc">-</span><span class="dv">1</span>))}</span>
 <span id="cb392-3"><a href="EO-intro.html#cb392-3" aria-hidden="true" tabindex="-1"></a>x<span class="ot">=</span><span class="fu">seq</span>(<span class="fl">0.1</span>,<span class="dv">5</span>,<span class="at">by=</span><span class="fl">0.05</span>)</span>
 <span id="cb392-4"><a href="EO-intro.html#cb392-4" aria-hidden="true" tabindex="-1"></a></span>
