@@ -506,7 +506,7 @@ Figura 12.1: Esquema básico del flujo de la EEM en la EO. Basado en Olaya [2020
 <span id="cb396-30"><a href="flujo.html#cb396-30" aria-hidden="true" tabindex="-1"></a><span class="fu">text</span>( <span class="sc">-</span><span class="dv">120</span>, <span class="dv">53000</span>,<span class="st">&quot;Límite Estratopausa&quot;</span>,  <span class="at">adj =</span> <span class="dv">0</span>,<span class="at">cex =</span> <span class="fl">0.9</span>,  <span class="at">font =</span> <span class="dv">4</span>,  <span class="at">col =</span> <span class="st">&quot;steelblue4&quot;</span>)</span>
 <span id="cb396-31"><a href="flujo.html#cb396-31" aria-hidden="true" tabindex="-1"></a><span class="fu">text</span>( <span class="dv">30</span>, <span class="dv">86700</span>,<span class="st">&quot;Límite Mesopausa&quot;</span>,  <span class="at">adj =</span> <span class="dv">1</span>,  <span class="at">cex =</span> <span class="fl">0.9</span>,  <span class="at">font =</span> <span class="dv">4</span>,  <span class="at">col =</span> <span class="st">&quot;steelblue4&quot;</span>)</span></code></pre></div>
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:rs-flow-4"></span>
-<img src="_main_files/figure-html/rs-flow-4-1.png" alt="Modelo Atmósfera Estándar, Presión (superior) y Temperatura (inferior) versus Altitud." width="480" />
+<img src="img/atmos-0.png" alt="Modelo Atmósfera Estándar, Presión (superior) y Temperatura (inferior) versus Altitud." width="50%" />
 <p class="caption">
 Figura 12.2: Modelo Atmósfera Estándar, Presión (superior) y Temperatura (inferior) versus Altitud.
 </p>
@@ -552,7 +552,7 @@ Figura 12.2: Modelo Atmósfera Estándar, Presión (superior) y Temperatura (inf
 <span id="cb397-24"><a href="flujo.html#cb397-24" aria-hidden="true" tabindex="-1"></a><span class="fu">mtext</span>( <span class="fu">expression</span>(<span class="fu">paste</span>( <span class="st">&quot;Longitud de Onda (&quot;</span>, lambda, <span class="st">&quot; &quot;</span>, <span class="fu">paste</span>(mu, m), <span class="st">&quot;)&quot;</span> )),</span>
 <span id="cb397-25"><a href="flujo.html#cb397-25" aria-hidden="true" tabindex="-1"></a>  <span class="at">side =</span> <span class="dv">3</span>, <span class="at">line =</span> <span class="dv">2</span>, <span class="at">cex =</span> <span class="fl">1.2</span>,  <span class="at">las =</span> <span class="dv">1</span>)</span></code></pre></div>
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:rs-flow-1"></span>
-<img src="_main_files/figure-html/rs-flow-1-1.png" alt="Transmitancia de la atmósfera terrestre y su relación con las moléculas absorbentes." width="1248" />
+<img src="img/mol.png" alt="Transmitancia de la atmósfera terrestre y su relación con las moléculas absorbentes." width="100%" />
 <p class="caption">
 Figura 12.3: Transmitancia de la atmósfera terrestre y su relación con las moléculas absorbentes.
 </p>
@@ -587,7 +587,7 @@ Figura 12.4: Dispersión atmosférica y de partículas. Modificado de Richards(2
 <h3><span class="header-section-number">12.2.4</span> Emisión</h3>
 <p>También hay influencias de las emisiones atmosféricas que son importantes principalmente en el rango termal (TIR). Esta debe corregirse para obtener con precisión la temperatura de la superficie a partir de imágenes adquiridas por satélite. Todos los materiales con una temperatura superior al cero absoluto, incluyendo la atmósfera emiten energía radiante que viajará en la dirección del sensor y será detectado. Así, al igual que con la dispersión atmosférica, la señal de la emisión de la atmósfera debe ser separada de la señal térmica que emite la superficie (Figura ).</p>
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:rs-flow-10"></span>
-<img src="img/volcano.jpg" alt="Emisión TIR, adicional a la emisión general. Imagen Sentinel-2 sobre el cráter Pu'u 'O'o' del complejo volcánico Kilauea (23 mayo 2018), fuente: ESA." width="171" />
+<img src="img/volcano.jpg" alt="Emisión TIR, adicional a la emisión general. Imagen Sentinel-2 sobre el cráter Pu'u 'O'o' del complejo volcánico Kilauea (23 mayo 2018), fuente: ESA." width="50%" />
 <p class="caption">
 Figura 12.5: Emisión TIR, adicional a la emisión general. Imagen Sentinel-2 sobre el cráter Pu’u ‘O’o’ del complejo volcánico Kilauea (23 mayo 2018), fuente: ESA.
 </p>
@@ -617,7 +617,7 @@ Figura 12.5: Emisión TIR, adicional a la emisión general. Imagen Sentinel-2 so
 <h3><span class="header-section-number">12.3.2</span> TOA a BOA</h3>
 <p>La <strong>corrección atmosférica</strong> es el paso final hacia <em>mediciones comparables</em> de la superficie de la Tierra. Al hacer la corrección atmosférica, (teóricamente) eliminamos la influencia de la atmósfera. Por lo tanto, llamamos al producto <em>reflectancia del fondo de la atmósfera</em> (BOA). En teoría, <strong><em>el BOA medido por un sensor espacial debería ser comparable a las mediciones terrestres</em></strong>. En el caso práctico de las imágenes Landsat Colección 2 Nivel 2 (ver <a href="#niv-lan8"><strong>??</strong></a>) los pasos descritos ya han sido realizados y toda la data disponible está procesada a nivel de BOA.</p>
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:rs-flow-11"></span>
-<img src="img/toaboa.png" alt="Comparación BOA-TOA. Imagen Landsat 8 RGB, TOA (izquierda). BOA (derecha). Área en Nepal mayo3, 2013 (fuente: Michelle Bouchard, USGS)" width="476" />
+<img src="img/toaboa.png" alt="Comparación BOA-TOA. Imagen Landsat 8 RGB, TOA (izquierda). BOA (derecha). Área en Nepal mayo3, 2013 (fuente: Michelle Bouchard, USGS)" width="100%" />
 <p class="caption">
 Figura 12.6: Comparación BOA-TOA. Imagen Landsat 8 RGB, TOA (izquierda). BOA (derecha). Área en Nepal mayo3, 2013 (fuente: Michelle Bouchard, USGS)
 </p>

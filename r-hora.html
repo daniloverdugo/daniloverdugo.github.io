@@ -399,7 +399,7 @@ div.csl-indent {
 <p>La hora actual se obtiene con la función:
 </p>
 <div class="sourceCode" id="cb353"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb353-1"><a href="r-hora.html#cb353-1" aria-hidden="true" tabindex="-1"></a><span class="fu">Sys.time</span>()</span></code></pre></div>
-<pre><code>## [1] &quot;2022-03-03 17:05:20 -03&quot;</code></pre>
+<pre><code>## [1] &quot;2022-03-03 18:09:17 -03&quot;</code></pre>
 <p>Que retorna un objeto POSIXct que se compone de una fecha y una hora en una zona horaria determinada.</p>
 <div class="sourceCode" id="cb355"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb355-1"><a href="r-hora.html#cb355-1" aria-hidden="true" tabindex="-1"></a>ahora <span class="ot">&lt;-</span> <span class="fu">Sys.time</span>()</span>
 <span id="cb355-2"><a href="r-hora.html#cb355-2" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(ahora)</span></code></pre></div>
@@ -450,26 +450,26 @@ div.csl-indent {
 </table>
 <p>Estos símbolos existen y comparten con los símbolos de fechas<a href="#fn14" class="footnote-ref" id="fnref14"><sup>14</sup></a>:</p>
 <div class="sourceCode" id="cb359"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb359-1"><a href="r-hora.html#cb359-1" aria-hidden="true" tabindex="-1"></a><span class="fu">format</span>(ahora, <span class="st">&quot;%A %I:%M&quot;</span>)</span></code></pre></div>
-<pre><code>## [1] &quot;jueves 05:05&quot;</code></pre>
+<pre><code>## [1] &quot;jueves 06:09&quot;</code></pre>
 <div class="sourceCode" id="cb361"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb361-1"><a href="r-hora.html#cb361-1" aria-hidden="true" tabindex="-1"></a><span class="fu">format</span>(ahora, <span class="st">&quot;%H:%M:%S (%Z)&quot;</span>)</span></code></pre></div>
-<pre><code>## [1] &quot;17:05:20 (-03)&quot;</code></pre>
+<pre><code>## [1] &quot;18:09:17 (-03)&quot;</code></pre>
 <div class="sourceCode" id="cb363"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb363-1"><a href="r-hora.html#cb363-1" aria-hidden="true" tabindex="-1"></a><span class="fu">format</span>(ahora, <span class="st">&quot;%H:%M:%S&quot;</span>)  </span></code></pre></div>
-<pre><code>## [1] &quot;17:05:20&quot;</code></pre>
+<pre><code>## [1] &quot;18:09:17&quot;</code></pre>
 </div>
 <div id="ope-time" class="section level2" number="10.2">
 <h2><span class="header-section-number">10.2</span> Operando con el tiempo</h2>
 <p>El objeto tiempo también es capaz de realizar operaciones algebraicas.</p>
 <div class="sourceCode" id="cb365"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb365-1"><a href="r-hora.html#cb365-1" aria-hidden="true" tabindex="-1"></a>ahora</span></code></pre></div>
-<pre><code>## [1] &quot;2022-03-03 17:05:20 -03&quot;</code></pre>
+<pre><code>## [1] &quot;2022-03-03 18:09:17 -03&quot;</code></pre>
 <p>Sumar 30 segundos:</p>
 <div class="sourceCode" id="cb367"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb367-1"><a href="r-hora.html#cb367-1" aria-hidden="true" tabindex="-1"></a>(despues_s <span class="ot">&lt;-</span> ahora <span class="sc">+</span> <span class="dv">30</span>)</span></code></pre></div>
-<pre><code>## [1] &quot;2022-03-03 17:05:50 -03&quot;</code></pre>
+<pre><code>## [1] &quot;2022-03-03 18:09:47 -03&quot;</code></pre>
 <p>Sumar 30 minutos:</p>
 <div class="sourceCode" id="cb369"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb369-1"><a href="r-hora.html#cb369-1" aria-hidden="true" tabindex="-1"></a>(despues_m <span class="ot">&lt;-</span> ahora <span class="sc">+</span> (<span class="dv">30</span> <span class="sc">*</span> <span class="dv">60</span>))</span></code></pre></div>
-<pre><code>## [1] &quot;2022-03-03 17:35:20 -03&quot;</code></pre>
+<pre><code>## [1] &quot;2022-03-03 18:39:17 -03&quot;</code></pre>
 <p>Sumar 30 horas (notese el ajuste de la fecha):</p>
 <div class="sourceCode" id="cb371"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb371-1"><a href="r-hora.html#cb371-1" aria-hidden="true" tabindex="-1"></a>(despues_h <span class="ot">&lt;-</span> ahora <span class="sc">+</span> (<span class="dv">30</span> <span class="sc">*</span> <span class="dv">60</span> <span class="sc">*</span> <span class="dv">60</span>))</span></code></pre></div>
-<pre><code>## [1] &quot;2022-03-04 23:05:20 -03&quot;</code></pre>
+<pre><code>## [1] &quot;2022-03-05 00:09:17 -03&quot;</code></pre>
 <div class="sourceCode" id="cb373"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb373-1"><a href="r-hora.html#cb373-1" aria-hidden="true" tabindex="-1"></a>despues_h <span class="sc">-</span> ahora</span></code></pre></div>
 <pre><code>## Time difference of 1.25 days</code></pre>
 <p>La función <em>difftime()</em> soporta las siguientes unidades “auto,” “secs,” “mins,” “hours,” “days” y “weeks.”</p>
@@ -477,7 +477,7 @@ div.csl-indent {
 <pre><code>## Time difference of 0.1785714 weeks</code></pre>
 <p>Una función útil que también trabaja con tiempos es <code>trunc()</code>. Toma un argumento <code>x</code>, permite especificar el tiempo <code>units</code> de interés y trunca los enteros de cualquier unidad más pequeña a cero:</p>
 <div class="sourceCode" id="cb377"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb377-1"><a href="r-hora.html#cb377-1" aria-hidden="true" tabindex="-1"></a><span class="fu">trunc</span>(ahora, <span class="at">units=</span> <span class="st">&quot;mins&quot;</span>)</span></code></pre></div>
-<pre><code>## [1] &quot;2022-03-03 17:05:00 -03&quot;</code></pre>
+<pre><code>## [1] &quot;2022-03-03 18:09:00 -03&quot;</code></pre>
 <div class="sourceCode" id="cb379"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb379-1"><a href="r-hora.html#cb379-1" aria-hidden="true" tabindex="-1"></a><span class="fu">trunc</span>(ahora, <span class="at">units=</span> <span class="st">&quot;months&quot;</span>)</span></code></pre></div>
 <pre><code>## [1] &quot;2022-03-01 -03&quot;</code></pre>
 <div class="sourceCode" id="cb381"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb381-1"><a href="r-hora.html#cb381-1" aria-hidden="true" tabindex="-1"></a><span class="fu">trunc</span>(ahora, <span class="at">units=</span> <span class="st">&quot;years&quot;</span>)</span></code></pre></div>
@@ -488,7 +488,7 @@ div.csl-indent {
 <p>En general, hemos visto que la base R proporciona un amplio soporte para crear y computar con fechas y horas. Al mismo tiempo, tratar con tres clases diferentes y sus relaciones con otros tipos de datos (específicamente: números) es un desafío. Aunque la mayoría de las complicaciones provienen de las complejidades inherentes de fechas y horas, las clases y los comandos R básicos para fechas y horas se han ido desarrollando con el tiempo y se vuelven cada vez más poderosos.</p>
 <p>Convertir entre zonas horarias, una operación muy compleja se realiza de manera muy práctica. Por ejemplo, deseo conocer la hora de término de un viaje de 15 horas en una zona horaria diametralmente opuesta (note que usamos la versión de hora local <em>lt</em>), entonces, ¿qué hora sería en 15 horas más en Shangái?</p>
 <div class="sourceCode" id="cb383"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb383-1"><a href="r-hora.html#cb383-1" aria-hidden="true" tabindex="-1"></a><span class="fu">as.POSIXlt</span>(<span class="fu">Sys.time</span>() <span class="sc">+</span> (<span class="dv">15</span> <span class="sc">*</span> <span class="dv">60</span> <span class="sc">*</span> <span class="dv">60</span>), <span class="at">tz =</span> <span class="st">&quot;Asia/Shanghai&quot;</span>)</span></code></pre></div>
-<pre><code>## [1] &quot;2022-03-04 19:05:20 CST&quot;</code></pre>
+<pre><code>## [1] &quot;2022-03-04 20:09:18 CST&quot;</code></pre>
 
 </div>
 </div>
